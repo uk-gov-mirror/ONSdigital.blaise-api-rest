@@ -1,7 +1,10 @@
-﻿using System.Web.Http;
-using Blaise.Api.Providers;
+﻿using System.Net.Http.Headers;
+using System.Web.Http;
+using Blaise.Api.Framework;
 using Microsoft.Owin.Extensions;
+using Newtonsoft.Json.Serialization;
 using Owin;
+using Swashbuckle.Application;
 using Unity.WebApi;
 
 namespace Blaise.Api
@@ -21,7 +24,7 @@ namespace Blaise.Api
             var config = new HttpConfiguration
             {
                 DependencyResolver = new UnityDependencyResolver(
-                    UnityProvider.GetConfiguredContainer())
+                    UnityConfig.GetConfiguredContainer())
             };
 
             config.MapHttpAttributeRoutes();
@@ -31,6 +34,14 @@ namespace Blaise.Api
                 defaults: new { id = RouteParameter.Optional }
             );
             appBuilder.UseWebApi(config);
+
+            config.Formatters.JsonFormatter.SupportedMediaTypes
+                .Add(new MediaTypeHeaderValue("text/html"));
+
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
+
+            SwaggerConfig.Register(config);
         }
     }
 }

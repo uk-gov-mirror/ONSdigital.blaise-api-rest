@@ -4,9 +4,9 @@ using Blaise.Nuget.Api;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Unity;
 
-namespace Blaise.Api.Providers
+namespace Blaise.Api.Framework
 {
-    public static class UnityProvider
+    public static class UnityConfig
     {
         public static IUnityContainer GetConfiguredContainer()
         {

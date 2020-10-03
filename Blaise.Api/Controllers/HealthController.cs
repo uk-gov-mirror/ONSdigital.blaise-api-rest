@@ -16,7 +16,7 @@ namespace Blaise.Api.Controllers
         {
             Console.WriteLine("Health check");
 
-            var results = new List<string> { "ASP.NET", "Docker", "Windows Server Containers" };
+            var results = new List<string> { "Blaise OK", "DB OK"};
 
             return Ok(results);
         }
