@@ -3,7 +3,7 @@
 
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
-COPY Blaise.Api/bin/Debug /api
+COPY Blaise.Api/bin/Release /api
 
 WORKDIR /api
 
