@@ -9,40 +9,18 @@ using Blaise.Nuget.Api.Contracts.Exceptions;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1")]
-    public class InstrumentParkController : ApiController
+    [RoutePrefix("api/v1/serverparks/{serverParkName}")]
+    public class InstrumentController : ApiController
     {
         private readonly IInstrumentService _instrumentService;
 
-        public InstrumentParkController(IInstrumentService instrumentService)
+        public InstrumentController(IInstrumentService instrumentService)
         {
             _instrumentService = instrumentService;
         }
 
         [HttpGet]
         [Route("instruments")]
-        [ResponseType(typeof(IEnumerable<InstrumentDto>))]
-        public IHttpActionResult GetAllInstruments()
-        {
-            try
-            {
-                Console.WriteLine("Obtaining a list of instruments across all server parks");
-
-                var instruments = _instrumentService.GetAllInstruments().ToList();
-
-                Console.WriteLine($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
-
-                return Ok(instruments);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
-        }
-
-        [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments")]
         [ResponseType(typeof(IEnumerable<InstrumentDto>))]
         public IHttpActionResult GetInstruments(string serverParkName)
         {
@@ -68,7 +46,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}")]
+        [Route("instruments/{instrumentName}")]
         [ResponseType(typeof(InstrumentDto))]
         public IHttpActionResult GetInstrument(string serverParkName, string instrumentName)
         {
@@ -91,7 +69,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/instruments/{instrumentName}/exists")]
+        [Route("instruments/{instrumentName}/exists")]
         [ResponseType(typeof(bool))]
         public IHttpActionResult InstrumentExists(string serverParkName, string instrumentName)
         {

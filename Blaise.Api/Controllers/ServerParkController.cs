@@ -8,7 +8,7 @@ using Blaise.Api.Core.Interfaces;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1")]
+    [RoutePrefix("api/v1/serverparks")]
     public class ServerParkController : ApiController
     {
         private readonly IServerParkService _serverParkService;
@@ -19,29 +19,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("serverparks/names")]
-        [ResponseType(typeof(IEnumerable<string>))]
-        public IHttpActionResult GetServerParkNames()
-        {
-            try
-            {
-                Console.WriteLine("Obtaining a list of server parks");
-
-                var serverParkNames = _serverParkService.GetServerParkNames().ToList();
-
-                Console.WriteLine($"Successfully received a list of server park names '{string.Join(", ", serverParkNames)}'");
-
-                return Ok(serverParkNames);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
-        }
-
-        [HttpGet]
-        [Route("serverparks")]
+        [Route("")]
         [ResponseType(typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
@@ -63,7 +41,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}")]
+        [Route("{serverParkName}")]
         [ResponseType(typeof(ServerParkDto))]
         public IHttpActionResult GetServerPark(string serverParkName)
         {
@@ -83,7 +61,7 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpGet]
-        [Route("serverparks/{serverParkName}/exists")]
+        [Route("{serverParkName}/exists")]
         [ResponseType(typeof(bool))]
         public IHttpActionResult ServerParkExists(string serverParkName)
         {

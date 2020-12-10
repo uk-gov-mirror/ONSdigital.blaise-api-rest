@@ -27,10 +27,12 @@ namespace Blaise.Api.Configuration
             //core mappers
             container.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
             container.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
+            container.RegisterType<ICatiInstrumentMapper, CatiInstrumentMapper>();
 
             //core services
             container.RegisterType<IServerParkService, ServerParkService>();
             container.RegisterType<IInstrumentService, InstrumentService>();
+            container.RegisterType<ICatiService, CatiService>();
 
             return container;
         }

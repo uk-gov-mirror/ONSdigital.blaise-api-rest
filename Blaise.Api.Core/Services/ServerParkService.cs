@@ -18,11 +18,6 @@ namespace Blaise.Api.Core.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<string> GetServerParkNames()
-        {
-            return _blaiseApi.GetNamesOfServerParks();
-        }
-
         public IEnumerable<ServerParkDto> GetServerParks()
         {
             var serverParks = _blaiseApi.GetServerParks();

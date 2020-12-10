@@ -27,38 +27,6 @@ namespace Blaise.Api.Tests.Unit.Core.Services
         }
 
         [Test]
-        public void Given_I_Call_GetServerParkNames_Then_The_Correct_Method_Is_called_On_The_Api()
-        {
-            //act
-            _sut.GetServerParkNames();
-
-            //assert
-            _blaiseApiMock.Verify(v => v.GetNamesOfServerParks(), Times.Once);
-        }
-
-        [Test]
-        public void Given_I_Call_GetServerParkNames_Then_The_Correct_ServerParkNames_Are_Returned()
-        {
-            //arrange
-            var serverParkNames = new List<string>
-            {
-                "ServerParkA",
-                "ServerParkB"
-            };
-
-            _blaiseApiMock.Setup(b => b.GetNamesOfServerParks()).Returns(serverParkNames);
-
-            //act
-            var result = _sut.GetServerParkNames().ToList();
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<string>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(serverParkNames, result);
-        }
-
-        [Test]
         public void Given_I_Call_GetServerParks_Then_The_Correct_Method_Is_called_On_The_Api()
         {
             //arrange
