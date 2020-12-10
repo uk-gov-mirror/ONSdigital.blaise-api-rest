@@ -24,7 +24,8 @@ namespace Blaise.Api.Core.Mappers
             return new InstrumentDto
             {
                 Name = instrument.Name,
-                ServerParkName = instrument.ServerPark
+                ServerParkName = instrument.ServerPark,
+                InstallDate = instrument.InstallDate
             };
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Mappers;
@@ -54,9 +55,11 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
             //arrange
             var instrumentName = "OPN2010A";
             var serverParkName = "ServerParkA";
+            var installDate = DateTime.Now;
             var surveyMock = new Mock<ISurvey>();
             surveyMock.Setup(s => s.Name).Returns(instrumentName);
             surveyMock.Setup(s => s.ServerPark).Returns(serverParkName);
+            surveyMock.Setup(s => s.InstallDate).Returns(installDate);
 
             //act
             var result = _sut.MapToDto(surveyMock.Object);
@@ -66,6 +69,7 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
             Assert.IsInstanceOf<InstrumentDto>(result);
             Assert.AreEqual(instrumentName,result.Name);
             Assert.AreEqual(serverParkName,result.ServerParkName);
+            Assert.AreEqual(installDate,result.InstallDate);
         }
     }
 }
