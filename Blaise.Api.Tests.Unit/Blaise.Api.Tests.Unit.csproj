@@ -70,6 +70,7 @@
     <Compile Include="Mappers\CatiInstrumentMapperTests.cs" />
     <Compile Include="Mappers\InstrumentDtoMapperTests.cs" />
     <Compile Include="Mappers\ServerParkDtoMapperTests.cs" />
+    <Compile Include="Services\CatiServiceTests.cs" />
     <Compile Include="Services\InstrumentServiceTests.cs" />
     <Compile Include="Services\ServerParkServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

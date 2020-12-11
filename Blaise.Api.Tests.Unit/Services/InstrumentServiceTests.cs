@@ -28,7 +28,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_List_Of_InstrumentDtos_Back()
+        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_List_Of_InstrumentDtos_Returned()
         {
             //arrange
             var surveys = new List<ISurvey>();
@@ -63,7 +63,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_Correct_List_Of_InstrumentDtos()
+        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_Correct_List_Of_InstrumentDtos_Returned()
         {
             //arrange
             var surveys = new List<ISurvey>();
