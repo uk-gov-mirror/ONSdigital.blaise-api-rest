@@ -9,27 +9,19 @@ namespace Blaise.Api.Core.Mappers
 {
     public class CatiInstrumentMapper : ICatiInstrumentMapper
     {
-        private readonly IInstrumentDtoMapper _instrumentDtoMapper;
-
-        public CatiInstrumentMapper(IInstrumentDtoMapper instrumentDtoMapper)
+        public CatiInstrumentDto MapToCatiInstrumentDto(InstrumentDto instrumentDto, List<DateTime> surveyDays)
         {
-            _instrumentDtoMapper = instrumentDtoMapper;
-        }
-        public CatiInstrumentDto MapToDto(ISurvey instrument, List<DateTime> surveyDays)
-        {
-            var instrumentDto = _instrumentDtoMapper.MapToDto(instrument);
+            var catiInstrument = new CatiInstrumentDto
+            {
+                Name = instrumentDto.Name,
+                ServerParkName = instrumentDto.ServerParkName,
+                InstallDate = instrumentDto.InstallDate,
+                SurveyDays = surveyDays,
+                Expired = surveyDays.All(s => s.Date < DateTime.Today),
+                ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today)
+            };
 
-            return MapToDto((CatiInstrumentDto) instrumentDto, surveyDays);
-        }
-
-        private static CatiInstrumentDto MapToDto(CatiInstrumentDto instrumentDto, 
-            List<DateTime> surveyDays)
-        {
-            instrumentDto.SurveyDays = surveyDays;
-            instrumentDto.Expired = surveyDays.All(s => s.Date < DateTime.Today);
-            instrumentDto.ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today);
-            
-            return instrumentDto;
+            return catiInstrument;
         }
 
     }

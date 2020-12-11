@@ -7,7 +7,7 @@ using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
 
-namespace Blaise.Api.Tests.Unit.Core.Mappers
+namespace Blaise.Api.Tests.Unit.Mappers
 {
     public class InstrumentDtoMapperTests
     {
@@ -20,7 +20,18 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
         }
 
         [Test]
-        public void Given_A_List_Of_Surveys_When_I_Call_MapToDto_Then_A_Correct_List_Of_Instrument_Dtos_Is_Returned()
+        public void Given_A_List_Of_Surveys_When_I_Call_MapToInstrumentDtos_Then_A_List_Of_Instrument_Dtos_Are_Returned()
+        {
+            //act
+            var result = _sut.MapToInstrumentDtos(new List<ISurvey>()).ToList();
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<List<InstrumentDto>>(result);
+        }
+
+        [Test]
+        public void Given_A_List_Of_Surveys_When_I_Call_MapToInstrumentDtos_Then_The_Correct_Properties_Are_Mapped()
         {
             //arrange
             var instrument1Name = "OPN2010A";
@@ -39,7 +50,7 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
             };
 
             //act
-            var result = _sut.MapToDto(surveys).ToList();
+            var result = _sut.MapToInstrumentDtos(surveys).ToList();
 
             //assert
             Assert.IsNotNull(result);
@@ -50,7 +61,21 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
         }
 
         [Test]
-        public void Given_A_Survey_When_I_Call_MapToDto_Then_A_Correct_Instrument_Dto_Is_Returned()
+        public void Given_A_Survey_When_I_Call_MapToInstrumentDto_Then_An_InstrumentDto_Is_Returned()
+        {
+            //arrange
+            var surveyMock = new Mock<ISurvey>();
+
+            //act
+            var result = _sut.MapToInstrumentDto(surveyMock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<InstrumentDto>(result);
+        }
+
+        [Test]
+        public void Given_A_Survey_When_I_Call_MapToInstrumentDto_Then_The_Correct_Properties_Are_Mapped()
         {
             //arrange
             var instrumentName = "OPN2010A";
@@ -62,14 +87,14 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
             surveyMock.Setup(s => s.InstallDate).Returns(installDate);
 
             //act
-            var result = _sut.MapToDto(surveyMock.Object);
+            var result = _sut.MapToInstrumentDto(surveyMock.Object);
 
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<InstrumentDto>(result);
-            Assert.AreEqual(instrumentName,result.Name);
-            Assert.AreEqual(serverParkName,result.ServerParkName);
-            Assert.AreEqual(installDate,result.InstallDate);
+            Assert.AreEqual(instrumentName, result.Name);
+            Assert.AreEqual(serverParkName, result.ServerParkName);
+            Assert.AreEqual(installDate, result.InstallDate);
         }
     }
 }

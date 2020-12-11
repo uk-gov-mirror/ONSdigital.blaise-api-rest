@@ -27,7 +27,7 @@ namespace Blaise.Api.Controllers
             {
                 Console.WriteLine("Obtaining a list of instruments from Cati");
 
-                var instruments = _catiService.GetInstrumentsFromCati().ToList();
+                var instruments = _catiService.GetCatiInstruments().ToList();
 
                 Console.WriteLine($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
 

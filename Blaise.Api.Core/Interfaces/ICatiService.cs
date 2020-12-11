@@ -5,6 +5,6 @@ namespace Blaise.Api.Core.Interfaces
 {
     public interface ICatiService
     {
-        List<CatiInstrumentDto> GetInstrumentsFromCati();
+        List<CatiInstrumentDto> GetCatiInstruments();
     }
 }

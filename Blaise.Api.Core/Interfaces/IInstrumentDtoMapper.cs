@@ -6,7 +6,7 @@ namespace Blaise.Api.Core.Interfaces
 {
     public interface IInstrumentDtoMapper
     {
-        IEnumerable<InstrumentDto> MapToDto(IEnumerable<ISurvey> instruments);
-        InstrumentDto MapToDto(ISurvey instrument);
+        IEnumerable<InstrumentDto> MapToInstrumentDtos(IEnumerable<ISurvey> instruments);
+        InstrumentDto MapToInstrumentDto(ISurvey instrument);
     }
 }

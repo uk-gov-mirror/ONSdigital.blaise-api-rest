@@ -7,7 +7,7 @@ using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
 
-namespace Blaise.Api.Tests.Unit.Core.Mappers
+namespace Blaise.Api.Tests.Unit.Mappers
 {
     public class ServerParkDtoMapperTests
     {
@@ -23,46 +23,7 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
         }
 
         [Test]
-        public void Given_A_ServerPark_When_I_Call_MapToDto_Then_A_Correct_ServerParkDto_Is_Returned()
-        {
-            //arrange
-            var serverParkName = "ServerParkA";
-            var serverPark = new Mock<IServerPark>();
-            serverPark.Setup(s => s.Name).Returns(serverParkName);
-
-            //act
-            var result = _sut.MapToDto(serverPark.Object);
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ServerParkDto>(result);
-            Assert.AreEqual(serverParkName, result.Name);
-        }
-
-        [Test]
-        public void Given_A_ServerPark_Has_An_Instrument_When_I_Call_MapToDto_Then_The_Instrument_Is_Mapped()
-        {
-            //arrange
-            var serverPark = new Mock<IServerPark>();
-            serverPark.Setup(s => s.Surveys).Returns(It.IsAny<ISurveyCollection>());
-            
-            var instrumentName = "OPN2010A";
-            _instrumentDtoMapperMock.Setup(m => m.MapToDto(
-                    It.IsAny<ISurveyCollection>()))
-                .Returns(new List<InstrumentDto> { new InstrumentDto { Name = instrumentName }});
-
-            //act
-            var result = _sut.MapToDto(serverPark.Object).Instruments.ToList();
-
-            //assert
-            Assert.IsInstanceOf<List<InstrumentDto>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(1, result.Count);
-            Assert.True(result.Any(i => i.Name == instrumentName));
-        }
-
-        [Test]
-        public void Given_A_List_Of_ServerParks_When_I_Call_MapToDto_Then_A_Correct_List_Of_ServerParkDto_Is_Returned()
+        public void Given_A_List_Of_ServerParks_When_I_Call_MapToServerParkDtos_Then_A_Correct_List_Of_ServerParkDto_Is_Returned()
         {
             //arrange
             var serverPark1Name = "ServerParkA";
@@ -80,7 +41,7 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
             };
 
             //act
-            var result = (_sut.MapToDto(serverParks)).ToList();
+            var result = (_sut.MapToServerParkDtos(serverParks)).ToList();
 
             //assert
             Assert.IsNotNull(result);
@@ -88,6 +49,45 @@ namespace Blaise.Api.Tests.Unit.Core.Mappers
             Assert.AreEqual(2, result.Count());
             Assert.True(result.Any(i => i.Name == serverPark1Name));
             Assert.True(result.Any(i => i.Name == serverPark2Name));
+        }
+
+        [Test]
+        public void Given_A_ServerPark_When_I_Call_MapToServerParkDto_Then_A_Correct_ServerParkDto_Is_Returned()
+        {
+            //arrange
+            var serverParkName = "ServerParkA";
+            var serverPark = new Mock<IServerPark>();
+            serverPark.Setup(s => s.Name).Returns(serverParkName);
+
+            //act
+            var result = _sut.MapToServerParkDto(serverPark.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ServerParkDto>(result);
+            Assert.AreEqual(serverParkName, result.Name);
+        }
+
+        [Test]
+        public void Given_A_ServerPark_Has_An_Instrument_When_I_Call_MapToServerParkDto_Then_The_Instrument_Is_Mapped()
+        {
+            //arrange
+            var serverPark = new Mock<IServerPark>();
+            serverPark.Setup(s => s.Surveys).Returns(It.IsAny<ISurveyCollection>());
+            
+            var instrumentName = "OPN2010A";
+            _instrumentDtoMapperMock.Setup(m => m.MapToInstrumentDtos(
+                    It.IsAny<ISurveyCollection>()))
+                .Returns(new List<InstrumentDto> { new InstrumentDto { Name = instrumentName }});
+
+            //act
+            var result = _sut.MapToServerParkDto(serverPark.Object).Instruments.ToList();
+
+            //assert
+            Assert.IsInstanceOf<List<InstrumentDto>>(result);
+            Assert.IsNotEmpty(result);
+            Assert.AreEqual(1, result.Count);
+            Assert.True(result.Any(i => i.Name == instrumentName));
         }
     }
 }
