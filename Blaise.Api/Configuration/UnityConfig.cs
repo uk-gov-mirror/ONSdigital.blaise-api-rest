@@ -1,10 +1,8 @@
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Mappers;
 using Blaise.Api.Core.Services;
-using Blaise.Nuget.Api;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
 using Blaise.Nuget.Api.Providers;
 using Unity;
 using Unity.Injection;
