@@ -7,12 +7,12 @@ namespace Blaise.Api.Core.Services
 {
     public class CatiService : ICatiService
     {
-        private readonly IBlaiseSurveyApi _blaiseApi;
+        private readonly IBlaiseCatiApi _blaiseApi;
         private readonly IInstrumentService _instrumentService;
         private readonly ICatiInstrumentMapper _mapper;
 
         public CatiService(
-            IBlaiseSurveyApi blaiseApi,
+            IBlaiseCatiApi blaiseApi,
             IInstrumentService instrumentService,
             ICatiInstrumentMapper mapper)
         {

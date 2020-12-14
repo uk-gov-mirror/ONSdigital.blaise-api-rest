@@ -13,14 +13,14 @@ namespace Blaise.Api.Tests.Unit.Services
     public class CatiServiceTests
     {
         private ICatiService _sut;
-        private Mock<IBlaiseSurveyApi> _blaiseApiMock;
+        private Mock<IBlaiseCatiApi> _blaiseApiMock;
         private Mock<IInstrumentService> _instrumentServiceMock;
         private Mock<ICatiInstrumentMapper> _mapperMock;
 
         [SetUp]
         public void SetUpTests()
         {
-            _blaiseApiMock = new Mock<IBlaiseSurveyApi>();
+            _blaiseApiMock = new Mock<IBlaiseCatiApi>();
             _instrumentServiceMock = new Mock<IInstrumentService>();
             _mapperMock = new Mock<ICatiInstrumentMapper>();
 
