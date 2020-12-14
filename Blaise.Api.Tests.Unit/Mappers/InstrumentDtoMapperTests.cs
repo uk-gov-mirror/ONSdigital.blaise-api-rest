@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Mappers;
+using Blaise.Nuget.Api.Contracts.Enums;
+using Blaise.Nuget.Api.Contracts.Extensions;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
@@ -37,11 +39,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var instrument1Name = "OPN2010A";
             var instrument2Name = "OPN2010B";
 
+            var serverPark1Name = "ServerParkA";
+            var serverPark2Name = "ServerParkB";
+
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.Setup(s => s.Name).Returns(instrument1Name);
+            survey1Mock.Setup(s => s.ServerPark).Returns(serverPark1Name);
+            survey1Mock.Setup(s => s.Status).Returns(SurveyStatusType.Active.FullName());
 
             var survey2Mock = new Mock<ISurvey>();
             survey2Mock.Setup(s => s.Name).Returns(instrument2Name);
+            survey2Mock.Setup(s => s.ServerPark).Returns(serverPark2Name);
+            survey2Mock.Setup(s => s.Status).Returns(SurveyStatusType.Inactive.FullName());
 
             var surveys = new List<ISurvey>
             {
@@ -55,9 +64,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<List<InstrumentDto>>(result);
-            Assert.AreEqual(2, result.Count());
-            Assert.True(result.Any(i => i.Name == instrument1Name));
-            Assert.True(result.Any(i => i.Name == instrument2Name));
+            Assert.AreEqual(2, result.Count);
+
+            Assert.True(result.Any(i => i.Name == instrument1Name && i.ServerParkName == serverPark1Name && i.Status == SurveyStatusType.Active.FullName()));
+            Assert.True(result.Any(i => i.Name == instrument2Name && i.ServerParkName == serverPark2Name && i.Status == SurveyStatusType.Inactive.FullName()));
         }
 
         [Test]

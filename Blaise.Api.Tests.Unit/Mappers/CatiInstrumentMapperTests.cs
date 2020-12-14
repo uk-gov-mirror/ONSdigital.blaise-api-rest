@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Mappers;
+using Blaise.Nuget.Api.Contracts.Enums;
+using Blaise.Nuget.Api.Contracts.Extensions;
 using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Mappers
@@ -38,7 +40,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
             {
                 Name = "OPN2021A",
                 ServerParkName = "ServerParkA",
-                InstallDate = DateTime.Now
+                InstallDate = DateTime.Now,
+                Status = SurveyStatusType.Inactive.FullName()
             };
 
             //act
@@ -50,6 +53,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(instrumentDto.Name, result.Name);
             Assert.AreEqual(instrumentDto.ServerParkName, result.ServerParkName);
             Assert.AreEqual(instrumentDto.InstallDate, result.InstallDate);
+            Assert.AreEqual(instrumentDto.Status, result.Status);
         }
 
         [Test]

@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Mappers;
+using Blaise.Nuget.Api.Contracts.Enums;
+using Blaise.Nuget.Api.Contracts.Extensions;
 using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
@@ -74,11 +77,26 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //arrange
             var serverPark = new Mock<IServerPark>();
             serverPark.Setup(s => s.Surveys).Returns(It.IsAny<ISurveyCollection>());
-            
-            var instrumentName = "OPN2010A";
+
+            var instrument1Dto = new InstrumentDto
+            {
+                Name = "OPN2010A",
+                ServerParkName = "ServerParkA",
+                InstallDate = DateTime.Today.AddDays(-2),
+                Status = SurveyStatusType.Inactive.FullName()
+            };
+
+            var instrument2Dto = new InstrumentDto
+            {
+                Name = "OPN2010B",
+                ServerParkName = "ServerParkB",
+                InstallDate = DateTime.Today,
+                Status = SurveyStatusType.Inactive.FullName()
+            };
+
             _instrumentDtoMapperMock.Setup(m => m.MapToInstrumentDtos(
                     It.IsAny<ISurveyCollection>()))
-                .Returns(new List<InstrumentDto> { new InstrumentDto { Name = instrumentName }});
+                .Returns(new List<InstrumentDto> { instrument1Dto, instrument2Dto });
 
             //act
             var result = _sut.MapToServerParkDto(serverPark.Object).Instruments.ToList();
@@ -86,8 +104,13 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //assert
             Assert.IsInstanceOf<List<InstrumentDto>>(result);
             Assert.IsNotEmpty(result);
-            Assert.AreEqual(1, result.Count);
-            Assert.True(result.Any(i => i.Name == instrumentName));
+            Assert.AreEqual(2, result.Count);
+
+            Assert.True(result.Any(i => i.Name == instrument1Dto.Name && i.ServerParkName == instrument1Dto.ServerParkName && 
+                                        i.InstallDate == instrument1Dto.InstallDate && i.Status == instrument1Dto.Status));
+
+            Assert.True(result.Any(i => i.Name == instrument2Dto.Name && i.ServerParkName == instrument2Dto.ServerParkName && 
+                                        i.InstallDate == instrument2Dto.InstallDate && i.Status == instrument2Dto.Status));
         }
     }
 }

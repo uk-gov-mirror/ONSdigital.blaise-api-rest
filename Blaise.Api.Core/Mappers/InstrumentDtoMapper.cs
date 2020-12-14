@@ -25,7 +25,8 @@ namespace Blaise.Api.Core.Mappers
             {
                 Name = instrument.Name,
                 ServerParkName = instrument.ServerPark,
-                InstallDate = instrument.InstallDate
+                InstallDate = instrument.InstallDate,
+                Status = instrument.Status
             };
         }
     }
