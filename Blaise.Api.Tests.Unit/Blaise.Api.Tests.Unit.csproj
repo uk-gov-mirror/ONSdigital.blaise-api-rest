@@ -65,8 +65,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.7\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.8.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.7\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\UnityTests.cs" />
     <Compile Include="Mappers\CatiInstrumentMapperTests.cs" />
     <Compile Include="Mappers\InstrumentDtoMapperTests.cs" />
     <Compile Include="Mappers\ServerParkDtoMapperTests.cs" />
@@ -88,6 +95,10 @@
     <ProjectReference Include="..\Blaise.Api.Core\Blaise.Api.Core.csproj">
       <Project>{CB7A9A87-41B1-40C9-8899-1AB4DDDF7563}</Project>
       <Name>Blaise.Api.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Blaise.Api\Blaise.Api.csproj">
+      <Project>{f35096f9-a4bb-4c18-8da1-158c66fabcac}</Project>
+      <Name>Blaise.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

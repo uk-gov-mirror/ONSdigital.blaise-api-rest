@@ -21,6 +21,7 @@ namespace Blaise.Api.Configuration
             //blaise api
             container.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseCatiApi, BlaiseCatiApi>(new InjectionConstructor(connectionModel));
 
             //core mappers
             container.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
