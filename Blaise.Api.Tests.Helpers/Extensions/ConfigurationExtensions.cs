@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Blaise.Api.Tests.Helpers.Extensions;
 
-namespace Blaise.Api.Tests.Behaviour.Extensions
+namespace Blaise.Api.Tests.Helpers.Extensions
 {
     public class ConfigurationExtensions
     {

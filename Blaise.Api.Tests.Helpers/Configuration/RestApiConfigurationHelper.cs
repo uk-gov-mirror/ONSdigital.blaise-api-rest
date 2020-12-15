@@ -1,4 +1,4 @@
-﻿using Blaise.Api.Tests.Behaviour.Extensions;
+﻿using Blaise.Api.Tests.Helpers.Extensions;
 
 namespace Blaise.Api.Tests.Helpers.Configuration
 {
