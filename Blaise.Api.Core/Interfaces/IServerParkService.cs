@@ -5,8 +5,6 @@ namespace Blaise.Api.Core.Interfaces
 {
     public interface IServerParkService
     {
-        IEnumerable<string> GetServerParkNames();
-
         IEnumerable<ServerParkDto> GetServerParks();
 
         ServerParkDto GetServerPark(string serverParkName);

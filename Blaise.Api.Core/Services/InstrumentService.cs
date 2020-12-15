@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -25,19 +21,19 @@ namespace Blaise.Api.Core.Services
         public IEnumerable<InstrumentDto> GetAllInstruments()
         {
             var instruments = _blaiseApi.GetSurveysAcrossServerParks();
-            return _mapper.MapToDto(instruments);
+            return _mapper.MapToInstrumentDtos(instruments);
         }
 
         public IEnumerable<InstrumentDto> GetInstruments(string serverParkName)
         {
             var instruments = _blaiseApi.GetSurveys(serverParkName);
-            return _mapper.MapToDto(instruments);
+            return _mapper.MapToInstrumentDtos(instruments);
         }
 
         public InstrumentDto GetInstrument(string instrumentName, string serverParkName)
         {
             var instrument = _blaiseApi.GetSurvey(instrumentName, serverParkName);
-            return _mapper.MapToDto(instrument);
+            return _mapper.MapToInstrumentDto(instrument);
         }
 
         public bool InstrumentExists(string instrumentName, string serverParkName)

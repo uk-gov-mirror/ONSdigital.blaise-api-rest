@@ -8,7 +8,7 @@ using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
 
-namespace Blaise.Api.Tests.Unit.Core.Services
+namespace Blaise.Api.Tests.Unit.Services
 {
     public class ServerParkServiceTests
     {
@@ -24,38 +24,6 @@ namespace Blaise.Api.Tests.Unit.Core.Services
             _mapperMock = new Mock<IServerParkDtoMapper>();
 
             _sut = new ServerParkService(_blaiseApiMock.Object, _mapperMock.Object);
-        }
-
-        [Test]
-        public void Given_I_Call_GetServerParkNames_Then_The_Correct_Method_Is_called_On_The_Api()
-        {
-            //act
-            _sut.GetServerParkNames();
-
-            //assert
-            _blaiseApiMock.Verify(v => v.GetNamesOfServerParks(), Times.Once);
-        }
-
-        [Test]
-        public void Given_I_Call_GetServerParkNames_Then_The_Correct_ServerParkNames_Are_Returned()
-        {
-            //arrange
-            var serverParkNames = new List<string>
-            {
-                "ServerParkA",
-                "ServerParkB"
-            };
-
-            _blaiseApiMock.Setup(b => b.GetNamesOfServerParks()).Returns(serverParkNames);
-
-            //act
-            var result = _sut.GetServerParkNames().ToList();
-
-            //assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<string>>(result);
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(serverParkNames, result);
         }
 
         [Test]
@@ -80,7 +48,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
 
             //assert
             _blaiseApiMock.Verify(v => v.GetServerParks(), Times.Once);
-            _mapperMock.Verify(v => v.MapToDto(serverParkList));
+            _mapperMock.Verify(v => v.MapToServerParkDtos(serverParkList));
         }
 
         [Test]
@@ -94,7 +62,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
                 new ServerParkDto()
             };
 
-            _mapperMock.Setup(m => m.MapToDto(It.IsAny<List<IServerPark>>()))
+            _mapperMock.Setup(m => m.MapToServerParkDtos(It.IsAny<List<IServerPark>>()))
                 .Returns(serverParkDtoList);
 
             //act
@@ -124,7 +92,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
 
             //assert
             _blaiseApiMock.Verify(v => v.GetServerPark(serverParkName), Times.Once);
-            _mapperMock.Verify(v => v.MapToDto(serverPark1Mock.Object));
+            _mapperMock.Verify(v => v.MapToServerParkDto(serverPark1Mock.Object));
         }
 
         [Test]
@@ -137,7 +105,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
             _blaiseApiMock.Setup(b => b.GetServerPark(serverParkName))
                 .Returns(It.IsAny<IServerPark>());
 
-            _mapperMock.Setup(m => m.MapToDto(It.IsAny<IServerPark>()))
+            _mapperMock.Setup(m => m.MapToServerParkDto(It.IsAny<IServerPark>()))
                 .Returns(serverParkDto);
 
             //act

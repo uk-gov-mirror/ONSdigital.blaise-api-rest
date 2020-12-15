@@ -14,24 +14,24 @@ namespace Blaise.Api.Core.Mappers
             _mapper = mapper;
         }
 
-        public IEnumerable<ServerParkDto> MapToDto(IEnumerable<IServerPark> serverParks)
+        public IEnumerable<ServerParkDto> MapToServerParkDtos(IEnumerable<IServerPark> serverParks)
         {
             var serverParkDtoList = new List<ServerParkDto>();
 
             foreach (var serverPark in serverParks)
             {
-                serverParkDtoList.Add(MapToDto(serverPark));
+                serverParkDtoList.Add(MapToServerParkDto(serverPark));
             }
 
             return serverParkDtoList;
         }
 
-        public ServerParkDto MapToDto(IServerPark serverPark)
+        public ServerParkDto MapToServerParkDto(IServerPark serverPark)
         {
             return new ServerParkDto
             {
                 Name = serverPark.Name,
-                Instruments = _mapper.MapToDto(serverPark.Surveys)
+                Instruments = _mapper.MapToInstrumentDtos(serverPark.Surveys)
             };
         }
     }

@@ -8,7 +8,7 @@ using Moq;
 using NUnit.Framework;
 using StatNeth.Blaise.API.ServerManager;
 
-namespace Blaise.Api.Tests.Unit.Core.Services
+namespace Blaise.Api.Tests.Unit.Services
 {
     public class InstrumentServiceTests
     {
@@ -28,7 +28,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
         }
 
         [Test]
-        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_List_Of_InstrumentDtos_Back()
+        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_List_Of_InstrumentDtos_Returned()
         {
             //arrange
             var surveys = new List<ISurvey>();
@@ -36,7 +36,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
             _blaiseApiMock.Setup(b => b.GetSurveysAcrossServerParks())
                 .Returns(surveys);
 
-            _mapperMock.Setup(m => m.MapToDto(surveys))
+            _mapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
                 .Returns(new List<InstrumentDto>());
             //act
             var result = _sut.GetAllInstruments();
@@ -63,7 +63,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
         }
 
         [Test]
-        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_Correct_List_Of_InstrumentDtos()
+        public void Given_I_Call_GetAllInstruments_Then_I_Get_A_Correct_List_Of_InstrumentDtos_Returned()
         {
             //arrange
             var surveys = new List<ISurvey>();
@@ -77,7 +77,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
                 new InstrumentDto {Name = "OPN2010B"}
             };
 
-            _mapperMock.Setup(m => m.MapToDto(surveys))
+            _mapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
                 .Returns(instrumentDtos);
 
             //act
@@ -99,7 +99,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
             _blaiseApiMock.Setup(b => b.GetSurveys(serverParkName))
                 .Returns(surveys);
 
-            _mapperMock.Setup(m => m.MapToDto(surveys))
+            _mapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
                 .Returns(instrumentDtos);
 
             //act
@@ -121,7 +121,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
             _blaiseApiMock.Setup(b => b.GetSurveys(serverParkName))
                 .Returns(surveys);
 
-            _mapperMock.Setup(m => m.MapToDto(surveys))
+            _mapperMock.Setup(m => m.MapToInstrumentDtos(surveys))
                 .Returns(instrumentDtos);
 
             //act
@@ -145,7 +145,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
                     .GetSurvey(instrumentName, serverParkName))
                 .Returns(surveyMock.Object);
 
-            _mapperMock.Setup(m => m.MapToDto(surveyMock.Object))
+            _mapperMock.Setup(m => m.MapToInstrumentDto(surveyMock.Object))
                 .Returns(instrumentDto);
 
             //act
@@ -169,7 +169,7 @@ namespace Blaise.Api.Tests.Unit.Core.Services
                 .GetSurvey(instrumentName, serverParkName))
                 .Returns(surveyMock.Object);
 
-            _mapperMock.Setup(m => m.MapToDto(surveyMock.Object))
+            _mapperMock.Setup(m => m.MapToInstrumentDto(surveyMock.Object))
                 .Returns(instrumentDto);
 
             //act

@@ -7,24 +7,26 @@ namespace Blaise.Api.Core.Mappers
 {
     public class InstrumentDtoMapper : IInstrumentDtoMapper
     {
-        public IEnumerable<InstrumentDto> MapToDto(IEnumerable<ISurvey> instruments)
+        public IEnumerable<InstrumentDto> MapToInstrumentDtos(IEnumerable<ISurvey> instruments)
         {
             var instrumentDtoList = new List<InstrumentDto>();
 
             foreach (var instrument in instruments)
             {
-                instrumentDtoList.Add(MapToDto(instrument));
+                instrumentDtoList.Add(MapToInstrumentDto(instrument));
             }
 
             return instrumentDtoList;
         }
 
-        public InstrumentDto MapToDto(ISurvey instrument)
+        public InstrumentDto MapToInstrumentDto(ISurvey instrument)
         {
             return new InstrumentDto
             {
                 Name = instrument.Name,
-                ServerParkName = instrument.ServerPark
+                ServerParkName = instrument.ServerPark,
+                InstallDate = instrument.InstallDate,
+                Status = instrument.Status
             };
         }
     }
