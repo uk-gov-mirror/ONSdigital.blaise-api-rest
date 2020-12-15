@@ -160,6 +160,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ConfigurationProvider.cs" />
+    <Compile Include="ApiService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ApiService.Designer.cs">
+      <DependentUpon>ApiService.cs</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
