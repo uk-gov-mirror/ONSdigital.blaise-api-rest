@@ -7,9 +7,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Enums;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Filters;
 
 namespace Blaise.Api.Controllers
 {
+    [ExceptionFilter]
     [RoutePrefix("api/v1")]
     public class HealthController : ApiController
     {

@@ -5,10 +5,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
-using Blaise.Nuget.Api.Contracts.Exceptions;
+using Blaise.Api.Filters;
 
 namespace Blaise.Api.Controllers
 {
+    [ExceptionFilter]
     [RoutePrefix("api/v1/serverparks/{serverParkName}")]
     public class InstrumentController : ApiController
     {
@@ -24,25 +25,13 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<InstrumentDto>))]
         public IHttpActionResult GetInstruments(string serverParkName)
         {
-            try
-            {
-                Console.WriteLine("Obtaining a list of instruments for a server park");
+            Console.WriteLine("Obtaining a list of instruments for a server park");
 
-                var instruments = _instrumentService.GetInstruments(serverParkName).ToList();
+            var instruments = _instrumentService.GetInstruments(serverParkName).ToList();
 
-                Console.WriteLine($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
+            Console.WriteLine($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
 
-                return Ok(instruments);
-            }
-            catch (DataNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
+            return Ok(instruments);
         }
 
         [HttpGet]
@@ -50,22 +39,14 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(InstrumentDto))]
         public IHttpActionResult GetInstrument(string serverParkName, string instrumentName)
         {
-            try
-            {
-                Console.WriteLine("Obtaining an instruments for a server park");
+            Console.WriteLine("Obtaining an instruments for a server park");
 
-                var instruments = _instrumentService
-                    .GetInstrument(instrumentName, serverParkName);
+            var instruments = _instrumentService
+                .GetInstrument(instrumentName, serverParkName);
 
-                Console.WriteLine($"Successfully received an instrument '{instrumentName}'");
+            Console.WriteLine($"Successfully received an instrument '{instrumentName}'");
 
-                return Ok(instruments);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
+            return Ok(instruments);
         }
 
         [HttpGet]
@@ -73,22 +54,13 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(bool))]
         public IHttpActionResult InstrumentExists(string serverParkName, string instrumentName)
         {
-            try
-            {
-                Console.WriteLine("Check that an instrument exists on a server park");
+            Console.WriteLine("Check that an instrument exists on a server park");
 
-                var exists = _instrumentService
-                    .InstrumentExists(instrumentName, serverParkName);
+            var exists = _instrumentService.InstrumentExists(instrumentName, serverParkName);
 
-                Console.WriteLine($"Instrument '{instrumentName}' exists = {exists}");
+            Console.WriteLine($"Instrument '{instrumentName}' exists = {exists}");
 
-                return Ok(exists);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
+            return Ok(exists);
         }
     }
 }

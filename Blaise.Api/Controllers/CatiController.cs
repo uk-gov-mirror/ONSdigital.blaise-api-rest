@@ -5,9 +5,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Filters;
 
 namespace Blaise.Api.Controllers
 {
+    [ExceptionFilter]
     [RoutePrefix("api/v1/cati")]
     public class CatiController : ApiController
     {
@@ -23,21 +25,13 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<CatiInstrumentDto>))]
         public IHttpActionResult GetInstruments()
         {
-            try
-            {
-                Console.WriteLine("Obtaining a list of instruments from Cati");
+            Console.WriteLine("Obtaining a list of instruments from Cati");
 
-                var instruments = _catiService.GetCatiInstruments().ToList();
+            var instruments = _catiService.GetCatiInstruments().ToList();
 
-                Console.WriteLine($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+            Console.WriteLine($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
 
-                return Ok(instruments);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
+            return Ok(instruments);
         }
     }
 }

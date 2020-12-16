@@ -5,9 +5,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Filters;
 
 namespace Blaise.Api.Controllers
 {
+    [ExceptionFilter]
     [RoutePrefix("api/v1/serverparks")]
     public class ServerParkController : ApiController
     {
@@ -23,21 +25,13 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
-            try
-            {
-                Console.WriteLine("Obtaining a list of server parks");
+            Console.WriteLine("Obtaining a list of server parks");
 
-                var parks = _serverParkService.GetServerParks().ToList();
+            var parks = _serverParkService.GetServerParks().ToList();
 
-                Console.WriteLine($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
+            Console.WriteLine($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
 
-                return Ok(parks);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
+            return Ok(parks);
         }
 
         [HttpGet]
@@ -45,19 +39,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(ServerParkDto))]
         public IHttpActionResult GetServerPark(string serverParkName)
         {
-            try
-            {
-                var park = _serverParkService.GetServerPark(serverParkName);
+            var park = _serverParkService.GetServerPark(serverParkName);
 
-                Console.WriteLine($"Successfully received server park '{serverParkName}'");
+            Console.WriteLine($"Successfully received server park '{serverParkName}'");
 
-                return Ok(park);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
+            return Ok(park);
         }
 
         [HttpGet]
@@ -65,19 +51,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(bool))]
         public IHttpActionResult ServerParkExists(string serverParkName)
         {
-            try
-            {
-                var exists = _serverParkService.ServerParkExists(serverParkName);
+            var exists = _serverParkService.ServerParkExists(serverParkName);
 
-                Console.WriteLine($"Successfully found server park '{serverParkName}'");
+            Console.WriteLine($"Successfully found server park '{serverParkName}'");
 
-                return Ok(exists);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}, {e.InnerException}");
-                throw;
-            }
+            return Ok(exists);
         }
     }
 }
