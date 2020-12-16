@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Enums;
+using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Filters;
 
@@ -24,7 +25,7 @@ namespace Blaise.Api.Controllers
         
         [HttpGet]
         [Route("health")]
-        [ResponseType(typeof(List<string>))]
+        [ResponseType(typeof(List<HealthCheckResultDto>))]
         public IHttpActionResult HealthCheck()
         {
             Console.WriteLine("performing Health check on Blaise connectivity");
