@@ -28,6 +28,12 @@ namespace Blaise.Api.Tests.Helpers.Instrument
                 SurveyInterviewType.Cati, BlaiseConfigurationHelper.ServerParkName);
         }
 
+        public bool SurveyHasInstalled(int timeoutInSeconds)
+        {
+            return SurveyExists(BlaiseConfigurationHelper.InstrumentName, timeoutInSeconds) &&
+                   SurveyIsActive(BlaiseConfigurationHelper.InstrumentName, timeoutInSeconds);
+        }
+
         public void UninstallSurvey()
         {
             _blaiseSurveyApi.UninstallSurvey(BlaiseConfigurationHelper.InstrumentName,
@@ -64,6 +70,24 @@ namespace Blaise.Api.Tests.Helpers.Instrument
                 }
             }
             return GetSurveyStatus(instrumentName) == SurveyStatusType.Active;
+        }
+
+        private bool SurveyExists(string instrumentName, int timeoutInSeconds)
+        {
+            var counter = 0;
+            const int maxCount = 10;
+
+            while (!_blaiseSurveyApi.SurveyExists(instrumentName, BlaiseConfigurationHelper.ServerParkName))
+            {
+                Thread.Sleep(timeoutInSeconds % maxCount);
+
+                counter++;
+                if (counter == maxCount)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private SurveyStatusType GetSurveyStatus(string instrumentName)
