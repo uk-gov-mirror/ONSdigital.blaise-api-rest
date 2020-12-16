@@ -13,7 +13,7 @@ namespace Blaise.Api.Contracts.Enums
         [EnumMember(Value = "Remote data server connection")]
         RemoteDataServer,
 
-        [EnumMember(Value = "Renote Cati management connection")]
+        [EnumMember(Value = "Remote Cati management connection")]
         RemoteCatiManagement
     }
 }

@@ -156,6 +156,7 @@
     <Compile Include="Controllers\CatiController.cs" />
     <Compile Include="Controllers\InstrumentController.cs" />
     <Compile Include="Controllers\ServerParkController.cs" />
+    <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ConfigurationProvider.cs" />

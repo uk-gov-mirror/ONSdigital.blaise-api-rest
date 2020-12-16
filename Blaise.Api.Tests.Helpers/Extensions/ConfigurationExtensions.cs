@@ -25,12 +25,5 @@ namespace Blaise.Api.Tests.Helpers.Extensions
             variable.ThrowExceptionIfNullOrEmpty(variableName);
             return variable;
         }
-
-        public static int GetIntVariable(string variableName)
-        {
-            var variable = ConfigurationManager.AppSettings[variableName];
-            variable.ThrowExceptionIfNotInt(variableName);
-            return Convert.ToInt32(variable);
-        }
     }
 }

@@ -181,7 +181,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Instrument_Exists_When_I_Call_InstrumentExists_Then_True_Is_Retuned()
+        public void Given_An_Instrument_Exists_When_I_Call_InstrumentExists_Then_True_Is_Returned()
         {
             //arrange
             var instrumentName = "OPN2101A";

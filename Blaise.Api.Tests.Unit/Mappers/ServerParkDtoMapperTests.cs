@@ -49,7 +49,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<List<ServerParkDto>>(result);
-            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(2, result.Count);
             Assert.True(result.Any(i => i.Name == serverPark1Name));
             Assert.True(result.Any(i => i.Name == serverPark2Name));
         }
