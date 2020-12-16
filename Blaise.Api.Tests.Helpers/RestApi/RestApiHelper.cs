@@ -31,7 +31,7 @@ namespace Blaise.Api.Tests.Helpers.RestApi
         public async Task<List<Questionnaire>> GetAllActiveQuestionnaires()
         {
             var questionnaires =
-                await GetListOfObjectsASync<Questionnaire>("/api/v1/serverparks/localdevelopment/instruments");
+                await GetListOfObjectsASync<Questionnaire>(RestApiConfigurationHelper.InstrumentsUrl);
             return questionnaires != null ? questionnaires.Where(q => q.Status == SurveyStatusType.Active).ToList()
                 : new List<Questionnaire>();
         }
