@@ -24,6 +24,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void GivenThereIsAnInstrumentInstalledOnABlaiseEnvironment()
         {
             InstrumentHelper.GetInstance().InstallInstrument();
+            Assert.IsTrue(InstrumentHelper.GetInstance().SurveyHasInstalled(60));
         }
 
 
