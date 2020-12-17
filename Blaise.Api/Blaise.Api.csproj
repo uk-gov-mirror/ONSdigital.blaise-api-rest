@@ -179,6 +179,10 @@
       <Project>{cb7a9a87-41b1-40c9-8899-1ab4dddf7563}</Project>
       <Name>Blaise.Api.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Blaise.Api.Log\Blaise.Api.Log.csproj">
+      <Project>{8e9c7380-58e1-45fb-9e85-ebb18c012328}</Project>
+      <Name>Blaise.Api.Log</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Blaise.Api.Storage\Blaise.Api.Storage.csproj">
       <Project>{7c8f3591-49e3-4a48-ab46-843cc181e7bd}</Project>
       <Name>Blaise.Api.Storage</Name>

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Filters;
+using Blaise.Api.Log.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -25,11 +25,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<CatiInstrumentDto>))]
         public IHttpActionResult GetInstruments()
         {
-            Console.WriteLine("Obtaining a list of instruments from Cati");
+            LogService.Info("Obtaining a list of instruments from Cati");
 
             var instruments = _catiService.GetCatiInstruments().ToList();
 
-            Console.WriteLine($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+            LogService.Info($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
 
             return Ok(instruments);
         }

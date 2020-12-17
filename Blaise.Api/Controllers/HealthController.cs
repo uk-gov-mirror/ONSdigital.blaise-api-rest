@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -9,6 +7,7 @@ using Blaise.Api.Contracts.Enums;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Filters;
+using Blaise.Api.Log.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -28,7 +27,7 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(List<HealthCheckResultDto>))]
         public IHttpActionResult HealthCheck()
         {
-            Console.WriteLine("performing Health check on Blaise connectivity");
+            LogService.Info("performing Health check on Blaise connectivity");
 
             var results = _healthService.PerformCheck().ToList();
 

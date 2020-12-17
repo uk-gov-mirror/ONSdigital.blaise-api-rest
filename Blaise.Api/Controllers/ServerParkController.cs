@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Filters;
+using Blaise.Api.Log.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -25,11 +25,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
-            Console.WriteLine("Obtaining a list of server parks");
+            LogService.Info("Obtaining a list of server parks");
 
             var parks = _serverParkService.GetServerParks().ToList();
 
-            Console.WriteLine($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
+            LogService.Info($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
 
             return Ok(parks);
         }
@@ -41,7 +41,7 @@ namespace Blaise.Api.Controllers
         {
             var park = _serverParkService.GetServerPark(serverParkName);
 
-            Console.WriteLine($"Successfully received server park '{serverParkName}'");
+            LogService.Info($"Successfully received server park '{serverParkName}'");
 
             return Ok(park);
         }
@@ -53,7 +53,7 @@ namespace Blaise.Api.Controllers
         {
             var exists = _serverParkService.ServerParkExists(serverParkName);
 
-            Console.WriteLine($"Successfully found server park '{serverParkName}'");
+            LogService.Info($"Successfully found server park '{serverParkName}'");
 
             return Ok(exists);
         }
