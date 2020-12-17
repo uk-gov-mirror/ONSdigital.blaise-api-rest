@@ -9,12 +9,12 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseCatiApi _blaiseApi;
         private readonly IInstrumentService _instrumentService;
-        private readonly ICatiInstrumentMapper _mapper;
+        private readonly ICatiInstrumentDtoMapper _mapper;
 
         public CatiService(
             IBlaiseCatiApi blaiseApi,
             IInstrumentService instrumentService,
-            ICatiInstrumentMapper mapper)
+            ICatiInstrumentDtoMapper mapper)
         {
             _blaiseApi = blaiseApi;
             _instrumentService = instrumentService;

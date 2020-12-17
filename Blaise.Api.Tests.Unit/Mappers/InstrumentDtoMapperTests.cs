@@ -22,7 +22,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_A_List_Of_Surveys_When_I_Call_MapToInstrumentDtos_Then_A_List_Of_Instrument_Dtos_Are_Returned()
+        public void Given_A_List_Of_Surveys_When_I_Call_MapToInstrumentDtos_Then_A_List_Of_InstrumentDtos_Are_Returned()
         {
             //act
             var result = _sut.MapToInstrumentDtos(new List<ISurvey>()).ToList();

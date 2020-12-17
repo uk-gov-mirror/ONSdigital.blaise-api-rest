@@ -8,14 +8,14 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Mappers
 {
-    public class CatiInstrumentMapperTests
+    public class CatiInstrumentMapperDtoTests
     {
-        private CatiInstrumentMapper _sut;
+        private CatiInstrumentDtoMapper _sut;
 
         [SetUp]
         public void SetupTests()
         {
-            _sut = new CatiInstrumentMapper();
+            _sut = new CatiInstrumentDtoMapper();
         }
 
         [Test]

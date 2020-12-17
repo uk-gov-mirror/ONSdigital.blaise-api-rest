@@ -6,7 +6,7 @@ using Blaise.Api.Core.Interfaces;
 
 namespace Blaise.Api.Core.Mappers
 {
-    public class CatiInstrumentMapper : ICatiInstrumentMapper
+    public class CatiInstrumentDtoMapper : ICatiInstrumentDtoMapper
     {
         public CatiInstrumentDto MapToCatiInstrumentDto(InstrumentDto instrumentDto, List<DateTime> surveyDays)
         {

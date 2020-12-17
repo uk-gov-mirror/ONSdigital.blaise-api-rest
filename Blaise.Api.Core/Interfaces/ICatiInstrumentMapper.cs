@@ -4,7 +4,7 @@ using Blaise.Api.Contracts.Models;
 
 namespace Blaise.Api.Core.Interfaces
 {
-    public interface ICatiInstrumentMapper
+    public interface ICatiInstrumentDtoMapper
     {
         CatiInstrumentDto MapToCatiInstrumentDto(InstrumentDto instrumentDto, List<DateTime> surveyDays);
     }

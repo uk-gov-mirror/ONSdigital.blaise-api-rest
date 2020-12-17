@@ -1,0 +1,30 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Blaise.Api.Contracts.Models;
+using Blaise.Api.Core.Interfaces;
+using StatNeth.Blaise.API.Security;
+
+namespace Blaise.Api.Core.Mappers
+{
+    public class RoleDtoMapper : IRoleDtoMapper
+    {
+        public IEnumerable<RoleDto> MapToRoleDtos(IEnumerable<IRole> roles)
+        {
+            var roleDtos = new List<RoleDto>();
+
+            foreach (var role in roles)
+            {
+                roleDtos.Add(new RoleDto
+                {
+                    Name = role.Name,
+                    Description = role.Description,
+                    Permissions = role.Permissions
+                        .Where(p => p.Permission == PermissionStatus.Allowed)
+                        .Select(p => p.Action)
+                });
+            }
+
+            return roleDtos;
+        }
+    }
+}
