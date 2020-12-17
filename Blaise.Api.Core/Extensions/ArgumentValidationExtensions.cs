@@ -2,7 +2,6 @@
 
 namespace Blaise.Api.Core.Extensions
 {
-
     internal static class ArgumentValidationExtensions
     {
         public static void ThrowExceptionIfNullOrEmpty(this string parameter, string parameterName)
