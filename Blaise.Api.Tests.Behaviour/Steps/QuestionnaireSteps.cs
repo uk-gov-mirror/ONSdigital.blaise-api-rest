@@ -48,7 +48,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
         }
 
-        [When(@"the API is queried to return all questionnaires")]
+        [When(@"the API is queried to return all active questionnaires")]
         public async Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
         {
             var listOfActiveQuestionnaires = await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
