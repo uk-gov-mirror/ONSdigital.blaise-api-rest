@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Blaise.Api.Providers;
+using Blaise.Api.Configuration;
 using Microsoft.Owin.Hosting;
 
 namespace Blaise.Api
@@ -9,7 +9,7 @@ namespace Blaise.Api
     {
         private static void Main()
         {
-            var baseUrl = ConfigurationProvider.BaseUrl;
+            var baseUrl = PortConfig.BaseUrl;
 
             // Start OWIN host 
             using (WebApp.Start<Startup>(url: baseUrl))

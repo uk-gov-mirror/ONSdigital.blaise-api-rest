@@ -14,10 +14,14 @@ namespace Blaise.Api.Controllers
     public class InstrumentController : ApiController
     {
         private readonly IInstrumentService _instrumentService;
+        private readonly IInstallInstrumentService _installInstrumentService;
 
-        public InstrumentController(IInstrumentService instrumentService)
+        public InstrumentController(
+            IInstrumentService instrumentService, 
+            IInstallInstrumentService installInstrumentService)
         {
             _instrumentService = instrumentService;
+            _installInstrumentService = installInstrumentService;
         }
 
         [HttpGet]
@@ -54,13 +58,27 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(bool))]
         public IHttpActionResult InstrumentExists(string serverParkName, string instrumentName)
         {
-            Console.WriteLine("Check that an instrument exists on a server park");
+            Console.WriteLine($"Check that an instrument exists on server park '{serverParkName}'");
 
             var exists = _instrumentService.InstrumentExists(instrumentName, serverParkName);
 
-            Console.WriteLine($"Instrument '{instrumentName}' exists = {exists}");
+            Console.WriteLine($"Instrument '{instrumentName}' exists = '{exists}' on '{serverParkName}'");
 
             return Ok(exists);
+        }
+
+        [HttpPost]
+        [Route("install")]
+        public IHttpActionResult InstallInstrument([FromUri]string serverParkName, [FromBody] InstallInstrumentDto installInstrumentDto)
+        {
+            Console.WriteLine($"Attempting to install instrument '{installInstrumentDto.InstrumentFile}' on server park '{serverParkName}'");
+
+           _installInstrumentService.InstallInstrument(installInstrumentDto.BucketPath, 
+               installInstrumentDto.InstrumentFile, serverParkName);
+
+            Console.WriteLine($"Instrument '{installInstrumentDto.InstrumentFile}' installed on server park '{serverParkName}'");
+
+            return Ok();
         }
     }
 }

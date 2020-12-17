@@ -13,6 +13,7 @@ namespace Blaise.Api.Tests.Unit.Services
     public class InstrumentServiceTests
     {
         private IInstrumentService _sut;
+
         private Mock<IBlaiseSurveyApi> _blaiseApiMock;
         private Mock<IInstrumentDtoMapper> _mapperMock;
 

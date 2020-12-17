@@ -11,7 +11,7 @@ namespace Blaise.Api.Core.Services
         private readonly IInstrumentDtoMapper _mapper;
 
         public InstrumentService(
-            IBlaiseSurveyApi blaiseApi, 
+            IBlaiseSurveyApi blaiseApi,
             IInstrumentDtoMapper mapper)
         {
             _blaiseApi = blaiseApi;
