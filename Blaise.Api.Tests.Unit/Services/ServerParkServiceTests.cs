@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
@@ -118,6 +119,22 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetServerPark(string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_GetServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetServerPark(null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
         public void Given_I_Call_ServerParkExists_Then_The_Correct_Method_Is_called_On_The_Api()
         {
             //arrange
@@ -150,6 +167,22 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<bool>(result);
             Assert.AreEqual(exists, result);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_ServerParkExists_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.ServerParkExists(string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_ServerParkExists_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.ServerParkExists(null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
         }
     }
 }

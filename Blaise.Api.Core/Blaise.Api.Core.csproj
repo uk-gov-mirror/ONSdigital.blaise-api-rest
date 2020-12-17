@@ -104,6 +104,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Interfaces\IInstrumentService.cs" />
     <Compile Include="Interfaces\IServerParkDtoMapper.cs" />
     <Compile Include="Interfaces\IServerParkService.cs" />
