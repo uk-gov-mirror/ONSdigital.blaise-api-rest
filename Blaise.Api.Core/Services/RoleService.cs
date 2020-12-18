@@ -42,14 +42,6 @@ namespace Blaise.Api.Core.Services
             return _blaiseApi.RoleExists(name);
         }
 
-        public void AddRoles(IEnumerable<RoleDto> roles)
-        {
-            foreach (var role in roles)
-            {
-                _blaiseApi.AddRole(role.Name, role.Description, role.Permissions);
-            }
-        }
-
         public void AddRole(RoleDto role)
         {
             role.Name.ThrowExceptionIfNullOrEmpty("RoleDto.Name");

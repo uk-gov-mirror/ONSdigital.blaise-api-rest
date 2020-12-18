@@ -134,34 +134,6 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.AreEqual("name", exception.ParamName);
         }
 
-        [Test]
-        public void Given_I_Call_AddRoles_Then_The_Correct_Method_Is_Called()
-        {
-            //arrange
-            var role1Dto = new RoleDto
-            {
-                Name = "Name1",
-                Description = "Description1",
-                Permissions = new List<string> { "Permission1", "Permission2" }
-            };
-
-            var role2Dto = new RoleDto
-            {
-                Name = "Name2",
-                Description = "Description2",
-                Permissions = new List<string> { "Permission3", "Permission4" }
-            };
-
-            var roles = new List<RoleDto> { role1Dto, role2Dto };
-
-            //act
-            _sut.AddRoles(roles);
-
-            //assert
-            _blaiseApiMock.Verify(v => v.AddRole(role1Dto.Name, role1Dto.Description, role1Dto.Permissions), Times.Once);
-            _blaiseApiMock.Verify(v => v.AddRole(role2Dto.Name, role2Dto.Description, role2Dto.Permissions), Times.Once);
-            _blaiseApiMock.VerifyNoOtherCalls();
-        }
 
         [Test]
         public void Given_Valid_Arguments_When_I_Call_AddRole_Then_The_Correct_Service_Method_Is_Called()

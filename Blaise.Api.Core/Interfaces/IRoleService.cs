@@ -11,8 +11,6 @@ namespace Blaise.Api.Core.Interfaces
 
         bool RoleExists(string name);
 
-        void AddRoles(IEnumerable<RoleDto> roles);
-
         void AddRole(RoleDto role);
 
         void RemoveRole(string name);
