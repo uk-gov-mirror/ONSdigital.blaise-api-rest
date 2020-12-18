@@ -14,17 +14,22 @@ namespace Blaise.Api.Core.Mappers
 
             foreach (var role in roles)
             {
-                roleDtos.Add(new RoleDto
-                {
-                    Name = role.Name,
-                    Description = role.Description,
-                    Permissions = role.Permissions
-                        .Where(p => p.Permission == PermissionStatus.Allowed)
-                        .Select(p => p.Action)
-                });
+                roleDtos.Add(MapToRoleDto(role));
             }
 
             return roleDtos;
+        }
+
+        public RoleDto MapToRoleDto(IRole role)
+        {
+            return new RoleDto
+            {
+                Name = role.Name,
+                Description = role.Description,
+                Permissions = role.Permissions
+                    .Where(p => p.Permission == PermissionStatus.Allowed)
+                    .Select(p => p.Action)
+            };
         }
     }
 }

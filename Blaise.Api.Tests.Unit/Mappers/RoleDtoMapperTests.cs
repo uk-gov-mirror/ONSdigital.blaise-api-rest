@@ -73,7 +73,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Only_Allowed_Permissions_Are_Returned()
+        public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Then_Only_Allowed_Permissions_Are_Returned()
         {
             //arrange
             var role1Name = "Name1";
@@ -123,6 +123,79 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 r.Description == role2Description &&
                 r.Permissions.Count() == 1 &&
                 r.Permissions.Contains(permission2)));
+        }
+
+        [Test]
+        public void Given_A_Role_When_I_Call_MapToRoleDto_Then_A_Correct_RoleDto_Is_Returned()
+        {
+            //arrange
+            var role1Name = "Name1";
+            var role1Description = "Description1";
+            var role1Mock = new Mock<IRole>();
+            role1Mock.Setup(r => r.Name).Returns(role1Name);
+            role1Mock.Setup(r => r.Description).Returns(role1Description);
+
+            var permission1 = "Permission1";
+            var actionPermission1Mock = new Mock<IActionPermission>();
+            actionPermission1Mock.Setup(a => a.Action).Returns(permission1);
+            actionPermission1Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
+
+            var permission2 = "Permission2";
+            var actionPermission2Mock = new Mock<IActionPermission>();
+            actionPermission2Mock.Setup(a => a.Action).Returns(permission2);
+            actionPermission2Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
+
+            var actionPermissions = new List<IActionPermission> { actionPermission1Mock.Object, actionPermission2Mock.Object };
+            role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
+
+            //act
+            var result = _sut.MapToRoleDto(role1Mock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<RoleDto>(result);
+
+            Assert.AreEqual(role1Name, result.Name);
+            Assert.AreEqual(role1Description, result.Description);
+            Assert.AreEqual(2, result.Permissions.Count());
+            Assert.IsTrue(result.Permissions.Any(p => p == permission1));
+            Assert.IsTrue(result.Permissions.Any(p => p == permission2));
+        }
+
+        [Test]
+        public void Given_A_Role_When_I_Call_MapToRoleDto_Then_Only_Allowed_Permissions_Are_Returned()
+        {
+            //arrange
+            var role1Name = "Name1";
+            var role1Description = "Description1";
+            var role1Mock = new Mock<IRole>();
+            role1Mock.Setup(r => r.Name).Returns(role1Name);
+            role1Mock.Setup(r => r.Description).Returns(role1Description);
+
+            var permission1 = "Permission1";
+            var actionPermission1Mock = new Mock<IActionPermission>();
+            actionPermission1Mock.Setup(a => a.Action).Returns(permission1);
+            actionPermission1Mock.Setup(a => a.Permission).Returns(PermissionStatus.Disallowed);
+
+            var permission2 = "Permission2";
+            var actionPermission2Mock = new Mock<IActionPermission>();
+            actionPermission2Mock.Setup(a => a.Action).Returns(permission2);
+            actionPermission2Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
+
+            var actionPermissions = new List<IActionPermission> { actionPermission1Mock.Object, actionPermission2Mock.Object };
+            role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
+
+            //act
+            var result = _sut.MapToRoleDto(role1Mock.Object);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<RoleDto>(result);
+
+            Assert.AreEqual(role1Name, result.Name);
+            Assert.AreEqual(role1Description, result.Description);
+            Assert.AreEqual(1, result.Permissions.Count());
+            Assert.IsTrue(result.Permissions.Any(p => p == permission2));
         }
     }
 }
