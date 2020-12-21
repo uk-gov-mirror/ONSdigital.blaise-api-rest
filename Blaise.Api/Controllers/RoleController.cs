@@ -78,7 +78,7 @@ namespace Blaise.Api.Controllers
         [Route("{name}")]
         public IHttpActionResult RemoveRole([FromUri] string name)
         {
-            LogService.Info($"Attempting to removing role '{name}'");
+            LogService.Info($"Attempting to remove role '{name}'");
 
             _roleService.RemoveRole(name);
 

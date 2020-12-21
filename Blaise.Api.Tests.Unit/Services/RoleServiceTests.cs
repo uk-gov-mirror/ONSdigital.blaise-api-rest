@@ -54,7 +54,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRoles())
                 .Returns(roles);
 
-            var roleDtos = new List<RoleDto> { new RoleDto() };
+            var roleDtos = new List<RoleDto> { _roleDto };
 
             _mapperMock.Setup(m => m.MapToRoleDtos(roles))
                 .Returns(roleDtos);
@@ -75,16 +75,14 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRole(_name))
                 .Returns(roleMock.Object);
 
-            var roleDto = new RoleDto();
-
             _mapperMock.Setup(m => m.MapToRoleDto(roleMock.Object))
-                .Returns(roleDto);
+                .Returns(_roleDto);
             //act
             var result = _sut.GetRole(_name);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.AreSame(roleDto, result);
+            Assert.AreSame(_roleDto, result);
         }
 
         [Test]
