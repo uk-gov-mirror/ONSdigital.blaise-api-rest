@@ -124,6 +124,7 @@
     <Compile Include="Configuration\UnityTests.cs" />
     <Compile Include="Mappers\CatiInstrumentMapperDtoTests.cs" />
     <Compile Include="Mappers\InstrumentDtoMapperTests.cs" />
+    <Compile Include="Mappers\UserDtoMapperTests.cs" />
     <Compile Include="Mappers\RoleDtoMapperTests.cs" />
     <Compile Include="Mappers\ServerParkDtoMapperTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />

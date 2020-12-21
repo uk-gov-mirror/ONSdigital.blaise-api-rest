@@ -8,19 +8,19 @@ namespace Blaise.Api.Core.Mappers
 {
     public class UserDtoMapper : IUserDtoMapper
     {
-        public IEnumerable<UserDto> MapToDtoList(IEnumerable<IUser> users)
+        public IEnumerable<UserDto> MapToUserDtos(IEnumerable<IUser> users)
         {
             var userList = new List<UserDto>();
 
             foreach (var user in users)
             {
-                userList.Add(MapToDto(user));
+                userList.Add(MapToUserDto(user));
             }
 
             return userList;
         }
 
-        public UserDto MapToDto(IUser user)
+        public UserDto MapToUserDto(IUser user)
         {
             return new UserDto
             {

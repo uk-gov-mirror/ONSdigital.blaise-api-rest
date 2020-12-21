@@ -54,8 +54,11 @@ namespace Blaise.Api.Tests.Unit.Services
                 ServerParks = _serverParks,
             };
 
-            _passwordDto.Password = _password;
-
+            _passwordDto = new UpdatePasswordDto
+            {
+                Password = _password
+            };
+           
             _blaiseApiMock = new Mock<IBlaiseUserApi>();
             _mapperMock = new Mock<IUserDtoMapper>();
 
@@ -75,7 +78,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             var userDtos = new List<UserDto> { _userDto };
 
-            _mapperMock.Setup(m => m.MapToDtoList(users))
+            _mapperMock.Setup(m => m.MapToUserDtos(users))
                 .Returns(userDtos);
             //act
             var result = _sut.GetUsers();
@@ -94,7 +97,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetUser(_name))
                 .Returns(userMock.Object);
 
-            _mapperMock.Setup(m => m.MapToDto(userMock.Object))
+            _mapperMock.Setup(m => m.MapToUserDto(userMock.Object))
                 .Returns(_userDto);
             //act
             var result = _sut.GetUser(_name);
@@ -309,7 +312,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(_name, _passwordDto));
-            Assert.AreEqual("A value for the argument 'password' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'passwordDto.Password' must be supplied", exception.Message);
         }
 
         [Test]
@@ -320,7 +323,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(_name, _passwordDto));
-            Assert.AreEqual("password", exception.ParamName);
+            Assert.AreEqual("passwordDto.Password", exception.ParamName);
         }
 
         [Test]

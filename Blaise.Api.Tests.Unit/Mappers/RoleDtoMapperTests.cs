@@ -19,7 +19,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Then_A_Correct_List_Of_RoleDto_Are_Returned()
+        public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Then_A_Correct_List_Of_RoleDtos_Are_Returned()
         {
             //arrange
             var role1Name = "Name1";

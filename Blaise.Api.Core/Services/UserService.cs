@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models;
 using Blaise.Api.Contracts.Models.User;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces;
@@ -25,7 +24,7 @@ namespace Blaise.Api.Core.Services
         {
             var user = _blaiseApi.GetUsers();
 
-            return _mapper.MapToDtoList(user);
+            return _mapper.MapToUserDtos(user);
         }
 
         public UserDto GetUser(string name)
@@ -33,7 +32,7 @@ namespace Blaise.Api.Core.Services
             name.ThrowExceptionIfNullOrEmpty("name");
             var user = _blaiseApi.GetUser(name);
 
-            return _mapper.MapToDto(user);
+            return _mapper.MapToUserDto(user);
         }
 
         public bool UserExists(string name)
