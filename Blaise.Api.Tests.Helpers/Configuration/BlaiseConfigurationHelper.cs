@@ -1,5 +1,4 @@
 ﻿using Blaise.Api.Tests.Helpers.Extensions;
-using Blaise.Nuget.Api.Contracts.Models;
 
 namespace Blaise.Api.Tests.Helpers.Configuration
 {

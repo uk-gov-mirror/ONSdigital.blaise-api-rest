@@ -24,8 +24,7 @@ namespace Blaise.Api.Filters
                     context.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                     break;
             }
-
-
+            
             LogService.Error("Error: ", context.Exception);
         }
     }

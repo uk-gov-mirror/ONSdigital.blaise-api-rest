@@ -9,7 +9,7 @@ using Blaise.Api.Log.Services;
 namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
-    [RoutePrefix("api/v1/Users")]
+    [RoutePrefix("api/v1/users")]
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
@@ -66,12 +66,12 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult AddUser([FromBody] AddUserDto userDto)
         {
             LogService.Info($"Attempting to add user '{userDto.Name}'");
-            
+
             _userService.AddUser(userDto);
-            
+
             LogService.Info($"Successfully added role '{userDto.Name}'");
 
-               return Created($"{Request.RequestUri}/{userDto.Name}", userDto);
+            return Created($"{Request.RequestUri}/{userDto.Name}", userDto);
         }
 
         [HttpDelete]
@@ -89,7 +89,7 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{name}/password")]
-        public IHttpActionResult ChangePassword([FromUri] string name, [FromBody] UpdatePasswordDto passwordDto)
+        public IHttpActionResult UpdatePassword([FromUri] string name, [FromBody] UpdatePasswordDto passwordDto)
         {
             LogService.Info($"Attempting to update password for user '{name}'");
 

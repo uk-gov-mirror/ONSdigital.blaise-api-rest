@@ -9,7 +9,7 @@ using Blaise.Api.Log.Services;
 namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
-    [RoutePrefix("api/v1/Roles")]
+    [RoutePrefix("api/v1/roles")]
     public class RoleController : ApiController
     {
         private readonly IRoleService _roleService;

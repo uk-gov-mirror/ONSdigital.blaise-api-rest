@@ -12,7 +12,7 @@ using Blaise.Api.Log.Services;
 namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
-    [RoutePrefix("api/v1")]
+    [RoutePrefix("api/v1/health")]
     public class HealthController : ApiController
     {
         private readonly IHealthCheckService _healthService;
@@ -23,7 +23,7 @@ namespace Blaise.Api.Controllers
         }
         
         [HttpGet]
-        [Route("health")]
+        [Route("")]
         [ResponseType(typeof(List<HealthCheckResultDto>))]
         public IHttpActionResult HealthCheck()
         {
