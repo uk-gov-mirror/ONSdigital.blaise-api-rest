@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Blaise.Api.Contracts.Models;
 using Blaise.Api.Contracts.Models.User;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Filters;
@@ -64,15 +63,15 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public IHttpActionResult AddUser([FromBody] AddUserDto user)
+        public IHttpActionResult AddUser([FromBody] AddUserDto userDto)
         {
-            LogService.Info($"Attempting to add user '{user.Name}'");
+            LogService.Info($"Attempting to add user '{userDto.Name}'");
             
-            _userService.AddUser(user);
+            _userService.AddUser(userDto);
             
-            LogService.Info($"Successfully added role '{user.Name}'");
+            LogService.Info($"Successfully added role '{userDto.Name}'");
 
-            return Ok();
+               return Created($"{Request.RequestUri}/{userDto.Name}", userDto);
         }
 
         [HttpDelete]

@@ -63,15 +63,15 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public IHttpActionResult AddRole([FromBody] RoleDto role)
+        public IHttpActionResult AddRole([FromBody] RoleDto roleDto)
         {
-            LogService.Info($"Attempting to add role '{role.Name}'");
+            LogService.Info($"Attempting to add role '{roleDto.Name}'");
             
-            _roleService.AddRole(role);
+            _roleService.AddRole(roleDto);
             
-            LogService.Info($"Successfully added role '{role.Name}'");
+            LogService.Info($"Successfully added role '{roleDto.Name}'");
 
-            return Ok();
+            return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
         }
 
         [HttpDelete]
