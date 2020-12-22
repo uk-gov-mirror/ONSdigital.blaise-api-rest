@@ -41,5 +41,10 @@ namespace Blaise.Api.Core.Services
 
             return _blaiseApi.ServerParkExists(serverParkName);
         }
+
+        public void RegisterMachineOnServerPark(string serverParkName, string machineName)
+        {
+            _blaiseApi.RegisterMachineOnServerPark(serverParkName, machineName);
+        }
     }
 }
