@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -15,14 +16,14 @@ namespace Blaise.Api.Tests.Unit.Services
         private ICatiService _sut;
         private Mock<IBlaiseCatiApi> _blaiseApiMock;
         private Mock<IInstrumentService> _instrumentServiceMock;
-        private Mock<ICatiInstrumentMapper> _mapperMock;
+        private Mock<ICatiInstrumentDtoMapper> _mapperMock;
 
         [SetUp]
         public void SetUpTests()
         {
             _blaiseApiMock = new Mock<IBlaiseCatiApi>();
             _instrumentServiceMock = new Mock<IInstrumentService>();
-            _mapperMock = new Mock<ICatiInstrumentMapper>();
+            _mapperMock = new Mock<ICatiInstrumentDtoMapper>();
 
             _sut = new CatiService(
                 _blaiseApiMock.Object,

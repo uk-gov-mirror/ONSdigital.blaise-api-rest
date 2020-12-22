@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
 
 namespace Blaise.Api.Core.Mappers
 {
-    public class CatiInstrumentMapper : ICatiInstrumentMapper
+    public class CatiInstrumentDtoMapper : ICatiInstrumentDtoMapper
     {
         public CatiInstrumentDto MapToCatiInstrumentDto(InstrumentDto instrumentDto, List<DateTime> surveyDays)
         {

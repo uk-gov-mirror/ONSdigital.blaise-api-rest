@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Blaise.Api.Contracts.Models
+namespace Blaise.Api.Contracts.Models.Instrument
 {
     public class InstrumentDto
     {

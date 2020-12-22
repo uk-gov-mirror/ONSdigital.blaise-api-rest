@@ -1,66 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Filters;
+using Blaise.Api.Log.Services;
 
 namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
-    [RoutePrefix("api/v1/serverparks/{serverParkName}")]
+    [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
     public class InstrumentController : ApiController
     {
         private readonly IInstrumentService _instrumentService;
+        private readonly IInstallInstrumentService _installInstrumentService;
 
-        public InstrumentController(IInstrumentService instrumentService)
+        public InstrumentController(
+            IInstrumentService instrumentService,
+            IInstallInstrumentService installInstrumentService)
         {
             _instrumentService = instrumentService;
+            _installInstrumentService = installInstrumentService;
         }
 
         [HttpGet]
-        [Route("instruments")]
+        [Route("")]
         [ResponseType(typeof(IEnumerable<InstrumentDto>))]
         public IHttpActionResult GetInstruments(string serverParkName)
         {
-            Console.WriteLine("Obtaining a list of instruments for a server park");
+            LogService.Info("Obtaining a list of instruments for a server park");
 
             var instruments = _instrumentService.GetInstruments(serverParkName).ToList();
 
-            Console.WriteLine($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
+            LogService.Info($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
 
             return Ok(instruments);
         }
 
         [HttpGet]
-        [Route("instruments/{instrumentName}")]
+        [Route("{instrumentName}")]
         [ResponseType(typeof(InstrumentDto))]
         public IHttpActionResult GetInstrument(string serverParkName, string instrumentName)
         {
-            Console.WriteLine("Obtaining an instruments for a server park");
+            LogService.Info("Obtaining an instruments for a server park");
 
             var instruments = _instrumentService
                 .GetInstrument(instrumentName, serverParkName);
 
-            Console.WriteLine($"Successfully received an instrument '{instrumentName}'");
+            LogService.Info($"Successfully received an instrument '{instrumentName}'");
 
             return Ok(instruments);
         }
 
         [HttpGet]
-        [Route("instruments/{instrumentName}/exists")]
+        [Route("{instrumentName}/exists")]
         [ResponseType(typeof(bool))]
         public IHttpActionResult InstrumentExists(string serverParkName, string instrumentName)
         {
-            Console.WriteLine("Check that an instrument exists on a server park");
+            LogService.Info($"Check that an instrument exists on server park '{serverParkName}'");
 
             var exists = _instrumentService.InstrumentExists(instrumentName, serverParkName);
 
-            Console.WriteLine($"Instrument '{instrumentName}' exists = {exists}");
+            LogService.Info($"Instrument '{instrumentName}' exists = '{exists}' on '{serverParkName}'");
 
             return Ok(exists);
+        }
+
+        [HttpPost]
+        [Route("")]
+        public IHttpActionResult InstallInstrument([FromUri] string serverParkName, [FromBody] InstallInstrumentDto installInstrumentDto)
+        {
+            LogService.Info($"Attempting to install instrument '{installInstrumentDto.InstrumentFile}' on server park '{serverParkName}'");
+
+            _installInstrumentService.InstallInstrument(installInstrumentDto.BucketPath,
+                installInstrumentDto.InstrumentFile, serverParkName);
+
+            LogService.Info($"Instrument '{installInstrumentDto.InstrumentFile}' installed on server park '{serverParkName}'");
+
+            return Created($"{Request.RequestUri}/{installInstrumentDto.InstrumentName}", installInstrumentDto);
+        }
+
+        [HttpDelete]
+        [Route("{instrumentName}")]
+        public IHttpActionResult UninstallInstrument([FromUri] string serverParkName,[FromUri] string name)
+        {
+            LogService.Info($"Attempting to uninstall instrument '{name}' on server park '{serverParkName}'");
+
+            _installInstrumentService.UninstallInstrument(name, serverParkName);
+
+            LogService.Info($"Instrument '{name}' has been uninstalled from server park '{serverParkName}'");
+
+            return Ok();
         }
     }
 }

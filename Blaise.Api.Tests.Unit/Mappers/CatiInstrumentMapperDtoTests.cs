@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
@@ -8,14 +9,14 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Mappers
 {
-    public class CatiInstrumentMapperTests
+    public class CatiInstrumentMapperDtoTests
     {
-        private CatiInstrumentMapper _sut;
+        private CatiInstrumentDtoMapper _sut;
 
         [SetUp]
         public void SetupTests()
         {
-            _sut = new CatiInstrumentMapper();
+            _sut = new CatiInstrumentDtoMapper();
         }
 
         [Test]
