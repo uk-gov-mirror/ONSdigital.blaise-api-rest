@@ -57,5 +57,19 @@ namespace Blaise.Api.Controllers
 
             return Ok(exists);
         }
+
+        [HttpPost]
+        [Route("machine")]
+        public IHttpActionResult RegisterMachine([FromBody] RegisterMachineDto registerMachineDto)
+        {
+            LogService.Info($"Attempt to register a machine '{registerMachineDto.MachineName}'");
+
+            _serverParkService.RegisterMachineOnServerPark(registerMachineDto.ServerParkName,
+                registerMachineDto.MachineName);
+
+            LogService.Info($"Successfully registered a machine '{registerMachineDto.MachineName}'");
+
+            return Ok();
+        }
     }
 }
