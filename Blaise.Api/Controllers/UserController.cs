@@ -89,7 +89,7 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{name}/password")]
-        public IHttpActionResult UpdatePassword([FromUri] string name, [FromBody] UpdatePasswordDto passwordDto)
+        public IHttpActionResult UpdatePassword([FromUri] string name, [FromBody] UpdateUserPasswordDto passwordDto)
         {
             LogService.Info($"Attempting to update password for user '{name}'");
 
@@ -101,14 +101,27 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPatch]
-        [Route("{name}")]
-        public IHttpActionResult UpdateUser([FromUri] string name, [FromBody] UpdateUserDto userDto)
+        [Route("{name}/role")]
+        public IHttpActionResult UpdateRole([FromUri] string name, [FromBody] UpdateUserRoleDto roleDto)
         {
-            LogService.Info($"Attempting to update user '{name}'");
+            LogService.Info($"Attempting to update user '{name}' role to '{roleDto.Role}'");
 
-            _userService.UpdateUser(name, userDto);
+            _userService.UpdateRole(name, roleDto);
 
-            LogService.Info($"Successfully updated user '{name}'");
+            LogService.Info($"Successfully updated role for user '{name}'");
+
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("{name}/serverparks")]
+        public IHttpActionResult UpdateServerParks([FromUri] string name, [FromBody] UpdateUserServerParksDto serverParksDto)
+        {
+            LogService.Info($"Attempting to update server parks for user '{name}'");
+
+            _userService.UpdateServerParks(name, serverParksDto);
+
+            LogService.Info($"Successfully updated server parks for user '{name}'");
 
             return Ok();
         }

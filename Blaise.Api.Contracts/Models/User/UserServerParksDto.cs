@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Blaise.Api.Contracts.Models.User
 {
-    public class UpdateUserDto
+    public class UserServerParksDto
     {
-        public UpdateUserDto()
+        public UserServerParksDto()
         {
             ServerParks = new List<string>();
         }
 
-        public string Role { get; set; }
-
         public List<string> ServerParks { get; set; }
+
+        public string DefaultServerPark => ServerParks.FirstOrDefault();
     }
 }

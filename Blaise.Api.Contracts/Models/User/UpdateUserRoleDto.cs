@@ -1,9 +1,7 @@
 ﻿namespace Blaise.Api.Contracts.Models.User
 {
-    public class UserDto : UserServerParksDto
+    public class UpdateUserRoleDto
     {
-        public string Name { get; set; }
-
         public string Role { get; set; }
     }
 }

@@ -24,11 +24,6 @@ namespace Blaise.Api.Tests.Unit.Services
         private List<string> _serverParks;
         private string _defaultServerPark;
 
-        private UserDto _userDto;
-        private AddUserDto _addUserDto;
-        private UpdateUserDto _updateUserDto;
-        private UpdatePasswordDto _passwordDto;
-
         [SetUp]
         public void SetUpTests()
         {
@@ -38,27 +33,6 @@ namespace Blaise.Api.Tests.Unit.Services
             _serverParks = new List<string> { "ServerPark1", "ServerPark2" };
             _defaultServerPark = _serverParks.First();
 
-            _userDto = new UserDto();
-
-            _addUserDto = new AddUserDto
-            {
-                Name = _name,
-                Password = _password,
-                Role = (_role),
-                ServerParks = _serverParks,
-            };
-
-            _updateUserDto = new UpdateUserDto
-            {
-                Role = (_role),
-                ServerParks = _serverParks,
-            };
-
-            _passwordDto = new UpdatePasswordDto
-            {
-                Password = _password
-            };
-           
             _blaiseApiMock = new Mock<IBlaiseUserApi>();
             _mapperMock = new Mock<IUserDtoMapper>();
 
@@ -76,7 +50,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetUsers())
                 .Returns(users);
 
-            var userDtos = new List<UserDto> { _userDto };
+            var userDtos = new List<UserDto> { new UserDto() };
 
             _mapperMock.Setup(m => m.MapToUserDtos(users))
                 .Returns(userDtos);
@@ -92,19 +66,20 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetUser_Then_I_Get_A_RoleDto_Back()
         {
             //arrange
+            var userDto = new UserDto();
             var userMock = new Mock<IUser>();
 
             _blaiseApiMock.Setup(b => b.GetUser(_name))
                 .Returns(userMock.Object);
 
             _mapperMock.Setup(m => m.MapToUserDto(userMock.Object))
-                .Returns(_userDto);
+                .Returns(userDto);
             //act
             var result = _sut.GetUser(_name);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.AreSame(_userDto, result);
+            Assert.AreSame(userDto, result);
         }
 
         [Test]
@@ -157,99 +132,328 @@ namespace Blaise.Api.Tests.Unit.Services
         [Test]
         public void Given_Valid_Arguments_When_I_Call_AddUser_Then_The_Correct_Service_Method_Is_Called()
         {
+            //arrange
+            var addUserDto = new AddUserDto
+            {
+                Name = _name,
+                Password = _password,
+                Role = (_role),
+                ServerParks = _serverParks,
+            };
+
             //act
-            _sut.AddUser(_addUserDto);
+            _sut.AddUser(addUserDto);
 
             //assert
-            _blaiseApiMock.Verify(v => v.AddUser(_addUserDto.Name, _addUserDto.Password, _addUserDto.Role, _addUserDto.ServerParks, _defaultServerPark), Times.Once);
+            _blaiseApiMock.Verify(v => v.AddUser(addUserDto.Name, addUserDto.Password, addUserDto.Role, addUserDto.ServerParks, _defaultServerPark), Times.Once);
         }
 
         [Test]
         public void Given_An_Empty_Name_When_I_Call_AddUser_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
-            _addUserDto.Name = string.Empty;
+            var addUserDto = new AddUserDto
+            {
+                Name = string.Empty,
+                Password = _password,
+                Role = _role,
+                ServerParks = _serverParks,
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("A value for the argument 'userDto.Name' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("A value for the argument 'addUserDto.Name' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_Name_When_I_Call_AddUser_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            _addUserDto.Name = null;
+            var addUserDto = new AddUserDto
+            {
+                Name = null,
+                Password = _password,
+                Role = _role,
+                ServerParks = _serverParks,
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("userDto.Name", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("addUserDto.Name", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_Password_When_I_Call_AddUser_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
-            _addUserDto.Password = string.Empty;
+            var addUserDto = new AddUserDto
+            {
+                Name = _name,
+                Password = string.Empty,
+                Role = _role,
+                ServerParks = _serverParks,
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("A value for the argument 'userDto.Password' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("A value for the argument 'addUserDto.Password' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_Password_When_I_Call_AddUser_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            _addUserDto.Password = null;
+            var addUserDto = new AddUserDto
+            {
+                Name = _name,
+                Password = null,
+                Role = _role,
+                ServerParks = _serverParks,
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("userDto.Password", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("addUserDto.Password", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_Role_When_I_Call_AddUser_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
-            _addUserDto.Role = string.Empty;
+            var addUserDto = new AddUserDto
+            {
+                Name = _name,
+                Password = _password,
+                Role = string.Empty,
+                ServerParks = _serverParks,
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("A value for the argument 'userDto.Role' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("A value for the argument 'addUserDto.Role' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_Role_When_I_Call_AddUser_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            _addUserDto.Role = null;
+            var addUserDto = new AddUserDto
+            {
+                Name = _name,
+                Password = _password,
+                Role = null,
+                ServerParks = _serverParks,
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("userDto.Role", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("addUserDto.Role", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_ServerPark_List_When_I_Call_AddUser_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
-            _addUserDto.ServerParks = new List<string>();
+            var addUserDto = new AddUserDto
+            {
+                Name = _name,
+                Password = _password,
+                Role = _role,
+                ServerParks = new List<string>(),
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("A value for the argument 'userDto.ServerParks' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("A value for the argument 'addUserDto.ServerParks' must be supplied", exception.Message);
         }
 
         [Test]
         public void Given_A_Null_ServerPark_List_When_I_Call_AddUser_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            _addUserDto.ServerParks = null;
+            var addUserDto = new AddUserDto
+            {
+                Name = _name,
+                Password = _password,
+                Role = _role,
+                ServerParks = null,
+            };
 
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(_addUserDto));
-            Assert.AreEqual("userDto.ServerParks", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUser(addUserDto));
+            Assert.AreEqual("addUserDto.ServerParks", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_UpdatePassword_Then_The_Correct_Service_Method_Is_Called()
+        {
+            //arrange
+            var updatePasswordDto = new UpdateUserPasswordDto {Password = _password};
+
+            //act
+            _sut.UpdatePassword(_name, updatePasswordDto);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.UpdatePassword(_name, _password), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_Name_When_I_Call_UpdatePassword_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var updatePasswordDto = new UpdateUserPasswordDto {Password = _password};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(string.Empty, updatePasswordDto));
+            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_Name_When_I_Call_UpdatePassword_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var updatePasswordDto = new UpdateUserPasswordDto {Password = _password};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(null, updatePasswordDto));
+            Assert.AreEqual("name", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_Password_When_I_Call_UpdatePassword_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var updatePasswordDto = new UpdateUserPasswordDto {Password = string.Empty};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(_name, updatePasswordDto));
+            Assert.AreEqual("A value for the argument 'updateUserPasswordDto.Password' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_Password_When_I_Call_UpdatePassword_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var updatePasswordDto = new UpdateUserPasswordDto {Password = null};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(_name, updatePasswordDto));
+            Assert.AreEqual("updateUserPasswordDto.Password", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_UpdateUser_Then_The_Correct_Service_Method_Is_Called()
+        {
+            //arrange
+            var updateRoleDto = new UpdateUserRoleDto {Role = _role};
+
+            //act
+            _sut.UpdateRole(_name, updateRoleDto);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.UpdateRole(_name, updateRoleDto.Role), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_Name_When_I_Call_UpdateRole_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var updateRoleDto = new UpdateUserRoleDto {Role = _role};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateRole(string.Empty, updateRoleDto));
+            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_Name_When_I_Call_UpdateRole_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var updateUserRoleDto = new UpdateUserRoleDto {Role = _role};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateRole(null, updateUserRoleDto));
+            Assert.AreEqual("name", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_Role_When_I_Call_UpdateRole_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var updateUserRoleDto = new UpdateUserRoleDto {Role = string.Empty};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateRole(_name, updateUserRoleDto));
+            Assert.AreEqual("A value for the argument 'updateUserRoleDto.Role' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_Role_When_I_Call_UpdateRole_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var updateUserRoleDto = new UpdateUserRoleDto {Role = null};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateRole(_name, updateUserRoleDto));
+            Assert.AreEqual("updateUserRoleDto.Role", exception.ParamName);
+        }
+
+        
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_UpdateServerParks_Then_The_Correct_Service_Method_Is_Called()
+        {
+            //arrange
+            var updateServerParksDto = new UpdateUserServerParksDto {ServerParks = _serverParks};
+
+            //act
+            _sut.UpdateServerParks(_name, updateServerParksDto);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.UpdateServerParks(_name, updateServerParksDto.ServerParks, updateServerParksDto.DefaultServerPark), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_Name_When_I_Call_UpdateServerParks_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var updateServerParksDto = new UpdateUserServerParksDto {ServerParks = _serverParks};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateServerParks(string.Empty, updateServerParksDto));
+            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_Name_When_I_Call_UpdateServerParks_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var updateUserServerParksDto = new UpdateUserServerParksDto {ServerParks = _serverParks};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateServerParks(null, updateUserServerParksDto));
+            Assert.AreEqual("name", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerPark_List_When_I_Call_UpdateServerParks_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var updateUserServerParksDto = new UpdateUserServerParksDto {ServerParks = new List<string>()};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateServerParks(_name, updateUserServerParksDto));
+            Assert.AreEqual("A value for the argument 'updateUserServerParksDto.ServerParks' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerPark_List_When_I_Call_UpdateServerParks_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var updateUserServerParksDto = new UpdateUserServerParksDto {ServerParks = null};
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateServerParks(_name, updateUserServerParksDto));
+            Assert.AreEqual("updateUserServerParksDto.ServerParks", exception.ParamName);
         }
 
         [Test]
@@ -276,123 +480,6 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveUser(null));
             Assert.AreEqual("name", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_Valid_Arguments_When_I_Call_UpdatePassword_Then_The_Correct_Service_Method_Is_Called()
-        {
-            //act
-            _sut.UpdatePassword(_name, _passwordDto);
-
-            //assert
-            _blaiseApiMock.Verify(v => v.ChangePassword(_name, _password), Times.Once);
-        }
-
-        [Test]
-        public void Given_An_Empty_Name_When_I_Call_UpdatePassword_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(string.Empty, _passwordDto));
-            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_Name_When_I_Call_UpdatePassword_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(null, _passwordDto));
-            Assert.AreEqual("name", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_Password_When_I_Call_UpdatePassword_Then_An_ArgumentException_Is_Thrown()
-        {
-            //arrange
-            _passwordDto.Password = string.Empty;
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdatePassword(_name, _passwordDto));
-            Assert.AreEqual("A value for the argument 'passwordDto.Password' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_Password_When_I_Call_UpdatePassword_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //arrange
-            _passwordDto.Password = null;
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdatePassword(_name, _passwordDto));
-            Assert.AreEqual("passwordDto.Password", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_Valid_Arguments_When_I_Call_UpdateUser_Then_The_Correct_Service_Method_Is_Called()
-        {
-            //act
-            _sut.UpdateUser(_name, _updateUserDto);
-
-            //assert
-            _blaiseApiMock.Verify(v => v.EditUser(_name, _updateUserDto.Role, _updateUserDto.ServerParks), Times.Once);
-        }
-
-        [Test]
-        public void Given_An_Empty_Name_When_I_Call_UpdateUser_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateUser(string.Empty, _updateUserDto));
-            Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_Name_When_I_Call_UpdateUser_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateUser(null, _updateUserDto));
-            Assert.AreEqual("name", exception.ParamName);
-        }
-
-        public void Given_An_Empty_Role_When_I_Call_UpdateUser_Then_An_ArgumentException_Is_Thrown()
-        {
-            //arrange
-            _updateUserDto.Role = string.Empty;
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateUser(_name, _updateUserDto));
-            Assert.AreEqual("A value for the argument 'userDto.Role' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_Role_When_I_Call_UpdateUser_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //arrange
-            _updateUserDto.Role = null;
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateUser(_name, _updateUserDto));
-            Assert.AreEqual("userDto.Role", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_ServerPark_List_When_I_Call_UpdateUser_Then_An_ArgumentException_Is_Thrown()
-        {
-            //arrange
-            _updateUserDto.ServerParks = new List<string>();
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateUser(_name, _updateUserDto));
-            Assert.AreEqual("A value for the argument 'userDto.ServerParks' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_ServerPark_List_When_I_Call_UpdateUser_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //arrange
-            _updateUserDto.ServerParks = null;
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateUser(_name, _updateUserDto));
-            Assert.AreEqual("userDto.ServerParks", exception.ParamName);
         }
     }
 }
