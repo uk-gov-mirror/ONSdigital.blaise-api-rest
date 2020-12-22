@@ -56,10 +56,10 @@
     <Compile Include="Enums\HealthCheckType.cs" />
     <Compile Include="Enums\HealthStatusType.cs" />
     <Compile Include="Interfaces\IConfigurationProvider.cs" />
-    <Compile Include="Models\CatiInstrumentDto.cs" />
+    <Compile Include="Models\Instrument\CatiInstrumentDto.cs" />
     <Compile Include="Models\HealthCheckResultDto.cs" />
-    <Compile Include="Models\InstallInstrumentDto.cs" />
-    <Compile Include="Models\InstrumentDto.cs" />
+    <Compile Include="Models\Instrument\InstallInstrumentDto.cs" />
+    <Compile Include="Models\Instrument\InstrumentDto.cs" />
     <Compile Include="Models\RoleDto.cs" />
     <Compile Include="Models\ServerParkDto.cs" />
     <Compile Include="Models\User\AddUserDto.cs" />

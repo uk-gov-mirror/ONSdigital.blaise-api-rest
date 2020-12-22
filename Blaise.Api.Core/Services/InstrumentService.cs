@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Nuget.Api.Contracts.Interfaces;

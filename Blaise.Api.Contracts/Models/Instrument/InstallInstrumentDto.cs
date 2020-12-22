@@ -1,4 +1,4 @@
-﻿namespace Blaise.Api.Contracts.Models
+﻿namespace Blaise.Api.Contracts.Models.Instrument
 {
     public class InstallInstrumentDto
     {

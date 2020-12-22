@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
