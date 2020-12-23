@@ -104,7 +104,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
- testRunner.Given("There is an instrument installed on a Blaise environment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("There is a questionnaire installed on a Blaise environment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 9
  testRunner.And("the questionnaire is active", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -113,7 +113,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("the API is queried to return all active questionnaires", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 11
- testRunner.Then("details of questionnaire a is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("details of the questionnaire is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -151,7 +151,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 15
- testRunner.Given("There is an instrument installed on a Blaise environment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("There is a questionnaire installed on a Blaise environment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 16
  testRunner.And("the questionnaire is inactive", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
+using Blaise.Api.Log.Services;
 using Blaise.Nuget.Api.Contracts.Exceptions;
 
 namespace Blaise.Api.Filters
@@ -23,8 +24,8 @@ namespace Blaise.Api.Filters
                     context.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                     break;
             }
-
-            Console.WriteLine($"Error: {context.Exception.Message}, {context.Exception.InnerException}");
+            
+            LogService.Error("Error: ", context.Exception);
         }
     }
 }

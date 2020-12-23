@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
@@ -20,7 +21,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext = scenarioContext;
         }
 
-        [Given(@"There is an instrument installed on a Blaise environment")]
+        [Given(@"There is a questionnaire installed on a Blaise environment")]
         public void GivenThereIsAnInstrumentInstalledOnABlaiseEnvironment()
         {
             InstrumentHelper.GetInstance().InstallInstrument();
@@ -48,13 +49,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [When(@"the API is queried to return all active questionnaires")]
-        public async System.Threading.Tasks.Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
+        public async Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
         {
             var listOfActiveQuestionnaires = await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
             _scenarioContext.Set(listOfActiveQuestionnaires, ApiResponse);
         }
 
-        [Then(@"details of questionnaire a is returned")]
+        [Then(@"details of the questionnaire is returned")]
         public void ThenDetailsOfQuestionnaireAIsReturned()
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);

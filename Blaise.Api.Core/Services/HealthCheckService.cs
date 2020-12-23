@@ -2,96 +2,56 @@
 using Blaise.Api.Contracts.Enums;
 using Blaise.Api.Contracts.Models;
 using Blaise.Api.Core.Interfaces;
-using Blaise.Nuget.Api.Contracts.Models;
-using Blaise.Nuget.Api.Core.Interfaces.Factories;
-using Blaise.Nuget.Api.Core.Interfaces.Providers;
+using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
 {
     public class HealthCheckService : IHealthCheckService
     {
-        private readonly IConfigurationProvider _configurationProvider;
-        private readonly IConnectedServerFactory _connectedServerFactory;
-        private readonly IRemoteDataServerFactory _remoteDataServerFactory;
-        private readonly ICatiManagementServerFactory _catiManagementServerFactory;
+        private readonly IBlaiseHealthApi _blaiseHealthApi;
 
-        public HealthCheckService(
-            IConfigurationProvider configurationProvider,
-            IConnectedServerFactory connectedServerFactory,
-            IRemoteDataServerFactory remoteDataServerFactory,
-            ICatiManagementServerFactory catiManagementServerFactory)
+        public HealthCheckService(IBlaiseHealthApi blaiseHealthApi)
         {
-            _configurationProvider = configurationProvider;
-            _connectedServerFactory = connectedServerFactory;
-            _remoteDataServerFactory = remoteDataServerFactory;
-            _catiManagementServerFactory = catiManagementServerFactory;
+            _blaiseHealthApi = blaiseHealthApi;
         }
 
         public IEnumerable<HealthCheckResultDto> PerformCheck()
         {
-            var connectionModel = _configurationProvider.GetConnectionModel();
-
             return new List<HealthCheckResultDto>
             {
-                CheckConnectionModel(connectionModel),
-                CheckConnection(connectionModel),
-                CheckRemoteDataServerConnection(connectionModel),
-                CheckRemoteCatiManagementConnection(connectionModel)
+                CheckConnectionModel(),
+                CheckConnection(),
+                CheckRemoteDataServerConnection(),
+                CheckRemoteCatiManagementConnection()
             };
         }
 
-        private static HealthCheckResultDto CheckConnectionModel(ConnectionModel connectionModel)
+        private HealthCheckResultDto CheckConnectionModel()
         {
-            if (!string.IsNullOrWhiteSpace(connectionModel.ServerName) &&
-                !string.IsNullOrWhiteSpace(connectionModel.UserName) &&
-                !string.IsNullOrWhiteSpace(connectionModel.Password) &&
-                !string.IsNullOrWhiteSpace(connectionModel.Binding) &&
-                connectionModel.Port > 0 &&
-                connectionModel.RemotePort > 0)
-            {
-                return new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.Ok);
-            }
-
-            return new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.NotOk);
+            return _blaiseHealthApi.ConnectionModelIsHealthy() 
+                ? new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.Ok) 
+                : new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.NotOk);
         }
 
-        private HealthCheckResultDto CheckConnection(ConnectionModel connectionModel)
+        private HealthCheckResultDto CheckConnection()
         {
-            try
-            {
-                _connectedServerFactory.GetConnection(connectionModel);
-                return new HealthCheckResultDto(HealthCheckType.Connection, HealthStatusType.Ok);
-            }
-            catch
-            {
-                return new HealthCheckResultDto(HealthCheckType.Connection, HealthStatusType.NotOk);
-            }
+            return _blaiseHealthApi.ConnectionToBlaiseIsHealthy()
+                ? new HealthCheckResultDto(HealthCheckType.Connection, HealthStatusType.Ok)
+                : new HealthCheckResultDto(HealthCheckType.Connection, HealthStatusType.NotOk);
         }
 
-        private HealthCheckResultDto CheckRemoteDataServerConnection(ConnectionModel connectionModel)
+        private HealthCheckResultDto CheckRemoteDataServerConnection()
         {
-            try
-            {
-                _remoteDataServerFactory.GetConnection(connectionModel);
-                return new HealthCheckResultDto(HealthCheckType.RemoteDataServer, HealthStatusType.Ok);
-            }
-            catch
-            {
-                return new HealthCheckResultDto(HealthCheckType.RemoteDataServer, HealthStatusType.NotOk);
-            }
+            return _blaiseHealthApi.RemoteConnectionToBlaiseIsHealthy()
+                ? new HealthCheckResultDto(HealthCheckType.RemoteDataServer, HealthStatusType.Ok)
+                : new HealthCheckResultDto(HealthCheckType.RemoteDataServer, HealthStatusType.NotOk);
         }
 
-        private HealthCheckResultDto CheckRemoteCatiManagementConnection(ConnectionModel connectionModel)
+        private HealthCheckResultDto CheckRemoteCatiManagementConnection()
         {
-            try
-            {
-                _catiManagementServerFactory.GetConnection(connectionModel);
-                return new HealthCheckResultDto(HealthCheckType.RemoteCatiManagement, HealthStatusType.Ok);
-            }
-            catch
-            {
-                return new HealthCheckResultDto(HealthCheckType.RemoteCatiManagement, HealthStatusType.NotOk);
-            }
+            return _blaiseHealthApi.RemoteConnectionToCatiIsHealthy()
+                ? new HealthCheckResultDto(HealthCheckType.RemoteCatiManagement, HealthStatusType.Ok)
+                : new HealthCheckResultDto(HealthCheckType.RemoteCatiManagement, HealthStatusType.NotOk);
         }
     }
 }
