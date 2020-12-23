@@ -1,8 +1,4 @@
-﻿using System;
-using System.ServiceProcess;
-using System.Threading;
-using Blaise.Api.Providers;
-using Microsoft.Owin.Hosting;
+﻿using System.ServiceProcess;
 
 namespace Blaise.Api
 {
