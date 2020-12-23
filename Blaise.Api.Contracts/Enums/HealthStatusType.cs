@@ -7,7 +7,7 @@ namespace Blaise.Api.Contracts.Enums
         [EnumMember(Value = "OK")]
         Ok,
 
-        [EnumMember(Value = "Not OK")]
-        NotOk
+        [EnumMember(Value = "ERROR")]
+        Error
     }
 }

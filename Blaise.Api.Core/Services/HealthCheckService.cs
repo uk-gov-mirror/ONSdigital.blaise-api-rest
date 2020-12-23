@@ -30,28 +30,28 @@ namespace Blaise.Api.Core.Services
         {
             return _blaiseHealthApi.ConnectionModelIsHealthy() 
                 ? new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.Ok) 
-                : new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.NotOk);
+                : new HealthCheckResultDto(HealthCheckType.ConnectionModel, HealthStatusType.Error);
         }
 
         private HealthCheckResultDto CheckConnection()
         {
             return _blaiseHealthApi.ConnectionToBlaiseIsHealthy()
                 ? new HealthCheckResultDto(HealthCheckType.Connection, HealthStatusType.Ok)
-                : new HealthCheckResultDto(HealthCheckType.Connection, HealthStatusType.NotOk);
+                : new HealthCheckResultDto(HealthCheckType.Connection, HealthStatusType.Error);
         }
 
         private HealthCheckResultDto CheckRemoteDataServerConnection()
         {
             return _blaiseHealthApi.RemoteConnectionToBlaiseIsHealthy()
                 ? new HealthCheckResultDto(HealthCheckType.RemoteDataServer, HealthStatusType.Ok)
-                : new HealthCheckResultDto(HealthCheckType.RemoteDataServer, HealthStatusType.NotOk);
+                : new HealthCheckResultDto(HealthCheckType.RemoteDataServer, HealthStatusType.Error);
         }
 
         private HealthCheckResultDto CheckRemoteCatiManagementConnection()
         {
             return _blaiseHealthApi.RemoteConnectionToCatiIsHealthy()
                 ? new HealthCheckResultDto(HealthCheckType.RemoteCatiManagement, HealthStatusType.Ok)
-                : new HealthCheckResultDto(HealthCheckType.RemoteCatiManagement, HealthStatusType.NotOk);
+                : new HealthCheckResultDto(HealthCheckType.RemoteCatiManagement, HealthStatusType.Error);
         }
     }
 }

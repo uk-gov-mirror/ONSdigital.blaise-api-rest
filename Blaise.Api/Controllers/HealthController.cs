@@ -31,7 +31,7 @@ namespace Blaise.Api.Controllers
 
             var results = _healthService.PerformCheck().ToList();
 
-            if (results.Any(r => r.StatusType == HealthStatusType.NotOk))
+            if (results.Any(r => r.StatusType == HealthStatusType.Error))
             {
                 return Content(HttpStatusCode.ServiceUnavailable, results);
             }
