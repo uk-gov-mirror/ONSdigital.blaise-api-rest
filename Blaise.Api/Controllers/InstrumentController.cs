@@ -42,7 +42,7 @@ namespace Blaise.Api.Controllers
         [HttpGet]
         [Route("{instrumentName}")]
         [ResponseType(typeof(InstrumentDto))]
-        public IHttpActionResult GetInstrument(string serverParkName, string instrumentName)
+        public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             LogService.Info("Obtaining an instruments for a server park");
 
@@ -57,7 +57,7 @@ namespace Blaise.Api.Controllers
         [HttpGet]
         [Route("{instrumentName}/exists")]
         [ResponseType(typeof(bool))]
-        public IHttpActionResult InstrumentExists(string serverParkName, string instrumentName)
+        public IHttpActionResult InstrumentExists([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             LogService.Info($"Check that an instrument exists on server park '{serverParkName}'");
 

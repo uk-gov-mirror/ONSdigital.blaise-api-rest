@@ -37,7 +37,7 @@ namespace Blaise.Api.Controllers
         [HttpGet]
         [Route("{serverParkName}")]
         [ResponseType(typeof(ServerParkDto))]
-        public IHttpActionResult GetServerPark(string serverParkName)
+        public IHttpActionResult GetServerPark([FromUri] string serverParkName)
         {
             var park = _serverParkService.GetServerPark(serverParkName);
 
@@ -49,7 +49,7 @@ namespace Blaise.Api.Controllers
         [HttpGet]
         [Route("{serverParkName}/exists")]
         [ResponseType(typeof(bool))]
-        public IHttpActionResult ServerParkExists(string serverParkName)
+        public IHttpActionResult ServerParkExists([FromUri] string serverParkName)
         {
             var exists = _serverParkService.ServerParkExists(serverParkName);
 
@@ -59,13 +59,12 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPost]
-        [Route("machine")]
-        public IHttpActionResult RegisterMachine([FromBody] RegisterMachineDto registerMachineDto)
+        [Route("{serverParkName}/machine")]
+        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] RegisterMachineDto registerMachineDto)
         {
             LogService.Info($"Attempt to register a machine '{registerMachineDto.MachineName}'");
 
-            _serverParkService.RegisterMachineOnServerPark(registerMachineDto.ServerParkName,
-                registerMachineDto.MachineName);
+            _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto.MachineName);
 
             LogService.Info($"Successfully registered a machine '{registerMachineDto.MachineName}'");
 
