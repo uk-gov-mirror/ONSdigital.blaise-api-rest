@@ -9,7 +9,7 @@ using Blaise.Api.Log.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
+    //[ExceptionFilter]
     [RoutePrefix("api/v1/serverparks")]
     public class ServerParkController : ApiController
     {
