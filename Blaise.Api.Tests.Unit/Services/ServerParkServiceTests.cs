@@ -184,5 +184,169 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.ServerParkExists(null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_RegisterMachineOnServerPark_Then_The_Correct_Service_Method_Is_Called()
+        {
+            //arrange
+            var serverParkName = "Park1";
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = "Gusty01",
+                LogicalRootName = "Default",
+                Roles = new List<string> { "Web", "Cati" },
+            };
+
+            _blaiseApiMock.Setup(p => p.RegisterMachineOnServerPark(It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<string>>()));
+
+            //act
+            _sut.RegisterMachineOnServerPark(serverParkName, registerMachineDto);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.RegisterMachineOnServerPark(serverParkName,
+                registerMachineDto.MachineName, registerMachineDto.LogicalRootName, registerMachineDto.Roles), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = "Gusty01",
+                LogicalRootName = "Default",
+                Roles = new List<string> { "Web", "Cati" },
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterMachineOnServerPark(string.Empty,
+               registerMachineDto));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = "Gusty01",
+                LogicalRootName = "Default",
+                Roles = new List<string> { "Web", "Cati" },
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(null,
+                registerMachineDto));
+        }
+
+        [Test]
+        public void Given_An_Empty_MachineName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "Park1";
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = string.Empty,
+                LogicalRootName = "Default",
+                Roles = new List<string> { "Web", "Cati" },
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
+                registerMachineDto));
+            Assert.AreEqual("A value for the argument 'registerMachineDto.MachineName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_MachineName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "Park1";
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = null,
+                LogicalRootName = "Default",
+                Roles = new List<string> { "Web", "Cati" },
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
+                registerMachineDto));
+            Assert.AreEqual("registerMachineDto.MachineName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_LogicalRootName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "Park1";
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = "Gusty01",
+                LogicalRootName = string.Empty,
+                Roles = new List<string> { "Web", "Cati" },
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
+                registerMachineDto));
+            Assert.AreEqual("A value for the argument 'registerMachineDto.LogicalRootName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_LogicalRootName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "Park1";
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = "Gusty01",
+                LogicalRootName = null,
+                Roles = new List<string> { "Web", "Cati" },
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
+                registerMachineDto));
+            Assert.AreEqual("registerMachineDto.LogicalRootName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_List_Of_Roles_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "Park1";
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = "Gusty01",
+                LogicalRootName = "Default",
+                Roles = new List<string>(),
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
+                registerMachineDto));
+            Assert.AreEqual("A value for the argument 'registerMachineDto.Roles' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_List_Of_Roles_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "Park1";
+            var registerMachineDto = new RegisterMachineDto
+            {
+                MachineName = "Gusty01",
+                LogicalRootName = "Default",
+                Roles = null,
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
+                registerMachineDto));
+            Assert.AreEqual("registerMachineDto.Roles", exception.ParamName);
+        }
     }
 }

@@ -42,9 +42,15 @@ namespace Blaise.Api.Core.Services
             return _blaiseApi.ServerParkExists(serverParkName);
         }
 
-        public void RegisterMachineOnServerPark(string serverParkName, string machineName)
+        public void RegisterMachineOnServerPark(string serverParkName, RegisterMachineDto registerMachineDto)
         {
-            _blaiseApi.RegisterMachineOnServerPark(serverParkName, machineName);
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            registerMachineDto.MachineName.ThrowExceptionIfNullOrEmpty("registerMachineDto.MachineName");
+            registerMachineDto.LogicalRootName.ThrowExceptionIfNullOrEmpty("registerMachineDto.LogicalRootName");
+            registerMachineDto.Roles.ThrowExceptionIfNullOrEmpty("registerMachineDto.Roles");
+
+            _blaiseApi.RegisterMachineOnServerPark(serverParkName, registerMachineDto.MachineName,
+                registerMachineDto.LogicalRootName, registerMachineDto.Roles);
         }
     }
 }

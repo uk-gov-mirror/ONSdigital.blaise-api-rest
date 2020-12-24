@@ -74,8 +74,7 @@ namespace Blaise.Api.Controllers
         {
             LogService.Info($"Attempting to install instrument '{installInstrumentDto.InstrumentFile}' on server park '{serverParkName}'");
 
-            _installInstrumentService.InstallInstrument(installInstrumentDto.BucketPath,
-                installInstrumentDto.InstrumentFile, serverParkName);
+            _installInstrumentService.InstallInstrument(serverParkName, installInstrumentDto);
 
             LogService.Info($"Instrument '{installInstrumentDto.InstrumentFile}' installed on server park '{serverParkName}'");
 

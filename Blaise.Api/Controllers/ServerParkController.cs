@@ -64,7 +64,7 @@ namespace Blaise.Api.Controllers
         {
             LogService.Info($"Attempt to register a machine '{registerMachineDto.MachineName}'");
 
-            _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto.MachineName);
+            _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto);
 
             LogService.Info($"Successfully registered a machine '{registerMachineDto.MachineName}'");
 

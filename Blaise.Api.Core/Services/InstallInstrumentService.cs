@@ -1,4 +1,5 @@
-﻿using Blaise.Api.Core.Extensions;
+﻿using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Enums;
@@ -19,13 +20,12 @@ namespace Blaise.Api.Core.Services
             _storageService = storageService;
         }
 
-        public void InstallInstrument(string bucketPath, string instrumentFileName, string serverParkName)
+        public void InstallInstrument(string serverParkName, InstallInstrumentDto installInstrumentDto)
         {
-            bucketPath.ThrowExceptionIfNullOrEmpty("bucketPath");
-            instrumentFileName.ThrowExceptionIfNullOrEmpty("instrumentFileName");
-            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            installInstrumentDto.BucketPath.ThrowExceptionIfNullOrEmpty("installInstrumentDto.BucketPath");
 
-            var instrumentFile = _storageService.DownloadFromBucket(bucketPath, instrumentFileName);
+            var instrumentFile = _storageService.DownloadFromBucket(
+                installInstrumentDto.BucketPath, installInstrumentDto.InstrumentFile);
 
             _blaiseApi.InstallSurvey(instrumentFile, SurveyInterviewType.Cati, serverParkName);
             _storageService.DeleteFile(instrumentFile);
