@@ -13,7 +13,7 @@ namespace Blaise.Api.Core.Services
         private readonly IStorageService _storageService;
 
         public InstallInstrumentService(
-            IBlaiseSurveyApi blaiseApi, 
+            IBlaiseSurveyApi blaiseApi,
             IStorageService storageService)
         {
             _blaiseApi = blaiseApi;
@@ -22,7 +22,9 @@ namespace Blaise.Api.Core.Services
 
         public void InstallInstrument(string serverParkName, InstallInstrumentDto installInstrumentDto)
         {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             installInstrumentDto.BucketPath.ThrowExceptionIfNullOrEmpty("installInstrumentDto.BucketPath");
+            installInstrumentDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("installInstrumentDto.InstrumentFile");
 
             var instrumentFile = _storageService.DownloadFromBucket(
                 installInstrumentDto.BucketPath, installInstrumentDto.InstrumentFile);
