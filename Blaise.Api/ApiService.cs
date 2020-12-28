@@ -5,10 +5,11 @@ using Microsoft.Owin.Hosting;
 
 namespace Blaise.Api
 {
-    partial class ApiService : ServiceBase
+    internal partial class ApiService : ServiceBase
     {
         public string BaseAddress = ConfigurationProvider.BaseUrl;
-        private IDisposable _server = null;
+        private IDisposable _server;
+
         public ApiService()
         {
             InitializeComponent();

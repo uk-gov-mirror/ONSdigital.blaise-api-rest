@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
 using StatNeth.Blaise.API.ServerManager;

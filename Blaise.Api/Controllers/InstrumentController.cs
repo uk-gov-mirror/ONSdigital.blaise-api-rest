@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Blaise.Api.Contracts.Models;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Filters;

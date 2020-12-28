@@ -16,13 +16,5 @@ namespace Blaise.Api.Tests.Helpers.Extensions
                 throw new ArgumentException($"A value for the argument '{parameterName}' must be supplied");
             }
         }
-
-        public static void ThrowExceptionIfNotInt(this string parameter, string parameterName)
-        {
-            if (!Int32.TryParse(parameter, out _))
-            {
-                throw new ArgumentException($"A int value for the argument '{parameterName}' must be supplied");
-            }
-        }
     }
 }
