@@ -2,7 +2,7 @@
 using Blaise.Api.Contracts.Models;
 using StatNeth.Blaise.API.Security;
 
-namespace Blaise.Api.Core.Interfaces
+namespace Blaise.Api.Core.Interfaces.Mappers
 {
     public interface IRoleDtoMapper
     {

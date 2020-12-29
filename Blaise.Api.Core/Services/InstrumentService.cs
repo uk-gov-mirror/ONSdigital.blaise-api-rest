@@ -2,6 +2,8 @@
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Mappers;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services

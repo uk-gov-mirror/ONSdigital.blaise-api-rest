@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Mappers;
 
 namespace Blaise.Api.Core.Mappers
 {

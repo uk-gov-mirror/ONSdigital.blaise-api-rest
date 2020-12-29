@@ -2,6 +2,7 @@
 using System.Linq;
 using Blaise.Api.Contracts.Models.User;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Mappers;
 using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Mappers

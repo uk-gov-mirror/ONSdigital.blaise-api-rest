@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Mappers;
 using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Mappers

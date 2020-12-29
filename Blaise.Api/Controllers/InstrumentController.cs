@@ -4,6 +4,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
 using Blaise.Api.Log.Services;
 
