@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Role;
 
 namespace Blaise.Api.Core.Interfaces.Services
 {

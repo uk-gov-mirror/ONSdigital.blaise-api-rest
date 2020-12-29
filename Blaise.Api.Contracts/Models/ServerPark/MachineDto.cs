@@ -1,9 +1,9 @@
 ﻿
 using System.Collections.Generic;
 
-namespace Blaise.Api.Contracts.Models
+namespace Blaise.Api.Contracts.Models.ServerPark
 {
-    public class RegisterMachineDto
+    public class MachineDto
     {
         public string MachineName { get; set; }
 

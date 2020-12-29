@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Instrument;
 
-namespace Blaise.Api.Contracts.Models
+namespace Blaise.Api.Contracts.Models.ServerPark
 {
     public class ServerParkDto
     {

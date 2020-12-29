@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
@@ -191,7 +191,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var serverParkName = "Park1";
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = "Gusty01",
                 LogicalRootName = "Default",
@@ -213,7 +213,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_ServerParkName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = "Gusty01",
                 LogicalRootName = "Default",
@@ -230,7 +230,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_ServerParkName_When_I_Call_RegisterMachineOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = "Gusty01",
                 LogicalRootName = "Default",
@@ -240,7 +240,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(null,
                 registerMachineDto));
-            Assert.AreEqual("registerMachineDto.serverParkName", exception.ParamName);
+            Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
@@ -248,7 +248,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var serverParkName = "Park1";
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = string.Empty,
                 LogicalRootName = "Default",
@@ -258,7 +258,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
                 registerMachineDto));
-            Assert.AreEqual("A value for the argument 'registerMachineDto.MachineName' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'machineDto.MachineName' must be supplied", exception.Message);
         }
 
         [Test]
@@ -266,7 +266,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var serverParkName = "Park1";
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = null,
                 LogicalRootName = "Default",
@@ -276,7 +276,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
                 registerMachineDto));
-            Assert.AreEqual("registerMachineDto.MachineName", exception.ParamName);
+            Assert.AreEqual("machineDto.MachineName", exception.ParamName);
         }
 
         [Test]
@@ -284,7 +284,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var serverParkName = "Park1";
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = "Gusty01",
                 LogicalRootName = string.Empty,
@@ -294,7 +294,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
                 registerMachineDto));
-            Assert.AreEqual("A value for the argument 'registerMachineDto.LogicalRootName' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'machineDto.LogicalRootName' must be supplied", exception.Message);
         }
 
         [Test]
@@ -302,7 +302,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var serverParkName = "Park1";
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = "Gusty01",
                 LogicalRootName = null,
@@ -312,7 +312,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
                 registerMachineDto));
-            Assert.AreEqual("registerMachineDto.LogicalRootName", exception.ParamName);
+            Assert.AreEqual("machineDto.LogicalRootName", exception.ParamName);
         }
 
         [Test]
@@ -320,7 +320,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var serverParkName = "Park1";
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = "Gusty01",
                 LogicalRootName = "Default",
@@ -330,7 +330,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
                 registerMachineDto));
-            Assert.AreEqual("A value for the argument 'registerMachineDto.Roles' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'machineDto.Roles' must be supplied", exception.Message);
         }
 
         [Test]
@@ -338,7 +338,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             var serverParkName = "Park1";
-            var registerMachineDto = new RegisterMachineDto
+            var registerMachineDto = new MachineDto
             {
                 MachineName = "Gusty01",
                 LogicalRootName = "Default",
@@ -348,7 +348,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(serverParkName,
                 registerMachineDto));
-            Assert.AreEqual("registerMachineDto.Roles", exception.ParamName);
+            Assert.AreEqual("machineDto.Roles", exception.ParamName);
         }
     }
 }

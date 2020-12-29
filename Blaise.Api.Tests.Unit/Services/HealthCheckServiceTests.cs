@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Health;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;

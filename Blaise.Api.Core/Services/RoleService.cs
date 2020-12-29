@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Role;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;

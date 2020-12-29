@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Mappers;
 using StatNeth.Blaise.API.ServerManager;
 

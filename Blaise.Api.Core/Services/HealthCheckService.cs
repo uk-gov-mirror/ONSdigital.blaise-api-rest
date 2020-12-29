@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Health;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
