@@ -68,5 +68,21 @@ namespace Blaise.Api.Core.Services
 
             return _blaiseApi.GetSurveyStatus(instrumentName, serverParkName);
         }
+
+        public void ActivateInstrument(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            _blaiseApi.ActivateSurvey(instrumentName, serverParkName);
+        }
+
+        public void DeactivateInstrument(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            _blaiseApi.DeactivateSurvey(instrumentName, serverParkName);
+        }
     }
 }

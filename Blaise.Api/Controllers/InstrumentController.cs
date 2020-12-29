@@ -122,5 +122,34 @@ namespace Blaise.Api.Controllers
 
             return Ok();
         }
+
+
+        [HttpPatch]
+        [Route("{instrumentName}/activate")]
+        public IHttpActionResult ActivateInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            LogService.Info($"Activate instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            _instrumentService
+                .ActivateInstrument(instrumentName, serverParkName);
+
+            LogService.Info($"Successfully activated instrument '{instrumentName}'");
+
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("{instrumentName}/deactivate")]
+        public IHttpActionResult DeactivateInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            LogService.Info($"Deactivate instrument '{instrumentName}' on server park '{serverParkName}'");
+
+            _instrumentService
+                .DeactivateInstrument(instrumentName, serverParkName);
+
+            LogService.Info($"Successfully deactivated instrument '{instrumentName}'");
+
+            return Ok();
+        }
     }
 }

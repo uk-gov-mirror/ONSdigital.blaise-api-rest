@@ -18,5 +18,9 @@ namespace Blaise.Api.Core.Interfaces.Services
         Guid GetInstrumentId(string instrumentName, string serverParkName);
 
         SurveyStatusType GetInstrumentStatus(string instrumentName, string serverParkName);
+
+        void ActivateInstrument(string instrumentName, string serverParkName);
+
+        void DeactivateInstrument(string instrumentName, string serverParkName);
     }
 }

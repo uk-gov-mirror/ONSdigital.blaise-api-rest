@@ -418,5 +418,111 @@ namespace Blaise.Api.Tests.Unit.Services
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
+
+        [Test]
+        public void Given_An_Instrument_Exists_When_I_Call_ActivateInstrument_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+  
+            _blaiseApiMock.Setup(b =>
+                b.ActivateSurvey(instrumentName, serverParkName));
+
+            //act
+            _sut.ActivateInstrument(instrumentName, serverParkName);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.ActivateSurvey(instrumentName, serverParkName), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_ActivateInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.ActivateInstrument(string.Empty,
+                _serverParkName));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_ActivateInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.ActivateInstrument(null,
+                _serverParkName));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_ActivateInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.ActivateInstrument(_instrumentName,
+                string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_ActivateInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.ActivateInstrument(_instrumentName,
+                null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Instrument_Exists_When_I_Call_DeactivateInstrument_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+  
+            _blaiseApiMock.Setup(b =>
+                b.DeactivateSurvey(instrumentName, serverParkName));
+
+            //act
+            _sut.DeactivateInstrument(instrumentName, serverParkName);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.DeactivateSurvey(instrumentName, serverParkName), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_DeactivateInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeactivateInstrument(string.Empty,
+                _serverParkName));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_DeactivateInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeactivateInstrument(null,
+                _serverParkName));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_DeactivateInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.DeactivateInstrument(_instrumentName,
+                string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_DeactivateInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.DeactivateInstrument(_instrumentName,
+                null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
     }
 }
