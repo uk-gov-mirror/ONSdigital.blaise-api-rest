@@ -11,7 +11,7 @@ namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/cati")]
-    public class CatiController : ApiController
+    public class CatiController : BaseController
     {
         private readonly ICatiService _catiService;
 

@@ -10,7 +10,7 @@ namespace Blaise.Api.Controllers
 {
     //[ExceptionFilter]
     [RoutePrefix("api/v1/serverparks")]
-    public class ServerParkController : ApiController
+    public class ServerParkController : BaseController
     {
         private readonly IServerParkService _serverParkService;
 
@@ -67,7 +67,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully registered a machine '{registerMachineDto.MachineName}'");
 
-            return Ok();
+            return NoContent();
         }
     }
 }

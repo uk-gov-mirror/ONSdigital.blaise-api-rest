@@ -13,7 +13,7 @@ namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
-    public class InstrumentController : ApiController
+    public class InstrumentController : BaseController
     {
         private readonly IInstrumentService _instrumentService;
         private readonly IInstallInstrumentService _installInstrumentService;
@@ -120,7 +120,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Instrument '{name}' has been uninstalled from server park '{serverParkName}'");
 
-            return Ok();
+            return NoContent();
         }
 
 
@@ -135,7 +135,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully activated instrument '{instrumentName}'");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch]
@@ -149,7 +149,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully deactivated instrument '{instrumentName}'");
 
-            return Ok();
+            return NoContent(); 
         }
     }
 }

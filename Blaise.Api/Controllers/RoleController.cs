@@ -10,7 +10,7 @@ namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/roles")]
-    public class RoleController : ApiController
+    public class RoleController : BaseController
     {
         private readonly IRoleService _roleService;
 
@@ -84,7 +84,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully removed role '{name}'");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch]
@@ -97,7 +97,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully updated permissions for role '{name}'");
 
-            return Ok();
+            return NoContent();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/users")]
-    public class UserController : ApiController
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
 
@@ -84,7 +84,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully removed user '{name}'");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch]
@@ -97,7 +97,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully updated password for user '{name}'");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch]
@@ -110,7 +110,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully updated role for user '{name}'");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch]
@@ -123,7 +123,7 @@ namespace Blaise.Api.Controllers
 
             LogService.Info($"Successfully updated server parks for user '{name}'");
 
-            return Ok();
+            return NoContent();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/health")]
-    public class HealthController : ApiController
+    public class HealthController : BaseController
     {
         private readonly IHealthCheckService _healthService;
 
