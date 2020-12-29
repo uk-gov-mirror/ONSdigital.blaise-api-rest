@@ -7,8 +7,8 @@
     <ProjectGuid>{8E9C7380-58E1-45FB-9E85-EBB18C012328}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Blaise.Api.Log</RootNamespace>
-    <AssemblyName>Blaise.Api.Log</AssemblyName>
+    <RootNamespace>Blaise.Api.Logging</RootNamespace>
+    <AssemblyName>Blaise.Api.Logging</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\LogService.cs" />
+    <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

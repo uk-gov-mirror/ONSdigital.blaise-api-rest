@@ -4,7 +4,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Log.Services;
+using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -24,11 +24,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
-            LogService.Info("Obtaining a list of server parks");
+            LoggingService.LogInfo("Obtaining a list of server parks");
 
             var parks = _serverParkService.GetServerParks().ToList();
 
-            LogService.Info($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
+            LoggingService.LogInfo($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
 
             return Ok(parks);
         }
@@ -40,7 +40,7 @@ namespace Blaise.Api.Controllers
         {
             var park = _serverParkService.GetServerPark(serverParkName);
 
-            LogService.Info($"Successfully received server park '{serverParkName}'");
+            LoggingService.LogInfo($"Successfully received server park '{serverParkName}'");
 
             return Ok(park);
         }
@@ -52,7 +52,7 @@ namespace Blaise.Api.Controllers
         {
             var exists = _serverParkService.ServerParkExists(serverParkName);
 
-            LogService.Info($"Successfully found server park '{serverParkName}'");
+            LoggingService.LogInfo($"Successfully found server park '{serverParkName}'");
 
             return Ok(exists);
         }
@@ -61,11 +61,11 @@ namespace Blaise.Api.Controllers
         [Route("{serverParkName}/machine")]
         public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] MachineDto registerMachineDto)
         {
-            LogService.Info($"Attempt to register a machine '{registerMachineDto.MachineName}'");
+            LoggingService.LogInfo($"Attempt to register a machine '{registerMachineDto.MachineName}'");
 
             _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto);
 
-            LogService.Info($"Successfully registered a machine '{registerMachineDto.MachineName}'");
+            LoggingService.LogInfo($"Successfully registered a machine '{registerMachineDto.MachineName}'");
 
             return NoContent();
         }

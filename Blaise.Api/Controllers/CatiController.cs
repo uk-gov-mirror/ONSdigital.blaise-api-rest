@@ -5,7 +5,7 @@ using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
-using Blaise.Api.Log.Services;
+using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
@@ -25,11 +25,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<CatiInstrumentDto>))]
         public IHttpActionResult GetInstruments()
         {
-            LogService.Info("Obtaining a list of instruments from Cati");
+            LoggingService.LogInfo("Obtaining a list of instruments from Cati");
 
             var instruments = _catiService.GetCatiInstruments().ToList();
 
-            LogService.Info($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+            LoggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
 
             return Ok(instruments);
         }

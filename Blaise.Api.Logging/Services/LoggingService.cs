@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace Blaise.Api.Log.Services
+namespace Blaise.Api.Logging.Services
 {
-    public class LogService 
+    public class LoggingService 
     {
-        public static void Info(string message)
+        public static void LogInfo(string message)
         {
             Console.WriteLine(message);
         }
 
-        public static void Error(string message, Exception exception)
+        public static void LogError(string message, Exception exception)
         {
             Console.WriteLine($"{message}: {exception.Message}, {exception.InnerException}");
         }
