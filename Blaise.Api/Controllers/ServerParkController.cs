@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Log.Services;
 

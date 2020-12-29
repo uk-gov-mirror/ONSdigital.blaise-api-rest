@@ -1,6 +1,5 @@
 ﻿using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Enums;

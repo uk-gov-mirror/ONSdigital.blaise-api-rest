@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models.User;
-using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;

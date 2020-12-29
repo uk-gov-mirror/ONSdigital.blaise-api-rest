@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.Instrument;
-using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
 using Blaise.Api.Log.Services;
@@ -44,12 +43,12 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(InstrumentDto))]
         public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LogService.Info("Obtaining an instruments for a server park");
+            LogService.Info("Get an instrument for a server park");
 
             var instruments = _instrumentService
                 .GetInstrument(instrumentName, serverParkName);
 
-            LogService.Info($"Successfully received an instrument '{instrumentName}'");
+            LogService.Info($"Successfully retrieved an instrument '{instrumentName}'");
 
             return Ok(instruments);
         }
@@ -66,6 +65,20 @@ namespace Blaise.Api.Controllers
             LogService.Info($"Instrument '{instrumentName}' exists = '{exists}' on '{serverParkName}'");
 
             return Ok(exists);
+        }
+
+        [HttpGet]
+        [Route("{instrumentName}/id")]
+        [ResponseType(typeof(bool))]
+        public IHttpActionResult GetInstrumentId([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            LogService.Info($"Get the ID of an instrument on server park '{serverParkName}'");
+
+            var instrumentId = _instrumentService.GetInstrumentId(instrumentName, serverParkName);
+
+            LogService.Info($"Instrument ID '{instrumentId}' retrieved");
+
+            return Ok(instrumentId);
         }
 
         [HttpPost]

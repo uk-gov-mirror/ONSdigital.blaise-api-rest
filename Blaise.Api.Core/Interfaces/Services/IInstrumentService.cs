@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Instrument;
 
 namespace Blaise.Api.Core.Interfaces.Services
@@ -12,5 +13,7 @@ namespace Blaise.Api.Core.Interfaces.Services
         InstrumentDto GetInstrument(string instrumentName, string serverParkName);
 
         bool InstrumentExists(string instrumentName, string serverParkName);
+
+        Guid GetInstrumentId(string instrumentName, string serverParkName);
     }
 }

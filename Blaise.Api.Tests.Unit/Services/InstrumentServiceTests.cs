@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models;
 using Blaise.Api.Contracts.Models.Instrument;
-using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
@@ -303,6 +301,61 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstrumentExists(_instrumentName,
+                null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Instrument_Exists_When_I_Call_GetInstrumentId_Then_The_Correct_Id_Is_Returned()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+            var instrumentId = Guid.NewGuid();
+            _blaiseApiMock.Setup(b =>
+                b.GetIdOfSurvey(instrumentName, serverParkName)).Returns(instrumentId);
+
+            //act
+            var result = _sut.GetInstrumentId(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<Guid>(result);
+            Assert.AreEqual(instrumentId, result);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_GetInstrumentId_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetInstrumentId(string.Empty,
+                _serverParkName));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_GetInstrumentId_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetInstrumentId(null,
+                _serverParkName));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetInstrumentId_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetInstrumentId(_instrumentName,
+                string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_GetInstrumentId_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetInstrumentId(_instrumentName,
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }

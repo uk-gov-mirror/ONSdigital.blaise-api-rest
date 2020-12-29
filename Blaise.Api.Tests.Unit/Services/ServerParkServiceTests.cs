@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
@@ -241,6 +240,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterMachineOnServerPark(null,
                 registerMachineDto));
+            Assert.AreEqual("registerMachineDto.serverParkName", exception.ParamName);
         }
 
         [Test]

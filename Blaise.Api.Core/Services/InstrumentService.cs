@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -50,6 +50,14 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
             return _blaiseApi.SurveyExists(instrumentName, serverParkName);
+        }
+
+        public Guid GetInstrumentId(string instrumentName, string serverParkName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            return _blaiseApi.GetIdOfSurvey(instrumentName, serverParkName);
         }
     }
 }
