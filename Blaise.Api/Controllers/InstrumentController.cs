@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -6,6 +7,7 @@ using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
 using Blaise.Api.Log.Services;
+using Blaise.Nuget.Api.Contracts.Enums;
 
 namespace Blaise.Api.Controllers
 {
@@ -69,7 +71,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/id")]
-        [ResponseType(typeof(bool))]
+        [ResponseType(typeof(Guid))]
         public IHttpActionResult GetInstrumentId([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             LogService.Info($"Get the ID of an instrument on server park '{serverParkName}'");
@@ -79,6 +81,20 @@ namespace Blaise.Api.Controllers
             LogService.Info($"Instrument ID '{instrumentId}' retrieved");
 
             return Ok(instrumentId);
+        }
+
+        [HttpGet]
+        [Route("{instrumentName}/status")]
+        [ResponseType(typeof(SurveyStatusType))]
+        public IHttpActionResult GetInstrumentStatus([FromUri] string serverParkName, [FromUri] string instrumentName)
+        {
+            LogService.Info($"Get the status of an instrument on server park '{serverParkName}'");
+
+            var status = _instrumentService.GetInstrumentStatus(instrumentName, serverParkName);
+
+            LogService.Info($"Instrument '{instrumentName}' has the status '{status}'");
+
+            return Ok(status);
         }
 
         [HttpPost]

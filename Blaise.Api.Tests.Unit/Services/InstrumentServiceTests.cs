@@ -5,6 +5,7 @@ using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -312,6 +313,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var instrumentName = "OPN2101A";
             var serverParkName = "ServerParkA";
             var instrumentId = Guid.NewGuid();
+
             _blaiseApiMock.Setup(b =>
                 b.GetIdOfSurvey(instrumentName, serverParkName)).Returns(instrumentId);
 
@@ -320,7 +322,6 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<Guid>(result);
             Assert.AreEqual(instrumentId, result);
         }
 
@@ -356,6 +357,64 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetInstrumentId(_instrumentName,
+                null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [TestCase(SurveyStatusType.Active)]
+        [TestCase(SurveyStatusType.Inactive)]
+        [TestCase(SurveyStatusType.Erroneous)]
+        [TestCase(SurveyStatusType.Installing)]
+        [TestCase(SurveyStatusType.Other)]
+        public void Given_An_Instrument_Exists_When_I_Call_GetInstrumentStatus_Then_The_Correct_Status_Is_Returned(SurveyStatusType surveyStatus)
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+  
+            _blaiseApiMock.Setup(b =>
+                b.GetSurveyStatus(instrumentName, serverParkName)).Returns(surveyStatus);
+
+            //act
+            var result = _sut.GetInstrumentStatus(instrumentName, serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(surveyStatus, result);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_GetInstrumentStatus_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetInstrumentStatus(string.Empty,
+                _serverParkName));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_GetInstrumentStatus_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetInstrumentStatus(null,
+                _serverParkName));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetInstrumentStatus_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetInstrumentStatus(_instrumentName,
+                string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_GetInstrumentStatus_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetInstrumentStatus(_instrumentName,
                 null));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
