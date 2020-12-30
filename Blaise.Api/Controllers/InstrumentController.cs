@@ -6,14 +6,14 @@ using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
-using Blaise.Api.Log.Services;
+using Blaise.Api.Logging.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
 
 namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
-    public class InstrumentController : ApiController
+    public class InstrumentController : BaseController
     {
         private readonly IInstrumentService _instrumentService;
         private readonly IInstallInstrumentService _installInstrumentService;
@@ -31,11 +31,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<InstrumentDto>))]
         public IHttpActionResult GetInstruments(string serverParkName)
         {
-            LogService.Info("Obtaining a list of instruments for a server park");
+            LoggingService.LogInfo("Obtaining a list of instruments for a server park");
 
             var instruments = _instrumentService.GetInstruments(serverParkName).ToList();
 
-            LogService.Info($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
+            LoggingService.LogInfo($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
 
             return Ok(instruments);
         }
@@ -45,12 +45,12 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(InstrumentDto))]
         public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LogService.Info("Get an instrument for a server park");
+            LoggingService.LogInfo("Get an instrument for a server park");
 
             var instruments = _instrumentService
                 .GetInstrument(instrumentName, serverParkName);
 
-            LogService.Info($"Successfully retrieved an instrument '{instrumentName}'");
+            LoggingService.LogInfo($"Successfully retrieved an instrument '{instrumentName}'");
 
             return Ok(instruments);
         }
@@ -60,11 +60,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(bool))]
         public IHttpActionResult InstrumentExists([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LogService.Info($"Check that an instrument exists on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Check that an instrument exists on server park '{serverParkName}'");
 
             var exists = _instrumentService.InstrumentExists(instrumentName, serverParkName);
 
-            LogService.Info($"Instrument '{instrumentName}' exists = '{exists}' on '{serverParkName}'");
+            LoggingService.LogInfo($"Instrument '{instrumentName}' exists = '{exists}' on '{serverParkName}'");
 
             return Ok(exists);
         }
@@ -74,11 +74,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(Guid))]
         public IHttpActionResult GetInstrumentId([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LogService.Info($"Get the ID of an instrument on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Get the ID of an instrument on server park '{serverParkName}'");
 
             var instrumentId = _instrumentService.GetInstrumentId(instrumentName, serverParkName);
 
-            LogService.Info($"Instrument ID '{instrumentId}' retrieved");
+            LoggingService.LogInfo($"Instrument ID '{instrumentId}' retrieved");
 
             return Ok(instrumentId);
         }
@@ -88,11 +88,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(SurveyStatusType))]
         public IHttpActionResult GetInstrumentStatus([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LogService.Info($"Get the status of an instrument on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Get the status of an instrument on server park '{serverParkName}'");
 
             var status = _instrumentService.GetInstrumentStatus(instrumentName, serverParkName);
 
-            LogService.Info($"Instrument '{instrumentName}' has the status '{status}'");
+            LoggingService.LogInfo($"Instrument '{instrumentName}' has the status '{status}'");
 
             return Ok(status);
         }
@@ -101,11 +101,11 @@ namespace Blaise.Api.Controllers
         [Route("")]
         public IHttpActionResult InstallInstrument([FromUri] string serverParkName, [FromBody] InstallInstrumentDto installInstrumentDto)
         {
-            LogService.Info($"Attempting to install instrument '{installInstrumentDto.InstrumentFile}' on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Attempting to install instrument '{installInstrumentDto.InstrumentFile}' on server park '{serverParkName}'");
 
             _installInstrumentService.InstallInstrument(serverParkName, installInstrumentDto);
 
-            LogService.Info($"Instrument '{installInstrumentDto.InstrumentFile}' installed on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Instrument '{installInstrumentDto.InstrumentFile}' installed on server park '{serverParkName}'");
 
             return Created($"{Request.RequestUri}/{installInstrumentDto.InstrumentName}", installInstrumentDto);
         }
@@ -114,13 +114,13 @@ namespace Blaise.Api.Controllers
         [Route("{instrumentName}")]
         public IHttpActionResult UninstallInstrument([FromUri] string serverParkName,[FromUri] string name)
         {
-            LogService.Info($"Attempting to uninstall instrument '{name}' on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Attempting to uninstall instrument '{name}' on server park '{serverParkName}'");
 
             _installInstrumentService.UninstallInstrument(name, serverParkName);
 
-            LogService.Info($"Instrument '{name}' has been uninstalled from server park '{serverParkName}'");
+            LoggingService.LogInfo($"Instrument '{name}' has been uninstalled from server park '{serverParkName}'");
 
-            return Ok();
+            return NoContent();
         }
 
 
@@ -128,28 +128,28 @@ namespace Blaise.Api.Controllers
         [Route("{instrumentName}/activate")]
         public IHttpActionResult ActivateInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LogService.Info($"Activate instrument '{instrumentName}' on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Activate instrument '{instrumentName}' on server park '{serverParkName}'");
 
             _instrumentService
                 .ActivateInstrument(instrumentName, serverParkName);
 
-            LogService.Info($"Successfully activated instrument '{instrumentName}'");
+            LoggingService.LogInfo($"Successfully activated instrument '{instrumentName}'");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch]
         [Route("{instrumentName}/deactivate")]
         public IHttpActionResult DeactivateInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LogService.Info($"Deactivate instrument '{instrumentName}' on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Deactivate instrument '{instrumentName}' on server park '{serverParkName}'");
 
             _instrumentService
                 .DeactivateInstrument(instrumentName, serverParkName);
 
-            LogService.Info($"Successfully deactivated instrument '{instrumentName}'");
+            LoggingService.LogInfo($"Successfully deactivated instrument '{instrumentName}'");
 
-            return Ok();
+            return NoContent(); 
         }
     }
 }

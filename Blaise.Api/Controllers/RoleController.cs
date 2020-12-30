@@ -4,13 +4,13 @@ using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.Role;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
-using Blaise.Api.Log.Services;
+using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/roles")]
-    public class RoleController : ApiController
+    public class RoleController : BaseController
     {
         private readonly IRoleService _roleService;
 
@@ -24,11 +24,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<RoleDto>))]
         public IHttpActionResult GetRoles()
         {
-            LogService.Info("Getting a list of roles");
+            LoggingService.LogInfo("Getting a list of roles");
 
             var roles = _roleService.GetRoles();
 
-            LogService.Info("Successfully got a list of roles");
+            LoggingService.LogInfo("Successfully got a list of roles");
 
             return Ok(roles);
         }
@@ -38,11 +38,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(RoleDto))]
         public IHttpActionResult GetRole([FromUri] string name)
         {
-            LogService.Info($"Attempting to get role '{name}'");
+            LoggingService.LogInfo($"Attempting to get role '{name}'");
 
             var role = _roleService.GetRole(name);
 
-            LogService.Info($"Successfully got role '{name}'");
+            LoggingService.LogInfo($"Successfully got role '{name}'");
 
             return Ok(role);
         }
@@ -52,11 +52,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(bool))]
         public IHttpActionResult RoleExists([FromUri] string name)
         {
-            LogService.Info($"Attempting to see if role '{name}' exists");
+            LoggingService.LogInfo($"Attempting to see if role '{name}' exists");
 
             var exists = _roleService.RoleExists(name);
 
-            LogService.Info($"Role '{name}' exists = '{exists}'");
+            LoggingService.LogInfo($"Role '{name}' exists = '{exists}'");
 
             return Ok(exists);
         }
@@ -65,11 +65,11 @@ namespace Blaise.Api.Controllers
         [Route("")]
         public IHttpActionResult AddRole([FromBody] RoleDto roleDto)
         {
-            LogService.Info($"Attempting to add role '{roleDto.Name}'");
+            LoggingService.LogInfo($"Attempting to add role '{roleDto.Name}'");
             
             _roleService.AddRole(roleDto);
             
-            LogService.Info($"Successfully added role '{roleDto.Name}'");
+            LoggingService.LogInfo($"Successfully added role '{roleDto.Name}'");
 
             return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
         }
@@ -78,26 +78,26 @@ namespace Blaise.Api.Controllers
         [Route("{name}")]
         public IHttpActionResult RemoveRole([FromUri] string name)
         {
-            LogService.Info($"Attempting to remove role '{name}'");
+            LoggingService.LogInfo($"Attempting to remove role '{name}'");
 
             _roleService.RemoveRole(name);
 
-            LogService.Info($"Successfully removed role '{name}'");
+            LoggingService.LogInfo($"Successfully removed role '{name}'");
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch]
         [Route("{name}/permissions")]
         public IHttpActionResult UpdateRolePermissions([FromUri] string name, [FromBody] IEnumerable<string> permissions)
         {
-            LogService.Info("Attempting to update permissions for role '{name}'");
+            LoggingService.LogInfo("Attempting to update permissions for role '{name}'");
 
             _roleService.UpdateRolePermissions(name, permissions);
 
-            LogService.Info($"Successfully updated permissions for role '{name}'");
+            LoggingService.LogInfo($"Successfully updated permissions for role '{name}'");
 
-            return Ok();
+            return NoContent();
         }
     }
 }

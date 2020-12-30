@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaise.Api.Tests.Models", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaise.Api.Storage", "Blaise.Api.Storage\Blaise.Api.Storage.csproj", "{7C8F3591-49E3-4A48-AB46-843CC181E7BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaise.Api.Log", "Blaise.Api.Log\Blaise.Api.Log.csproj", "{8E9C7380-58E1-45FB-9E85-EBB18C012328}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaise.Api.Logging", "Blaise.Api.Logging\Blaise.Api.Logging.csproj", "{8E9C7380-58E1-45FB-9E85-EBB18C012328}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
