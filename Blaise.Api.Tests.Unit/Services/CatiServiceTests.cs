@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
@@ -18,12 +19,16 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<IInstrumentService> _instrumentServiceMock;
         private Mock<ICatiInstrumentDtoMapper> _mapperMock;
 
+        private DayBatchDto _dayBatchDto;
+
         [SetUp]
         public void SetUpTests()
         {
             _blaiseApiMock = new Mock<IBlaiseCatiApi>();
             _instrumentServiceMock = new Mock<IInstrumentService>();
             _mapperMock = new Mock<ICatiInstrumentDtoMapper>();
+
+            _dayBatchDto = new DayBatchDto {DaybatchDate = DateTime.Today};
 
             _sut = new CatiService(
                 _blaiseApiMock.Object,
@@ -89,6 +94,84 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.AreEqual(2, result.Count);
             Assert.True(result.Any(c => c.Name == instrument1.Name && c.SurveyDays.Any(s => s == surveyDays1.First())));
             Assert.True(result.Any(c => c.Name == instrument2.Name && c.SurveyDays.Any(s => s == surveyDays2.First())));
+        }
+
+        [Test]
+        public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_The_Correct_Service_Is_Called()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+  
+            _blaiseApiMock.Setup(b =>
+                b.CreateDayBatch(instrumentName, serverParkName, _dayBatchDto.DaybatchDate));
+
+            //act
+            _sut.CreateDayBatch(instrumentName, serverParkName, _dayBatchDto);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.CreateDayBatch(instrumentName, serverParkName, _dayBatchDto.DaybatchDate), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_CreateDayBatch_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(string.Empty,
+                serverParkName, _dayBatchDto));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(null,
+                serverParkName, _dayBatchDto));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_CreateDayBatch_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(instrumentName,
+                string.Empty, _dayBatchDto));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
+                null, _dayBatchDto));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_A_Null_DayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
+                serverParkName, null));
+            Assert.AreEqual("The argument 'dayBatchDto' must be supplied", exception.ParamName);
         }
     }
 }
