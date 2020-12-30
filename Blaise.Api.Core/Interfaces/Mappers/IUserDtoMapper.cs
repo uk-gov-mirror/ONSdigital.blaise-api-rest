@@ -2,7 +2,7 @@
 using Blaise.Api.Contracts.Models.User;
 using StatNeth.Blaise.API.ServerManager;
 
-namespace Blaise.Api.Core.Interfaces
+namespace Blaise.Api.Core.Interfaces.Mappers
 {
     public interface IUserDtoMapper
     {

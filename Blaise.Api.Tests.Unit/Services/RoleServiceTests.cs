@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Contracts.Models.Role;
+using Blaise.Api.Core.Interfaces.Mappers;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;

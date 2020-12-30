@@ -1,7 +1,7 @@
 ﻿using Blaise.Api.Contracts.Enums;
 using Newtonsoft.Json;
 
-namespace Blaise.Api.Contracts.Models
+namespace Blaise.Api.Contracts.Models.Health
 {
     public class HealthCheckResultDto
     {

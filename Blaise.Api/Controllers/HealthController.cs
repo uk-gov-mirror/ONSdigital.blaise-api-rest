@@ -4,8 +4,8 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Contracts.Models.Health;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
 using Blaise.Api.Log.Services;
 
@@ -31,7 +31,7 @@ namespace Blaise.Api.Controllers
 
             var results = _healthService.PerformCheck().ToList();
 
-            if (results.Any(r => r.StatusType == HealthStatusType.NotOk))
+            if (results.Any(r => r.StatusType == HealthStatusType.Error))
             {
                 return Content(HttpStatusCode.ServiceUnavailable, results);
             }

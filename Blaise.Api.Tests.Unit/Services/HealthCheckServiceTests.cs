@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Health;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             Assert.IsNotNull(result);
 
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.NotOk));
+            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Error));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok));
@@ -86,7 +86,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsNotNull(result);
 
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.NotOk));
+            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Error));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok));
         }
@@ -105,7 +105,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.NotOk));
+            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Error));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Ok));
         }
 
@@ -124,7 +124,7 @@ namespace Blaise.Api.Tests.Unit.Services
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.ConnectionModel && r.StatusType == HealthStatusType.Ok));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.Connection && r.StatusType == HealthStatusType.Ok));
             Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteDataServer && r.StatusType == HealthStatusType.Ok));
-            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.NotOk));
+            Assert.IsTrue(result.Any(r => r.CheckType == HealthCheckType.RemoteCatiManagement && r.StatusType == HealthStatusType.Error));
         }
     }
 }

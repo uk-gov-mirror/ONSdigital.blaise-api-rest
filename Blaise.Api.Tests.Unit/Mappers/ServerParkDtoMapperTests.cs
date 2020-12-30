@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models;
 using Blaise.Api.Contracts.Models.Instrument;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Contracts.Models.ServerPark;
+using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;

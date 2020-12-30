@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
-using Blaise.Api.Filters;
+using Blaise.Api.Contracts.Models.ServerPark;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Log.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
+    //[ExceptionFilter]
     [RoutePrefix("api/v1/serverparks")]
     public class ServerParkController : ApiController
     {
@@ -60,11 +59,11 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("{serverParkName}/machine")]
-        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] RegisterMachineDto registerMachineDto)
+        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] MachineDto registerMachineDto)
         {
             LogService.Info($"Attempt to register a machine '{registerMachineDto.MachineName}'");
 
-            _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto.MachineName);
+            _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto);
 
             LogService.Info($"Successfully registered a machine '{registerMachineDto.MachineName}'");
 

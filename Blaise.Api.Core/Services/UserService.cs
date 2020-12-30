@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.User;
 using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Mappers;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
@@ -26,19 +27,19 @@ namespace Blaise.Api.Core.Services
             return _mapper.MapToUserDtos(user);
         }
 
-        public UserDto GetUser(string name)
+        public UserDto GetUser(string userName)
         {
-            name.ThrowExceptionIfNullOrEmpty("name");
-            var user = _blaiseApi.GetUser(name);
+            userName.ThrowExceptionIfNullOrEmpty("userName");
+            var user = _blaiseApi.GetUser(userName);
 
             return _mapper.MapToUserDto(user);
         }
 
-        public bool UserExists(string name)
+        public bool UserExists(string userName)
         {
-            name.ThrowExceptionIfNullOrEmpty("name");
+            userName.ThrowExceptionIfNullOrEmpty("userName");
 
-            return _blaiseApi.UserExists(name);
+            return _blaiseApi.UserExists(userName);
         }
 
         public void AddUser(AddUserDto addUserDto)
@@ -51,34 +52,34 @@ namespace Blaise.Api.Core.Services
             _blaiseApi.AddUser(addUserDto.Name, addUserDto.Password, addUserDto.Role, addUserDto.ServerParks, addUserDto.DefaultServerPark);
         }
 
-        public void UpdatePassword(string name, UpdateUserPasswordDto updateUserPasswordDto)
+        public void UpdatePassword(string userName, UpdateUserPasswordDto updateUserPasswordDto)
         {
-            name.ThrowExceptionIfNullOrEmpty("name");
+            userName.ThrowExceptionIfNullOrEmpty("userName");
             updateUserPasswordDto.Password.ThrowExceptionIfNullOrEmpty("updateUserPasswordDto.Password");
 
-            _blaiseApi.UpdatePassword(name, updateUserPasswordDto.Password);
+            _blaiseApi.UpdatePassword(userName, updateUserPasswordDto.Password);
         }
 
-        public void UpdateRole(string name, UpdateUserRoleDto updateUserRoleDto)
+        public void UpdateRole(string userName, UpdateUserRoleDto updateUserRoleDto)
         {
-            name.ThrowExceptionIfNullOrEmpty("name");
+            userName.ThrowExceptionIfNullOrEmpty("userName");
             updateUserRoleDto.Role.ThrowExceptionIfNullOrEmpty("updateUserRoleDto.Role");
 
-            _blaiseApi.UpdateRole(name, updateUserRoleDto.Role);
+            _blaiseApi.UpdateRole(userName, updateUserRoleDto.Role);
         }
 
-        public void UpdateServerParks(string name, UpdateUserServerParksDto updateUserServerParksDto)
+        public void UpdateServerParks(string userName, UpdateUserServerParksDto updateUserServerParksDto)
         {
-            name.ThrowExceptionIfNullOrEmpty("name");
+            userName.ThrowExceptionIfNullOrEmpty("userName");
             updateUserServerParksDto.ServerParks.ThrowExceptionIfNullOrEmpty("updateUserServerParksDto.ServerParks");
 
-            _blaiseApi.UpdateServerParks(name, updateUserServerParksDto.ServerParks, updateUserServerParksDto.DefaultServerPark);
+            _blaiseApi.UpdateServerParks(userName, updateUserServerParksDto.ServerParks, updateUserServerParksDto.DefaultServerPark);
         }
-        public void RemoveUser(string name)
+        public void RemoveUser(string userName)
         {
-            name.ThrowExceptionIfNullOrEmpty("name");
+            userName.ThrowExceptionIfNullOrEmpty("userName");
 
-            _blaiseApi.RemoveUser(name);
+            _blaiseApi.RemoveUser(userName);
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.ServerPark;
 
-namespace Blaise.Api.Core.Interfaces
+namespace Blaise.Api.Core.Interfaces.Services
 {
     public interface IServerParkService
     {
@@ -11,6 +12,6 @@ namespace Blaise.Api.Core.Interfaces
 
         bool ServerParkExists(string serverParkName);
 
-        void RegisterMachineOnServerPark(string serverParkName, string machineName);
+        void RegisterMachineOnServerPark(string serverParkName, MachineDto registerMachineDto);
     }
 }
