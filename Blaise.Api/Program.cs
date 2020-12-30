@@ -1,16 +1,22 @@
-﻿using System.ServiceProcess;
+﻿using System;
+using System.Threading;
+using Blaise.Api.Configuration;
+using Microsoft.Owin.Hosting;
 
 namespace Blaise.Api
 {
     internal class Program
     {
-        static void Main()
+        private static void Main()
         {
-            var servicesToRun = new ServiceBase[]
+            var baseUrl = PortConfig.BaseUrl;
+
+            // Start OWIN host 
+            using (WebApp.Start<Startup>(url: baseUrl))
             {
-                new ApiService()
-            };
-            ServiceBase.Run(servicesToRun);
+                Console.WriteLine($"Starting Blaise RESTful API service on '{baseUrl}'");
+                Thread.Sleep(Timeout.Infinite);
+            }
         }
     }
 }
