@@ -41,7 +41,7 @@ namespace Blaise.Api.Storage.Providers
                 return client;
             }
 
-            return (_storageClient = StorageClient.Create());
+            return _storageClient = StorageClient.Create();
         }
     }
 }

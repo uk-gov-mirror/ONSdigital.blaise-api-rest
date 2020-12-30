@@ -100,8 +100,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_The_Correct_Service_Is_Called()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
   
             _blaiseApiMock.Setup(b =>
                 b.CreateDayBatch(instrumentName, serverParkName, _dayBatchDto.DaybatchDate));
@@ -117,7 +117,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_InstrumentName_When_I_Call_CreateDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
-            var serverParkName = "ServerParkA";
+            const string serverParkName = "ServerParkA";
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(string.Empty,
@@ -129,7 +129,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_InstrumentName_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            var serverParkName = "ServerParkA";
+            const string serverParkName = "ServerParkA";
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(null,
@@ -141,7 +141,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_ServerParkName_When_I_Call_CreateDayBatch_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
-            var instrumentName = "OPN2101A";
+            const string instrumentName = "OPN2101A";
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.CreateDayBatch(instrumentName,
@@ -153,7 +153,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_ServerParkName_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            var instrumentName = "OPN2101A";
+            const string instrumentName = "OPN2101A";
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,
@@ -165,8 +165,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_DayBatchDto_When_I_Call_CreateDayBatch_Then_An_ArgumentNullException_Is_Thrown()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.CreateDayBatch(instrumentName,

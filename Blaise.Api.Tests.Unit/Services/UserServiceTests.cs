@@ -138,8 +138,8 @@ namespace Blaise.Api.Tests.Unit.Services
             {
                 Name = _userName,
                 Password = _password,
-                Role = (_role),
-                ServerParks = _serverParks,
+                Role = _role,
+                ServerParks = _serverParks
             };
 
             //act
@@ -158,7 +158,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = string.Empty,
                 Password = _password,
                 Role = _role,
-                ServerParks = _serverParks,
+                ServerParks = _serverParks
             };
 
             //act && assert
@@ -175,7 +175,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = null,
                 Password = _password,
                 Role = _role,
-                ServerParks = _serverParks,
+                ServerParks = _serverParks
             };
 
             //act && assert
@@ -192,7 +192,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = _userName,
                 Password = string.Empty,
                 Role = _role,
-                ServerParks = _serverParks,
+                ServerParks = _serverParks
             };
 
             //act && assert
@@ -209,7 +209,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = _userName,
                 Password = null,
                 Role = _role,
-                ServerParks = _serverParks,
+                ServerParks = _serverParks
             };
 
             //act && assert
@@ -226,7 +226,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = _userName,
                 Password = _password,
                 Role = string.Empty,
-                ServerParks = _serverParks,
+                ServerParks = _serverParks
             };
 
             //act && assert
@@ -243,7 +243,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = _userName,
                 Password = _password,
                 Role = null,
-                ServerParks = _serverParks,
+                ServerParks = _serverParks
             };
 
             //act && assert
@@ -260,7 +260,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = _userName,
                 Password = _password,
                 Role = _role,
-                ServerParks = new List<string>(),
+                ServerParks = new List<string>()
             };
 
             //act && assert
@@ -277,7 +277,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 Name = _userName,
                 Password = _password,
                 Role = _role,
-                ServerParks = null,
+                ServerParks = null
             };
 
             //act && assert

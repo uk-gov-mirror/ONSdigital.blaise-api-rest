@@ -36,11 +36,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_List_Of_Surveys_When_I_Call_MapToInstrumentDtos_Then_The_Correct_Properties_Are_Mapped()
         {
             //arrange
-            var instrument1Name = "OPN2010A";
-            var instrument2Name = "OPN2010B";
+            const string instrument1Name = "OPN2010A";
+            const string instrument2Name = "OPN2010B";
 
-            var serverPark1Name = "ServerParkA";
-            var serverPark2Name = "ServerParkB";
+            const string serverPark1Name = "ServerParkA";
+            const string serverPark2Name = "ServerParkB";
 
             var survey1Mock = new Mock<ISurvey>();
             survey1Mock.Setup(s => s.Name).Returns(instrument1Name);
@@ -88,9 +88,10 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Survey_When_I_Call_MapToInstrumentDto_Then_The_Correct_Properties_Are_Mapped()
         {
             //arrange
-            var instrumentName = "OPN2010A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2010A";
+            const string serverParkName = "ServerParkA";
             var installDate = DateTime.Now;
+
             var surveyMock = new Mock<ISurvey>();
             surveyMock.Setup(s => s.Name).Returns(instrumentName);
             surveyMock.Setup(s => s.ServerPark).Returns(serverParkName);

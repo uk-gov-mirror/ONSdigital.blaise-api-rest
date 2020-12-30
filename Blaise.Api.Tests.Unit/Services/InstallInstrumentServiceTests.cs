@@ -50,7 +50,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_InstallInstrument_Then_The_Correct_Services_Are_Called_In_The_Correct_Order()
         {
             //arrange
-            var instrumentFilePath = "d:\\temp\\OPN1234.zip";
+            const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucket(_bucketPath,
                     _instrumentFileName))

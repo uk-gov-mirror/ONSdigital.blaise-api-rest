@@ -4,7 +4,7 @@ namespace Blaise.Api
 {
     internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             var servicesToRun = new ServiceBase[]
             {

@@ -17,7 +17,7 @@ namespace Blaise.Api
 
         protected override void OnStart(string[] args)
         {
-            _server = WebApp.Start<Startup>(url: BaseAddress);
+            _server = WebApp.Start<Startup>(BaseAddress);
         }
 
         protected override void OnStop()

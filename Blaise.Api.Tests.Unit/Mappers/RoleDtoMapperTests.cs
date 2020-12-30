@@ -22,26 +22,26 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Then_A_Correct_List_Of_RoleDtos_Are_Returned()
         {
             //arrange
-            var role1Name = "Name1";
-            var role1Description = "Description1";
+            const string role1Name = "Name1";
+            const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
             role1Mock.Setup(r => r.Name).Returns(role1Name);
             role1Mock.Setup(r => r.Description).Returns(role1Description);
 
-            var permission1 = "Permission1";
+            const string permission1 = "Permission1";
             var actionPermission1Mock = new Mock<IActionPermission>();
             actionPermission1Mock.Setup(a => a.Action).Returns(permission1);
             actionPermission1Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
             var actionPermissions = new List<IActionPermission> { actionPermission1Mock .Object};
             role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
 
-            var role2Name = "Name2";
-            var role2Description = "Description2";
+            const string role2Name = "Name2";
+            const string role2Description = "Description2";
             var role2Mock = new Mock<IRole>();
             role2Mock.Setup(r => r.Name).Returns(role2Name);
             role2Mock.Setup(r => r.Description).Returns(role2Description);
 
-            var permission2 = "Permission2";
+            const string permission2 = "Permission2";
             var actionPermission2Mock = new Mock<IActionPermission>();
             actionPermission2Mock.Setup(a => a.Action).Returns(permission2);
             actionPermission2Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
@@ -76,26 +76,26 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Then_Only_Allowed_Permissions_Are_Returned()
         {
             //arrange
-            var role1Name = "Name1";
-            var role1Description = "Description1";
+            const string role1Name = "Name1";
+            const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
             role1Mock.Setup(r => r.Name).Returns(role1Name);
             role1Mock.Setup(r => r.Description).Returns(role1Description);
 
-            var permission1 = "Permission1";
+            const string permission1 = "Permission1";
             var actionPermission1Mock = new Mock<IActionPermission>();
             actionPermission1Mock.Setup(a => a.Action).Returns(permission1);
             actionPermission1Mock.Setup(a => a.Permission).Returns(PermissionStatus.Disallowed);
             var actionPermissions = new List<IActionPermission> { actionPermission1Mock.Object };
             role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
 
-            var role2Name = "Name2";
-            var role2Description = "Description2";
+            const string role2Name = "Name2";
+            const string role2Description = "Description2";
             var role2Mock = new Mock<IRole>();
             role2Mock.Setup(r => r.Name).Returns(role2Name);
             role2Mock.Setup(r => r.Description).Returns(role2Description);
 
-            var permission2 = "Permission2";
+            const string permission2 = "Permission2";
             var actionPermission2Mock = new Mock<IActionPermission>();
             actionPermission2Mock.Setup(a => a.Action).Returns(permission2);
             actionPermission2Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
@@ -129,18 +129,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Role_When_I_Call_MapToRoleDto_Then_A_Correct_RoleDto_Is_Returned()
         {
             //arrange
-            var role1Name = "Name1";
-            var role1Description = "Description1";
+            const string role1Name = "Name1";
+            const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
             role1Mock.Setup(r => r.Name).Returns(role1Name);
             role1Mock.Setup(r => r.Description).Returns(role1Description);
 
-            var permission1 = "Permission1";
+            const string permission1 = "Permission1";
             var actionPermission1Mock = new Mock<IActionPermission>();
             actionPermission1Mock.Setup(a => a.Action).Returns(permission1);
             actionPermission1Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
 
-            var permission2 = "Permission2";
+            const string permission2 = "Permission2";
             var actionPermission2Mock = new Mock<IActionPermission>();
             actionPermission2Mock.Setup(a => a.Action).Returns(permission2);
             actionPermission2Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
@@ -166,18 +166,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_Role_When_I_Call_MapToRoleDto_Then_Only_Allowed_Permissions_Are_Returned()
         {
             //arrange
-            var role1Name = "Name1";
-            var role1Description = "Description1";
+            const string role1Name = "Name1";
+            const string role1Description = "Description1";
             var role1Mock = new Mock<IRole>();
             role1Mock.Setup(r => r.Name).Returns(role1Name);
             role1Mock.Setup(r => r.Description).Returns(role1Description);
 
-            var permission1 = "Permission1";
+            const string permission1 = "Permission1";
             var actionPermission1Mock = new Mock<IActionPermission>();
             actionPermission1Mock.Setup(a => a.Action).Returns(permission1);
             actionPermission1Mock.Setup(a => a.Permission).Returns(PermissionStatus.Disallowed);
 
-            var permission2 = "Permission2";
+            const string permission2 = "Permission2";
             var actionPermission2Mock = new Mock<IActionPermission>();
             actionPermission2Mock.Setup(a => a.Action).Returns(permission2);
             actionPermission2Mock.Setup(a => a.Permission).Returns(PermissionStatus.Allowed);
