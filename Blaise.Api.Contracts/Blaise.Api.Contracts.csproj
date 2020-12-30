@@ -56,7 +56,8 @@
     <Compile Include="Enums\HealthCheckType.cs" />
     <Compile Include="Enums\HealthStatusType.cs" />
     <Compile Include="Interfaces\IConfigurationProvider.cs" />
-    <Compile Include="Models\Instrument\CatiInstrumentDto.cs" />
+    <Compile Include="Models\Cati\CatiInstrumentDto.cs" />
+    <Compile Include="Models\Cati\DayBatchDto.cs" />
     <Compile Include="Models\Health\HealthCheckResultDto.cs" />
     <Compile Include="Models\Instrument\InstallInstrumentDto.cs" />
     <Compile Include="Models\Instrument\InstrumentDto.cs" />

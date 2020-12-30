@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Blaise.Api.Contracts.Models.Instrument;
 
-namespace Blaise.Api.Contracts.Models.Instrument
+namespace Blaise.Api.Contracts.Models.Cati
 {
     public class CatiInstrumentDto : InstrumentDto
     {

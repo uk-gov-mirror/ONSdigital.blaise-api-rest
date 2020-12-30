@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
