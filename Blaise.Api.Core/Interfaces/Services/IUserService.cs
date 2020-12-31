@@ -6,12 +6,12 @@ namespace Blaise.Api.Core.Interfaces.Services
     public interface IUserService
     { 
         IEnumerable<UserDto> GetUsers();
-        UserDto GetUser(string name);
-        bool UserExists(string name);
+        UserDto GetUser(string userName);
+        bool UserExists(string userName);
         void AddUser(AddUserDto userDto);
-        void RemoveUser(string name);
-        void UpdatePassword(string name, UpdateUserPasswordDto passwordDto);
-        void UpdateRole(string name, UpdateUserRoleDto roleDto);
-        void UpdateServerParks(string name, UpdateUserServerParksDto serverParksDto);
+        void RemoveUser(string userName);
+        void UpdatePassword(string userName, UpdateUserPasswordDto passwordDto);
+        void UpdateRole(string userName, UpdateUserRoleDto roleDto);
+        void UpdateServerParks(string userName, UpdateUserServerParksDto serverParksDto);
     }
 }
