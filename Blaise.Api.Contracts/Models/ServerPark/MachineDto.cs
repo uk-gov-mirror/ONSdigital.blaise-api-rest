@@ -7,10 +7,8 @@ namespace Blaise.Api.Contracts.Models.ServerPark
     {
         public string MachineName { get; set; }
 
-        public string LogicalRootName { get; set; }
+        public string LogicalServerName { get; set; }
 
         public IList<string> Roles { get; set; }
-
-        public int AdminPort { get; set; }
     }
 }
