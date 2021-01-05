@@ -152,7 +152,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.AddUserRole(_roleDto));
-            Assert.AreEqual("A value for the argument 'RoleDto.Name' must be supplied", exception.Message);
+            Assert.AreEqual("A value for the argument 'UserRoleDto.Name' must be supplied", exception.Message);
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUserRole(_roleDto));
-            Assert.AreEqual("RoleDto.Name", exception.ParamName);
+            Assert.AreEqual("UserRoleDto.Name", exception.ParamName);
         }
 
         [Test]

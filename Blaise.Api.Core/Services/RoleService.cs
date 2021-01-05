@@ -45,7 +45,7 @@ namespace Blaise.Api.Core.Services
 
         public void AddUserRole(UserRoleDto role)
         {
-            role.Name.ThrowExceptionIfNullOrEmpty("RoleDto.Name");
+            role.Name.ThrowExceptionIfNullOrEmpty("UserRoleDto.Name");
 
             _blaiseApi.AddRole(role.Name, role.Description, role.Permissions);
         }
