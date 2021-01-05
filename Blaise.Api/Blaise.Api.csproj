@@ -157,7 +157,7 @@
     <Compile Include="Configuration\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\CatiController.cs" />
     <Compile Include="Controllers\InstrumentController.cs" />

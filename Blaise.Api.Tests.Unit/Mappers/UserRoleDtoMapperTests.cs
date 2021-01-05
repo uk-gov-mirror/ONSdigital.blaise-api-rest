@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models.Role;
+using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Mappers;
 using Moq;
 using NUnit.Framework;
@@ -8,18 +8,18 @@ using StatNeth.Blaise.API.Security;
 
 namespace Blaise.Api.Tests.Unit.Mappers
 {
-    public class RoleDtoMapperTests
+    public class UserRoleDtoMapperTests
     {
-        private RoleDtoMapper _sut;
+        private UserRoleDtoMapper _sut;
 
         [SetUp]
         public void SetupTests()
         {
-            _sut = new RoleDtoMapper();
+            _sut = new UserRoleDtoMapper();
         }
 
         [Test]
-        public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Then_A_Correct_List_Of_RoleDtos_Are_Returned()
+        public void Given_A_List_Of_Roles_When_I_Call_MapToUserRoleDtos_Then_A_Correct_List_Of_UserRoleDtos_Are_Returned()
         {
             //arrange
             const string role1Name = "Name1";
@@ -51,11 +51,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var roles = new List<IRole> {role1Mock.Object, role2Mock.Object};
 
             //act
-            var result = _sut.MapToRoleDtos(roles).ToList();
+            var result = _sut.MapToUserRoleDtos(roles).ToList();
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<RoleDto>>(result);
+            Assert.IsInstanceOf<List<UserRoleDto>>(result);
             Assert.IsNotEmpty(result);
             Assert.AreEqual(2, result.Count);
 
@@ -73,7 +73,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_A_List_Of_Roles_When_I_Call_MapToRoleDtos_Then_Only_Allowed_Permissions_Are_Returned()
+        public void Given_A_List_Of_Roles_When_I_Call_MapToUserRoleDtos_Then_Only_Allowed_Permissions_Are_Returned()
         {
             //arrange
             const string role1Name = "Name1";
@@ -105,11 +105,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var roles = new List<IRole> { role1Mock.Object, role2Mock.Object };
 
             //act
-            var result = _sut.MapToRoleDtos(roles).ToList();
+            var result = _sut.MapToUserRoleDtos(roles).ToList();
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<List<RoleDto>>(result);
+            Assert.IsInstanceOf<List<UserRoleDto>>(result);
             Assert.IsNotEmpty(result);
             Assert.AreEqual(2, result.Count);
 
@@ -126,7 +126,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_A_Role_When_I_Call_MapToRoleDto_Then_A_Correct_RoleDto_Is_Returned()
+        public void Given_A_Role_When_I_Call_MapToUserRoleDto_Then_A_Correct_UserRoleDto_Is_Returned()
         {
             //arrange
             const string role1Name = "Name1";
@@ -149,11 +149,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
 
             //act
-            var result = _sut.MapToRoleDto(role1Mock.Object);
+            var result = _sut.MapToUserRoleDto(role1Mock.Object);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RoleDto>(result);
+            Assert.IsInstanceOf<UserRoleDto>(result);
 
             Assert.AreEqual(role1Name, result.Name);
             Assert.AreEqual(role1Description, result.Description);
@@ -163,7 +163,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_A_Role_When_I_Call_MapToRoleDto_Then_Only_Allowed_Permissions_Are_Returned()
+        public void Given_A_Role_When_I_Call_MapToUserRoleDto_Then_Only_Allowed_Permissions_Are_Returned()
         {
             //arrange
             const string role1Name = "Name1";
@@ -186,11 +186,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             role1Mock.Setup(r => r.Permissions).Returns(actionPermissions);
 
             //act
-            var result = _sut.MapToRoleDto(role1Mock.Object);
+            var result = _sut.MapToUserRoleDto(role1Mock.Object);
 
             //assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RoleDto>(result);
+            Assert.IsInstanceOf<UserRoleDto>(result);
 
             Assert.AreEqual(role1Name, result.Name);
             Assert.AreEqual(role1Description, result.Description);
