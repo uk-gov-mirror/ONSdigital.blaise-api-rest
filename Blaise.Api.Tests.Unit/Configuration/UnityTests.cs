@@ -8,6 +8,7 @@ namespace Blaise.Api.Tests.Unit.Configuration
     public class UnityTests
     {
         [TestCase(typeof(CatiController))]
+        [TestCase(typeof(CaseController))]
         [TestCase(typeof(HealthController))]
         [TestCase(typeof(InstrumentController))]
         [TestCase(typeof(ServerParkController))]
