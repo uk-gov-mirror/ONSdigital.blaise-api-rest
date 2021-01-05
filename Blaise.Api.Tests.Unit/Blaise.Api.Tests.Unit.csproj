@@ -127,7 +127,6 @@
     <Compile Include="Mappers\UserDtoMapperTests.cs" />
     <Compile Include="Mappers\UserRoleDtoMapperTests.cs" />
     <Compile Include="Mappers\ServerParkDtoMapperTests.cs" />
-    <Compile Include="Services\CaseServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />
     <Compile Include="Services\UserRoleServiceTests.cs" />
     <Compile Include="Services\CatiServiceTests.cs" />

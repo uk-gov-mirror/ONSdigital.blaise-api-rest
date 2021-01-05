@@ -8,5 +8,9 @@ namespace Blaise.Api.Contracts.Models.Instrument
         public string ServerParkName { get; set; }
         public DateTime InstallDate { get; set; }
         public string Status { get; set; }
+
+        public int DataRecordCount { get; set; }
+
+        public bool HasData => DataRecordCount > 0;
     }
 }

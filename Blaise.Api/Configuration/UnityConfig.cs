@@ -32,7 +32,6 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IBlaiseHealthApi, BlaiseHealthApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseRoleApi, BlaiseRoleApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
-            container.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
 
             //providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
@@ -54,7 +53,6 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IHealthCheckService, HealthCheckService>();
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IUserService, UserService>();
-            container.RegisterType<ICaseService, CaseService>();
 
             //storage services
             container.RegisterType<IStorageService, StorageService>();

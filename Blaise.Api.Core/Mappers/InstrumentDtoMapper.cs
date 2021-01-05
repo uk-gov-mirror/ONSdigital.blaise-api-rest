@@ -26,8 +26,16 @@ namespace Blaise.Api.Core.Mappers
                 Name = instrument.Name,
                 ServerParkName = instrument.ServerPark,
                 InstallDate = instrument.InstallDate,
-                Status = instrument.Status
+                Status = instrument.Status,
+                DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2)
             };
+        }
+
+        private static int GetNumberOfDataRecords(ISurvey2 instrument)
+        {
+            var reportingInfo = instrument.GetReportingInfo();
+
+            return reportingInfo.DataRecordCount;
         }
     }
 }
