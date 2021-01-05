@@ -127,7 +127,7 @@
     <Compile Include="Services\InstrumentService.cs" />
     <Compile Include="Interfaces\Services\IUserRoleService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
-    <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\UserRoleService.cs" />
     <Compile Include="Services\ServerParkService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
