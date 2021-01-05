@@ -180,8 +180,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Exists_When_I_Call_GetInstrument_Then_I_Get_A_Correct_InstrumentDto_Returned()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
             var instrumentDto = new InstrumentDto();
             var surveyMock = new Mock<ISurvey>();
 
@@ -240,8 +240,9 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Exists_When_I_Call_InstrumentExists_Then_True_Is_Returned()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+
             _blaiseApiMock.Setup(b =>
                 b.SurveyExists(instrumentName, serverParkName)).Returns(true);
 
@@ -257,8 +258,9 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Does_Not_Exist_When_I_Call_InstrumentExists_Then_False_Is_Returned()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
+
             _blaiseApiMock.Setup(b =>
                 b.SurveyExists(instrumentName, serverParkName)).Returns(false);
 
@@ -310,8 +312,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Exists_When_I_Call_GetInstrumentId_Then_The_Correct_Id_Is_Returned()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
             var instrumentId = Guid.NewGuid();
 
             _blaiseApiMock.Setup(b =>
@@ -369,8 +371,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Exists_When_I_Call_GetInstrumentStatus_Then_The_Correct_Status_Is_Returned(SurveyStatusType surveyStatus)
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
   
             _blaiseApiMock.Setup(b =>
                 b.GetSurveyStatus(instrumentName, serverParkName)).Returns(surveyStatus);
@@ -423,8 +425,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Exists_When_I_Call_ActivateInstrument_Then_The_Correct_Service_Is_Called()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
   
             _blaiseApiMock.Setup(b =>
                 b.ActivateSurvey(instrumentName, serverParkName));
@@ -476,8 +478,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Instrument_Exists_When_I_Call_DeactivateInstrument_Then_The_Correct_Service_Is_Called()
         {
             //arrange
-            var instrumentName = "OPN2101A";
-            var serverParkName = "ServerParkA";
+            const string instrumentName = "OPN2101A";
+            const string serverParkName = "ServerParkA";
   
             _blaiseApiMock.Setup(b =>
                 b.DeactivateSurvey(instrumentName, serverParkName));

@@ -30,7 +30,7 @@ namespace Blaise.Api.Core.Mappers
             };
         }
 
-        private string GetRole(IUser2 user)
+        private static string GetRole(IUser2 user)
         {
             return user.Role;
         }

@@ -33,9 +33,9 @@ namespace Blaise.Api.Tests.Unit.Storage
         public void Given_I_Call_DownloadFromBucket_Then_The_Correct_Services_Are_Called()
         {
             //arrange
-            var bucketPath = "OPN";
-            var instrumentFileName = "OPN1234.zip";
-            var tempPath = "d:\\temp";
+            const string bucketPath = "OPN";
+            const string instrumentFileName = "OPN1234.zip";
+            const string tempPath = "d:\\temp";
             var filePath = $"{tempPath}\\{Guid.NewGuid()}";
     
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
@@ -59,9 +59,9 @@ namespace Blaise.Api.Tests.Unit.Storage
         public void Given_I_Call_DownloadFromBucket_Then_The_Correct_File_Is_Returned()
         {
             //arrange
-            var bucketPath = "OPN";
-            var instrumentFileName = "OPN1234.zip";
-            var tempPath = "d:\\temp";
+            const string bucketPath = "OPN";
+            const string instrumentFileName = "OPN1234.zip";
+            const string tempPath = "d:\\temp";
             var filePath = $"{tempPath}\\{Guid.NewGuid()}";
             var instrumentFilePath = $"{tempPath}\\{instrumentFileName}";
 
@@ -87,7 +87,7 @@ namespace Blaise.Api.Tests.Unit.Storage
         public void Given_I_Call_DeleteFile_Then_The_Correct_Services_Are_Called()
         {
             //arrange
-            var instrumentFile = @"d:\\temp\\OPN2001A.zip";
+            const string instrumentFile = @"d:\\temp\\OPN2001A.zip";
 
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 

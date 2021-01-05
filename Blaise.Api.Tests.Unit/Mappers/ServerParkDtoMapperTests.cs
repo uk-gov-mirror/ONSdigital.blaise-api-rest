@@ -30,11 +30,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_List_Of_ServerParks_When_I_Call_MapToServerParkDtos_Then_A_Correct_List_Of_ServerParkDto_Is_Returned()
         {
             //arrange
-            var serverPark1Name = "ServerParkA";
+            const string serverPark1Name = "ServerParkA";
             var serverPark1 = new Mock<IServerPark>();
             serverPark1.Setup(s => s.Name).Returns(serverPark1Name);
 
-            var serverPark2Name = "ServerParkA";
+            const string serverPark2Name = "ServerParkA";
             var serverPark2 = new Mock<IServerPark>();
             serverPark2.Setup(s => s.Name).Returns(serverPark2Name);
 
@@ -45,7 +45,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             };
 
             //act
-            var result = (_sut.MapToServerParkDtos(serverParks)).ToList();
+            var result = _sut.MapToServerParkDtos(serverParks).ToList();
 
             //assert
             Assert.IsNotNull(result);
@@ -59,7 +59,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_ServerPark_When_I_Call_MapToServerParkDto_Then_A_Correct_ServerParkDto_Is_Returned()
         {
             //arrange
-            var serverParkName = "ServerParkA";
+            const string serverParkName = "ServerParkA";
             var serverPark = new Mock<IServerPark>();
             serverPark.Setup(s => s.Name).Returns(serverParkName);
 

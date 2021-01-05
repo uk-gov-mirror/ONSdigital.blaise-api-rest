@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -47,11 +48,11 @@ namespace Blaise.Api.Core.Services
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             machineDto.MachineName.ThrowExceptionIfNullOrEmpty("machineDto.MachineName");
-            machineDto.LogicalRootName.ThrowExceptionIfNullOrEmpty("machineDto.LogicalRootName");
+            machineDto.LogicalServerName.ThrowExceptionIfNullOrEmpty("machineDto.logicalServerName");
             machineDto.Roles.ThrowExceptionIfNullOrEmpty("machineDto.Roles");
 
             _blaiseApi.RegisterMachineOnServerPark(serverParkName, machineDto.MachineName,
-                machineDto.LogicalRootName, machineDto.Roles);
+                machineDto.LogicalServerName, machineDto.Roles);
         }
     }
 }
