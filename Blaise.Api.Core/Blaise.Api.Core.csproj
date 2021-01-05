@@ -112,9 +112,9 @@
     <Compile Include="Mappers\CatiInstrumentDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\ICatiInstrumentMapper.cs" />
     <Compile Include="Mappers\InstrumentDtoMapper.cs" />
-    <Compile Include="Interfaces\Mappers\IRoleDtoMapper.cs" />
+    <Compile Include="Interfaces\Mappers\IUserRoleDtoMapper.cs" />
     <Compile Include="Interfaces\Mappers\IUserDtoMapper.cs" />
-    <Compile Include="Mappers\RoleDtoMapper.cs" />
+    <Compile Include="Mappers\UserRoleDtoMapper.cs" />
     <Compile Include="Mappers\ServerParkDtoMapper.cs" />
     <Compile Include="Mappers\UserDtoMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,7 +125,7 @@
     <Compile Include="Interfaces\Services\IInstallInstrumentService.cs" />
     <Compile Include="Services\InstallInstrumentService.cs" />
     <Compile Include="Services\InstrumentService.cs" />
-    <Compile Include="Interfaces\Services\IRoleService.cs" />
+    <Compile Include="Interfaces\Services\IUserRoleService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\ServerParkService.cs" />
