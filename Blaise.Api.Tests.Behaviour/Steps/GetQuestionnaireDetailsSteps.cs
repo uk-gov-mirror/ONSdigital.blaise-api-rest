@@ -20,7 +20,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext = scenarioContext;
         }
 
-        [Given(@"There is a questionnaire installed on a Blaise environment")]
+        [Given(@"there is a questionnaire installed on a Blaise environment")]
         public void GivenThereIsAnInstrumentInstalledOnABlaiseEnvironment()
         {
             InstrumentHelper.GetInstance().InstallInstrument();
