@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
@@ -11,12 +10,12 @@ using TechTalk.SpecFlow;
 namespace Blaise.Api.Tests.Behaviour.Steps
 {
     [Binding]
-    public sealed class QuestionnaireSteps
+    public sealed class GetQuestionnaireDetailsSteps
     {
         private readonly ScenarioContext _scenarioContext;
         private const string ApiResponse = "ApiResponse";
 
-        public QuestionnaireSteps(ScenarioContext scenarioContext)
+        public GetQuestionnaireDetailsSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
@@ -27,7 +26,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             InstrumentHelper.GetInstance().InstallInstrument();
             Assert.IsTrue(InstrumentHelper.GetInstance().SurveyHasInstalled(60));
         }
-
 
         [Given(@"the questionnaire is active")]
         public void GivenTheQuestionnaireIsActive()
@@ -49,13 +47,13 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [When(@"the API is queried to return all active questionnaires")]
-        public async Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
+        public async System.Threading.Tasks.Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
         {
-            var listOfActiveQuestionnaires = await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
+            var listOfActiveQuestionnaires =  await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
             _scenarioContext.Set(listOfActiveQuestionnaires, ApiResponse);
         }
 
-        [Then(@"details of the questionnaire is returned")]
+        [Then(@"the details of the questionnaire is returned")]
         public void ThenDetailsOfQuestionnaireAIsReturned()
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
@@ -68,6 +66,14 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
             Assert.AreEqual(0, listOfActiveQuestionnaires.Count);
+        }
+
+        [Then(@"the questionnaire is available to use in the Blaise environment")]
+        public void ThenTheInstrumentIsAvailableToUseInTheBlaiseEnvironment()
+        {
+            var instrumentHasInstalled = InstrumentHelper.GetInstance().SurveyHasInstalled(60);
+
+            Assert.IsTrue(instrumentHasInstalled, "The instrument has not been installed, or is not active");
         }
 
         [AfterScenario("questionnaires")]
