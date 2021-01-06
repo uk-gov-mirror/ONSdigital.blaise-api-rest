@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models.Role;
+using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Interfaces.Mappers;
 using StatNeth.Blaise.API.Security;
 
 namespace Blaise.Api.Core.Mappers
 {
-    public class RoleDtoMapper : IRoleDtoMapper
+    public class UserRoleDtoMapper : IUserRoleDtoMapper
     {
-        public IEnumerable<RoleDto> MapToRoleDtos(IEnumerable<IRole> roles)
+        public IEnumerable<UserRoleDto> MapToUserRoleDtos(IEnumerable<IRole> roles)
         {
-            var roleDtos = new List<RoleDto>();
+            var roleDtos = new List<UserRoleDto>();
 
             foreach (var role in roles)
             {
-                roleDtos.Add(MapToRoleDto(role));
+                roleDtos.Add(MapToUserRoleDto(role));
             }
 
             return roleDtos;
         }
 
-        public RoleDto MapToRoleDto(IRole role)
+        public UserRoleDto MapToUserRoleDto(IRole role)
         {
-            return new RoleDto
+            return new UserRoleDto
             {
                 Name = role.Name,
                 Description = role.Description,

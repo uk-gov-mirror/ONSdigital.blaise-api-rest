@@ -6,7 +6,7 @@ namespace Blaise.Api.Controllers
 {
     public class BaseController : ApiController
     {
-        public StatusCodeResult NoContent()
+        internal StatusCodeResult NoContent()
         {
             return StatusCode(HttpStatusCode.NoContent);
         }

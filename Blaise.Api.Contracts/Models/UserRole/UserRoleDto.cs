@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Blaise.Api.Contracts.Models.Role
+namespace Blaise.Api.Contracts.Models.UserRole
 {
-    public class RoleDto
+    public class UserRoleDto
     {
         public string Name { get; set; }
 

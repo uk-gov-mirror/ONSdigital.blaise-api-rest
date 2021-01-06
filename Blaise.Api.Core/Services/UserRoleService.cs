@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Role;
+using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
@@ -7,57 +7,57 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
 {
-    public class RoleService : IRoleService
+    public class UserRoleService : IUserRoleService
     {
         private readonly IBlaiseRoleApi _blaiseApi;
-        private readonly IRoleDtoMapper _dtoMapper;
+        private readonly IUserRoleDtoMapper _dtoMapper;
 
-        public RoleService(
+        public UserRoleService(
             IBlaiseRoleApi blaiseApi, 
-            IRoleDtoMapper dtoMapper)
+            IUserRoleDtoMapper dtoMapper)
         {
             _blaiseApi = blaiseApi;
             _dtoMapper = dtoMapper;
         }
 
-        public IEnumerable<RoleDto> GetRoles()
+        public IEnumerable<UserRoleDto> GetUserRoles()
         {
             var roles = _blaiseApi.GetRoles();
 
-            return _dtoMapper.MapToRoleDtos(roles);
+            return _dtoMapper.MapToUserRoleDtos(roles);
         }
 
-        public RoleDto GetRole(string name)
+        public UserRoleDto GetUserRole(string name)
         {
             name.ThrowExceptionIfNullOrEmpty("name");
             
             var role = _blaiseApi.GetRole(name);
 
-            return _dtoMapper.MapToRoleDto(role);
+            return _dtoMapper.MapToUserRoleDto(role);
         }
 
-        public bool RoleExists(string name)
+        public bool UserRoleExists(string name)
         {
             name.ThrowExceptionIfNullOrEmpty("name");
 
             return _blaiseApi.RoleExists(name);
         }
 
-        public void AddRole(RoleDto role)
+        public void AddUserRole(UserRoleDto role)
         {
-            role.Name.ThrowExceptionIfNullOrEmpty("RoleDto.Name");
+            role.Name.ThrowExceptionIfNullOrEmpty("UserRoleDto.Name");
 
             _blaiseApi.AddRole(role.Name, role.Description, role.Permissions);
         }
 
-        public void RemoveRole(string name)
+        public void RemoveUserRole(string name)
         {
             name.ThrowExceptionIfNullOrEmpty("name");
 
             _blaiseApi.RemoveRole(name);
         }
 
-        public void UpdateRolePermissions(string name, IEnumerable<string> permissions)
+        public void UpdateUserRolePermissions(string name, IEnumerable<string> permissions)
         {
             name.ThrowExceptionIfNullOrEmpty("name");
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blaise.Api.Contracts.Models.Role;
+using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
@@ -11,18 +11,18 @@ using StatNeth.Blaise.API.Security;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class RoleServiceTests
+    public class UserRoleServiceTests
     {
-        private IRoleService _sut;
+        private IUserRoleService _sut;
 
         private Mock<IBlaiseRoleApi> _blaiseApiMock;
-        private Mock<IRoleDtoMapper> _mapperMock;
+        private Mock<IUserRoleDtoMapper> _mapperMock;
 
         private string _name;
         private string _description;
         private List<string> _permissions;
 
-        private RoleDto _roleDto;
+        private UserRoleDto _roleDto;
 
         [SetUp]
         public void SetUpTests()
@@ -31,7 +31,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _description = "Test";
             _permissions = new List<string> { "Permission1" };
 
-            _roleDto = new RoleDto
+            _roleDto = new UserRoleDto
             {
                 Name = _name,
                 Description = _description,
@@ -39,15 +39,15 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             _blaiseApiMock = new Mock<IBlaiseRoleApi>();
-            _mapperMock = new Mock<IRoleDtoMapper>();
+            _mapperMock = new Mock<IUserRoleDtoMapper>();
 
-            _sut = new RoleService(
+            _sut = new UserRoleService(
                 _blaiseApiMock.Object,
                 _mapperMock.Object);
         }
 
         [Test]
-        public void Given_I_Call_GetRoles_Then_I_Get_A_Correct_List_Of_RoleDtos_Back()
+        public void Given_I_Call_GetUserRoles_Then_I_Get_A_Correct_List_Of_UserRoleDtos_Back()
         {
             //arrange
             var roles = new List<IRole>();
@@ -55,12 +55,12 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRoles())
                 .Returns(roles);
 
-            var roleDtos = new List<RoleDto> { _roleDto };
+            var roleDtos = new List<UserRoleDto> { _roleDto };
 
-            _mapperMock.Setup(m => m.MapToRoleDtos(roles))
+            _mapperMock.Setup(m => m.MapToUserRoleDtos(roles))
                 .Returns(roleDtos);
             //act
-            var result = _sut.GetRoles();
+            var result = _sut.GetUserRoles();
 
             //assert
             Assert.IsNotNull(result);
@@ -68,7 +68,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_GetRole_Then_I_Get_A_RoleDto_Back()
+        public void Given_I_Call_GetUserRole_Then_I_Get_A_UserRoleDto_Back()
         {
             //arrange
             var roleMock = new Mock<IRole>();
@@ -76,10 +76,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetRole(_name))
                 .Returns(roleMock.Object);
 
-            _mapperMock.Setup(m => m.MapToRoleDto(roleMock.Object))
+            _mapperMock.Setup(m => m.MapToUserRoleDto(roleMock.Object))
                 .Returns(_roleDto);
             //act
-            var result = _sut.GetRole(_name);
+            var result = _sut.GetUserRole(_name);
 
             //assert
             Assert.IsNotNull(result);
@@ -87,10 +87,10 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_Name_When_I_Call_GetRole_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_Name_When_I_Call_GetUserRole_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.GetRole(string.Empty));
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetUserRole(string.Empty));
             Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
         }
 
@@ -98,38 +98,38 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_Name_When_I_Call_GetRole_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetRole(null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetUserRole(null));
             Assert.AreEqual("name", exception.ParamName);
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void Given_Valid_Arguments_When_I_Call_RoleExists_Then_The_Correct_Value_Is_Returned(bool exists)
+        public void Given_Valid_Arguments_When_I_Call_UserRoleExists_Then_The_Correct_Value_Is_Returned(bool exists)
         {
             //arrange
 
             _blaiseApiMock.Setup(r => r.RoleExists(_name)).Returns(exists);
 
             //act
-            var result = _sut.RoleExists(_name);
+            var result = _sut.UserRoleExists(_name);
 
             //assert
             Assert.AreEqual(exists, result);
         }
 
         [Test]
-        public void Given_An_Empty_Name_When_I_Call_RoleExists_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_Name_When_I_Call_UserRoleExists_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.RoleExists(string.Empty));
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UserRoleExists(string.Empty));
             Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_Name_When_I_Call_RoleExists_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_Name_When_I_Call_UserRoleExists_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RoleExists(null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UserRoleExists(null));
             Assert.AreEqual("name", exception.ParamName);
         }
 
@@ -138,21 +138,21 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_Valid_Arguments_When_I_Call_AddRole_Then_The_Correct_Service_Method_Is_Called()
         {
             //act
-            _sut.AddRole(_roleDto);
+            _sut.AddUserRole(_roleDto);
 
             //assert
             _blaiseApiMock.Verify(v => v.AddRole(_name, _description, _permissions), Times.Once);
         }
 
         [Test]
-        public void Given_An_Empty_Name_When_I_Call_AddRole_Then_An_ArgumentException_Is_Thrown()
+        public void Given_An_Empty_Name_When_I_Call_AddUserRole_Then_An_ArgumentException_Is_Thrown()
         {
             //arrange
             _roleDto.Name = string.Empty;
 
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.AddRole(_roleDto));
-            Assert.AreEqual("A value for the argument 'RoleDto.Name' must be supplied", exception.Message);
+            var exception = Assert.Throws<ArgumentException>(() => _sut.AddUserRole(_roleDto));
+            Assert.AreEqual("A value for the argument 'UserRoleDto.Name' must be supplied", exception.Message);
         }
 
         [Test]
@@ -162,15 +162,15 @@ namespace Blaise.Api.Tests.Unit.Services
             _roleDto.Name = null;
 
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddRole(_roleDto));
-            Assert.AreEqual("RoleDto.Name", exception.ParamName);
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.AddUserRole(_roleDto));
+            Assert.AreEqual("UserRoleDto.Name", exception.ParamName);
         }
 
         [Test]
-        public void Given_Valid_Arguments_When_I_Call_RemoveRole_Then_The_Correct_Service_Method_Is_Called()
+        public void Given_Valid_Arguments_When_I_Call_RemoveUserRole_Then_The_Correct_Service_Method_Is_Called()
         {
             //act
-            _sut.RemoveRole(_name);
+            _sut.RemoveUserRole(_name);
 
             //assert
             _blaiseApiMock.Verify(v => v.RemoveRole(_name), Times.Once);
@@ -180,7 +180,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_Name_When_I_Call_RemoveRole_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.RemoveRole(string.Empty));
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RemoveUserRole(string.Empty));
             Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
         }
 
@@ -188,15 +188,15 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_Name_When_I_Call_RemoveRole_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveRole(null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveUserRole(null));
             Assert.AreEqual("name", exception.ParamName);
         }
 
         [Test]
-        public void Given_Valid_Arguments_When_I_Call_UpdateRolePermissions_Then_The_Correct_Service_Method_Is_Called()
+        public void Given_Valid_Arguments_When_I_Call_UpdateUserRolePermissions_Then_The_Correct_Service_Method_Is_Called()
         {
             //act
-            _sut.UpdateRolePermissions(_name, _permissions);
+            _sut.UpdateUserRolePermissions(_name, _permissions);
 
             //assert
             _blaiseApiMock.Verify(v => v.UpdateRolePermissions(_name, _permissions), Times.Once);
@@ -206,15 +206,15 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_Name_When_I_Call_UpdateRolePermissions_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateRolePermissions(string.Empty, _permissions));
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateUserRolePermissions(string.Empty, _permissions));
             Assert.AreEqual("A value for the argument 'name' must be supplied", exception.Message);
         }
 
         [Test]
-        public void Given_A_Null_Name_When_I_Call_UpdateRolePermissions_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_Name_When_I_Call_UpdateUserRolePermissions_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateRolePermissions(null, _permissions));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateUserRolePermissions(null, _permissions));
             Assert.AreEqual("name", exception.ParamName);
         }
     }
