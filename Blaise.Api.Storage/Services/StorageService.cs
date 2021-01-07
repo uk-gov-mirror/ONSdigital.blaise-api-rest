@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO.Abstractions;
+﻿using System.IO.Abstractions;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 
@@ -23,7 +22,7 @@ namespace Blaise.Api.Storage.Services
 
         public string DownloadFromBucket(string bucketPath, string fileName)
         {
-            var destinationFilePath = _fileSystem.Path.Combine(TemporaryDownloadPath(), fileName);
+            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempDownloadPath, fileName);
             _cloudStorageClient.Download(bucketPath, fileName, destinationFilePath);
             _cloudStorageClient.Dispose();
 
@@ -33,11 +32,6 @@ namespace Blaise.Api.Storage.Services
         public void DeleteFile(string instrumentFile)
         {
             _fileSystem.File.Delete(instrumentFile);
-        }
-
-        private string TemporaryDownloadPath()
-        {
-            return _fileSystem.Path.Combine(_configurationProvider.TempDownloadPath, Guid.NewGuid().ToString());
         }
     }
 }

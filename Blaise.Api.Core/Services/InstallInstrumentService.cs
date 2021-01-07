@@ -28,10 +28,15 @@ namespace Blaise.Api.Core.Services
             installInstrumentDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("installInstrumentDto.InstrumentFile");
 
             var instrumentFile = _storageService.DownloadFromBucket(
-                installInstrumentDto.BucketPath, installInstrumentDto.InstrumentFile);
+                installInstrumentDto.BucketPath, 
+                installInstrumentDto.InstrumentFile);
 
-            _blaiseApi.InstallSurvey(installInstrumentDto.InstrumentName, serverParkName, 
-                instrumentFile, SurveyInterviewType.Cati);
+            _blaiseApi.InstallSurvey(
+                installInstrumentDto.InstrumentName, 
+                serverParkName, 
+                instrumentFile, 
+                SurveyInterviewType.Cati);
+
             _storageService.DeleteFile(instrumentFile);
         }
 

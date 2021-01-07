@@ -63,7 +63,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             const string bucketPath = "OPN";
             const string instrumentFileName = "OPN1234.zip";
             const string tempPath = "d:\\temp";
-            var filePath = $"{tempPath}\\{Guid.NewGuid()}";
+            var filePath = $"{tempPath}";
             var instrumentFilePath = $"{tempPath}\\{instrumentFileName}";
 
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
