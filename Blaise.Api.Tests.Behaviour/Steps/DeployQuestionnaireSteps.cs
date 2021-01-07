@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Cloud;
 using Blaise.Api.Tests.Helpers.Configuration;
+using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
 using TechTalk.SpecFlow;
 
@@ -37,6 +38,8 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterScenario("deploy")]
         public void CleanUpScenario()
         {
+            InstrumentHelper.GetInstance().UninstallSurvey();
+
             CloudStorageHelper.GetInstance().DeleteFromBucket(
                 BlaiseConfigurationHelper.InstrumentBucketPath,
                 BlaiseConfigurationHelper.InstrumentPackage);
