@@ -42,7 +42,8 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(filePath);
 
             _configurationProviderMock.Setup(c => c.TempDownloadPath).Returns(tempPath);
-            _configurationProviderMock.Setup(c => c.TempDownloadPath).Returns(tempPath);
+            _fileSystemMock.Setup(s => s.Path.Combine(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(filePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
