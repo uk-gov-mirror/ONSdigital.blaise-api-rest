@@ -22,6 +22,7 @@ namespace Blaise.Api.Core.Services
 
         public void InstallInstrument(string serverParkName, InstallInstrumentDto installInstrumentDto)
         {
+            installInstrumentDto.InstrumentName.ThrowExceptionIfNullOrEmpty("installInstrumentDto.InstrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             installInstrumentDto.BucketPath.ThrowExceptionIfNullOrEmpty("installInstrumentDto.BucketPath");
             installInstrumentDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("installInstrumentDto.InstrumentFile");
@@ -29,7 +30,8 @@ namespace Blaise.Api.Core.Services
             var instrumentFile = _storageService.DownloadFromBucket(
                 installInstrumentDto.BucketPath, installInstrumentDto.InstrumentFile);
 
-            _blaiseApi.InstallSurvey(instrumentFile, SurveyInterviewType.Cati, serverParkName);
+            _blaiseApi.InstallSurvey(installInstrumentDto.InstrumentName, serverParkName, 
+                instrumentFile, SurveyInterviewType.Cati);
             _storageService.DeleteFile(instrumentFile);
         }
 

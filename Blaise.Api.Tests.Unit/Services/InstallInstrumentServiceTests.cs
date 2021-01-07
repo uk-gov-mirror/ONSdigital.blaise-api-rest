@@ -38,6 +38,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _installInstrumentDto = new InstallInstrumentDto
             {
                 BucketPath = _bucketPath,
+                InstrumentName = _instrumentName,
                 InstrumentFile = _instrumentFileName
             };
 
@@ -57,7 +58,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(instrumentFilePath);
 
             _blaiseApiMock.InSequence(_mockSequence).Setup(b => b
-                .InstallSurvey(instrumentFilePath, SurveyInterviewType.Cati, _serverParkName));
+                .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(instrumentFilePath));
             //act
@@ -65,9 +66,51 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadFromBucket(_bucketPath, _instrumentFileName), Times.Once);
-            _blaiseApiMock.Verify(v => v.InstallSurvey(instrumentFilePath, SurveyInterviewType.Cati, _serverParkName)
-                , Times.Once);
+            _blaiseApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
+                instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
             _storageServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            _installInstrumentDto.InstrumentName = string.Empty;
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.InstallInstrument(_serverParkName,
+                _installInstrumentDto));
+            Assert.AreEqual("A value for the argument 'installInstrumentDto.InstrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            _installInstrumentDto.InstrumentName = null;
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstallInstrument(_serverParkName,
+                _installInstrumentDto));
+            Assert.AreEqual("installInstrumentDto.InstrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.InstallInstrument(string.Empty, 
+                _installInstrumentDto));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstallInstrument(null,
+                _installInstrumentDto));
+            Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]
@@ -91,48 +134,6 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstallInstrument(_serverParkName,
                 _installInstrumentDto));
             Assert.AreEqual("installInstrumentDto.BucketPath", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_InstrumentFile_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
-        {
-            //arrange
-            _installInstrumentDto.InstrumentFile = string.Empty;
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.InstallInstrument(_serverParkName,
-                _installInstrumentDto));
-            Assert.AreEqual("A value for the argument 'installInstrumentDto.InstrumentFile' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentFile_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //arrange
-            _installInstrumentDto.InstrumentFile = null;
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstallInstrument(_serverParkName,
-                _installInstrumentDto));
-            Assert.AreEqual("installInstrumentDto.InstrumentFile", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.InstallInstrument(string.Empty, 
-                _installInstrumentDto));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.InstallInstrument(null,
-                _installInstrumentDto));
-            Assert.AreEqual("serverParkName", exception.ParamName);
         }
 
         [Test]

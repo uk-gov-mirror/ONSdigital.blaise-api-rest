@@ -24,8 +24,11 @@ namespace Blaise.Api.Tests.Helpers.Instrument
 
         public void InstallInstrument()
         {
-            _blaiseSurveyApi.InstallSurvey(BlaiseConfigurationHelper.InstrumentPackage,
-                SurveyInterviewType.Cati, BlaiseConfigurationHelper.ServerParkName);
+            _blaiseSurveyApi.InstallSurvey(
+                BlaiseConfigurationHelper.InstrumentName,
+                BlaiseConfigurationHelper.ServerParkName,
+                BlaiseConfigurationHelper.InstrumentPackage,
+                SurveyInterviewType.Cati);
         }
 
         public bool SurveyHasInstalled(int timeoutInSeconds)
