@@ -11,7 +11,6 @@ using Blaise.Nuget.Api.Contracts.Enums;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
     public class InstrumentController : BaseController
     {
