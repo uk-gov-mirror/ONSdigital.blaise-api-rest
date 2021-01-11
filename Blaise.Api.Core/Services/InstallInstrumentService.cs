@@ -9,15 +9,19 @@ namespace Blaise.Api.Core.Services
 {
     public class InstallInstrumentService : IInstallInstrumentService
     {
-        private readonly IBlaiseSurveyApi _blaiseApi;
+        private readonly IBlaiseFileApi _blaiseFileApi;
+        private readonly IBlaiseSurveyApi _blaiseSurveyApi;
         private readonly IStorageService _storageService;
 
         public InstallInstrumentService(
+            IBlaiseFileApi blaiseFileApi,
             IBlaiseSurveyApi blaiseApi,
             IStorageService storageService)
         {
-            _blaiseApi = blaiseApi;
+            _blaiseFileApi = blaiseFileApi;
+            _blaiseSurveyApi = blaiseApi;
             _storageService = storageService;
+
         }
 
         public void InstallInstrument(string serverParkName, InstallInstrumentDto installInstrumentDto)
@@ -31,7 +35,11 @@ namespace Blaise.Api.Core.Services
                 installInstrumentDto.BucketPath, 
                 installInstrumentDto.InstrumentFile);
 
-            _blaiseApi.InstallSurvey(
+            _blaiseFileApi.UpdateInstrumentFileWithSqlConnection(
+                installInstrumentDto.InstrumentName,
+                installInstrumentDto.InstrumentFile);
+
+            _blaiseSurveyApi.InstallSurvey(
                 installInstrumentDto.InstrumentName, 
                 serverParkName, 
                 instrumentFile, 
@@ -45,7 +53,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            _blaiseApi.UninstallSurvey(instrumentName, serverParkName);
+            _blaiseSurveyApi.UninstallSurvey(instrumentName, serverParkName);
         }
     }
 }
