@@ -61,7 +61,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(instrumentFilePath);
 
             _blaiseFileApiMock.InSequence(_mockSequence).Setup(b => b
-                .UpdateInstrumentFileWithSqlConnection(_instrumentName, _instrumentFileName));
+                .UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath));
 
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
@@ -73,7 +73,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadFromBucket(_bucketPath, _instrumentFileName), Times.Once);
-            _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName, _instrumentFileName), Times.Once);
+            _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
                 instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
             _storageServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);

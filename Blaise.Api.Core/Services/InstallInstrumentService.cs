@@ -37,7 +37,7 @@ namespace Blaise.Api.Core.Services
 
             _blaiseFileApi.UpdateInstrumentFileWithSqlConnection(
                 installInstrumentDto.InstrumentName,
-                installInstrumentDto.InstrumentFile);
+                instrumentFile);
 
             _blaiseSurveyApi.InstallSurvey(
                 installInstrumentDto.InstrumentName, 
