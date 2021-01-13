@@ -22,7 +22,7 @@ namespace Blaise.Api.Storage.Services
 
         public string DownloadFromBucket(string bucketPath, string fileName)
         {
-            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempDownloadPath, fileName);
+            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, fileName);
             _cloudStorageClient.Download(bucketPath, fileName, destinationFilePath);
             _cloudStorageClient.Dispose();
 

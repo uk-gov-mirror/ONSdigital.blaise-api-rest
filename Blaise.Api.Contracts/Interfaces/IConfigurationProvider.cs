@@ -2,6 +2,7 @@
 {
     public interface IConfigurationProvider
     {
-        string TempDownloadPath { get; }
+        string BaseUrl { get; }
+        string TempPath { get; }
     }
 }

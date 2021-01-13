@@ -41,7 +41,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
 
-            _configurationProviderMock.Setup(c => c.TempDownloadPath).Returns(tempPath);
+            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
             _fileSystemMock.Setup(s => s.Path.Combine(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(filePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
@@ -72,7 +72,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.Path.Combine(filePath, instrumentFileName))
                 .Returns(instrumentFilePath);
 
-            _configurationProviderMock.Setup(c => c.TempDownloadPath).Returns(tempPath);
+            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
             _storageProviderMock.Setup(s => s.Download(bucketPath, instrumentFileName,
                 It.IsAny<string>()));
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));

@@ -7,7 +7,6 @@ namespace Blaise.Api
 {
     internal partial class ApiService : ServiceBase
     {
-        public string BaseAddress = ConfigurationProvider.BaseUrl;
         private IDisposable _server;
 
         public ApiService()
@@ -17,7 +16,8 @@ namespace Blaise.Api
 
         protected override void OnStart(string[] args)
         {
-            _server = WebApp.Start<Startup>(BaseAddress);
+            var configurationProvider = new ConfigurationProvider();
+            _server = WebApp.Start<Startup>(configurationProvider.BaseUrl);
         }
 
         protected override void OnStop()
