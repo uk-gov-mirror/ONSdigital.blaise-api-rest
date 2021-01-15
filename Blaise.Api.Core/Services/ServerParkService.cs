@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
@@ -44,15 +43,15 @@ namespace Blaise.Api.Core.Services
             return _blaiseApi.ServerParkExists(serverParkName);
         }
 
-        public void RegisterMachineOnServerPark(string serverParkName, MachineDto machineDto)
+        public void RegisterServerOnServerPark(string serverParkName, ServerDto serverDto)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            machineDto.MachineName.ThrowExceptionIfNullOrEmpty("machineDto.MachineName");
-            machineDto.LogicalServerName.ThrowExceptionIfNullOrEmpty("machineDto.logicalServerName");
-            machineDto.Roles.ThrowExceptionIfNullOrEmpty("machineDto.Roles");
+            serverDto.Name.ThrowExceptionIfNullOrEmpty("serverDto.Name");
+            serverDto.LogicalServerName.ThrowExceptionIfNullOrEmpty("serverDto.logicalServerName");
+            serverDto.Roles.ThrowExceptionIfNullOrEmpty("serverDto.Roles");
 
-            _blaiseApi.RegisterMachineOnServerPark(serverParkName, machineDto.MachineName,
-                machineDto.LogicalServerName, machineDto.Roles);
+            _blaiseApi.RegisterMachineOnServerPark(serverParkName, serverDto.Name,
+                serverDto.LogicalServerName, serverDto.Roles);
         }
     }
 }

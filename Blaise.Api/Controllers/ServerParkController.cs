@@ -58,14 +58,14 @@ namespace Blaise.Api.Controllers
         }
 
         [HttpPost]
-        [Route("{serverParkName}/machine")]
-        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] MachineDto registerMachineDto)
+        [Route("{serverParkName}/server")]
+        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] ServerDto serverDto)
         {
-            LoggingService.LogInfo($"Attempt to register a machine '{registerMachineDto.MachineName}'");
+            LoggingService.LogInfo($"Attempt to register a server '{serverDto.Name}'");
 
-            _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto);
+            _serverParkService.RegisterServerOnServerPark(serverParkName, serverDto);
 
-            LoggingService.LogInfo($"Successfully registered a machine '{registerMachineDto.MachineName}'");
+            LoggingService.LogInfo($"Successfully registered a server '{serverDto.Name}'");
 
             return NoContent();
         }

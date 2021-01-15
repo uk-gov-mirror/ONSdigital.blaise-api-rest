@@ -11,6 +11,6 @@ namespace Blaise.Api.Core.Interfaces.Services
 
         bool ServerParkExists(string serverParkName);
 
-        void RegisterMachineOnServerPark(string serverParkName, MachineDto registerMachineDto);
+        void RegisterServerOnServerPark(string serverParkName, ServerDto serverDto);
     }
 }

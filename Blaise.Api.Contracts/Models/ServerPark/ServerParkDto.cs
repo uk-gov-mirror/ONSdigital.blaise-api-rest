@@ -14,6 +14,6 @@ namespace Blaise.Api.Contracts.Models.ServerPark
 
         public IEnumerable<InstrumentDto> Instruments { get; set; }
 
-        public IEnumerable<MachineDto> Servers { get; set; }
+        public IEnumerable<ServerDto> Servers { get; set; }
     }
 }

@@ -105,14 +105,14 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(serverParkName, result.Name);
 
             Assert.IsNotNull(result.Servers);
-            Assert.IsInstanceOf<IEnumerable<MachineDto>>(result.Servers);
+            Assert.IsInstanceOf<IEnumerable<ServerDto>>(result.Servers);
             Assert.IsNotEmpty(result.Servers);
             Assert.AreEqual(2, result.Servers.Count());
 
-            Assert.True(result.Servers.Any(s => s.MachineName == machine1Name && s.LogicalServerName == machine1LogicalRoot &&
+            Assert.True(result.Servers.Any(s => s.Name == machine1Name && s.LogicalServerName == machine1LogicalRoot &&
                                                 s.Roles.OrderByDescending(l => l).SequenceEqual(machine1Roles.OrderByDescending(l => l))));
 
-            Assert.True(result.Servers.Any(s => s.MachineName == machine2Name && s.LogicalServerName == machine2LogicalRoot && 
+            Assert.True(result.Servers.Any(s => s.Name == machine2Name && s.LogicalServerName == machine2LogicalRoot && 
                                                 s.Roles.OrderByDescending(l => l).SequenceEqual(machine2Roles.OrderByDescending(l => l))));
 
         }

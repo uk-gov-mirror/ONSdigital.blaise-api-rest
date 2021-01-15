@@ -33,25 +33,25 @@ namespace Blaise.Api.Core.Mappers
             {
                 Name = serverPark.Name,
                 Instruments = _mapper.MapToInstrumentDtos(serverPark.Surveys),
-                Servers = MapToMachineDtos(serverPark.Servers)
+                Servers = MapToServerDtos(serverPark.Servers)
             };
         }
 
-        private static IEnumerable<MachineDto> MapToMachineDtos(IServerCollection servers)
+        private static IEnumerable<ServerDto> MapToServerDtos(IServerCollection servers)
         {
-            var machineDtoList = new List<MachineDto>();
+            var serverDtoList = new List<ServerDto>();
 
             foreach (var server in servers)
             {
-                machineDtoList.Add(new MachineDto
+                serverDtoList.Add(new ServerDto
                 {
-                    MachineName = server.Name,
+                    Name = server.Name,
                     LogicalServerName = server.LogicalRoot,
                     Roles = server.Roles.ToList()
                 });
             }
 
-            return machineDtoList;
+            return serverDtoList;
         }
     }
 }
