@@ -30,13 +30,20 @@ namespace Blaise.Api.Tests.Unit.Mappers
         public void Given_A_List_Of_ServerParks_When_I_Call_MapToServerParkDtos_Then_A_Correct_List_Of_ServerParkDto_Is_Returned()
         {
             //arrange
+            var serverList = new List<IServer>();
+            var serverCollection = new Mock<IServerCollection>();
+            serverCollection.Setup(s => s.GetEnumerator()).Returns(serverList.GetEnumerator());
+
             const string serverPark1Name = "ServerParkA";
             var serverPark1 = new Mock<IServerPark>();
             serverPark1.Setup(s => s.Name).Returns(serverPark1Name);
+            serverPark1.Setup(s => s.Servers).Returns(serverCollection.Object);
 
             const string serverPark2Name = "ServerParkA";
             var serverPark2 = new Mock<IServerPark>();
             serverPark2.Setup(s => s.Name).Returns(serverPark2Name);
+            serverPark2.Setup(s => s.Servers).Returns(It.IsAny<IServerCollection>());
+            serverPark2.Setup(s => s.Servers).Returns(serverCollection.Object);
 
             var serverParks = new List<IServerPark>
             {
@@ -63,6 +70,32 @@ namespace Blaise.Api.Tests.Unit.Mappers
             var serverPark = new Mock<IServerPark>();
             serverPark.Setup(s => s.Name).Returns(serverParkName);
 
+            var server1Mock = new Mock<IServer>();
+            const string machine1Name = "ServerA";
+            const string machine1LogicalRoot = "Default1";
+            var machine1Roles = new List<string> {"role1", "role2"};
+            var machine1ServerRoleCollection = new Mock<IServerRoleCollection>();
+            machine1ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine1Roles.GetEnumerator());
+            server1Mock.Setup(s => s.Name).Returns(machine1Name);
+            server1Mock.Setup(s => s.LogicalRoot).Returns(machine1LogicalRoot);
+            server1Mock.Setup(s => s.Roles).Returns(machine1ServerRoleCollection.Object);
+
+            var server2Mock = new Mock<IServer>();
+            const string machine2Name = "ServerB";  
+            const string machine2LogicalRoot = "Default2";
+            var machine2Roles = new List<string> {"role3"};
+            var machine2ServerRoleCollection = new Mock<IServerRoleCollection>();
+            machine2ServerRoleCollection.Setup(s => s.GetEnumerator()).Returns(machine2Roles.GetEnumerator());
+            server2Mock.Setup(s => s.Name).Returns(machine2Name);
+            server2Mock.Setup(s => s.LogicalRoot).Returns(machine2LogicalRoot);
+            server2Mock.Setup(s => s.Roles).Returns(machine2ServerRoleCollection.Object);
+
+            var serverList = new List<IServer> { server1Mock.Object, server2Mock.Object};
+            var serverCollection = new Mock<IServerCollection>();
+            serverCollection.Setup(s => s.GetEnumerator()).Returns(serverList.GetEnumerator());
+
+            serverPark.Setup(s => s.Servers).Returns(serverCollection.Object);
+            
             //act
             var result = _sut.MapToServerParkDto(serverPark.Object);
 
@@ -70,6 +103,18 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ServerParkDto>(result);
             Assert.AreEqual(serverParkName, result.Name);
+
+            Assert.IsNotNull(result.Servers);
+            Assert.IsInstanceOf<IEnumerable<MachineDto>>(result.Servers);
+            Assert.IsNotEmpty(result.Servers);
+            Assert.AreEqual(2, result.Servers.Count());
+
+            Assert.True(result.Servers.Any(s => s.MachineName == machine1Name && s.LogicalServerName == machine1LogicalRoot &&
+                                                s.Roles.OrderByDescending(l => l).SequenceEqual(machine1Roles.OrderByDescending(l => l))));
+
+            Assert.True(result.Servers.Any(s => s.MachineName == machine2Name && s.LogicalServerName == machine2LogicalRoot && 
+                                                s.Roles.OrderByDescending(l => l).SequenceEqual(machine2Roles.OrderByDescending(l => l))));
+
         }
 
         [Test]
@@ -78,6 +123,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //arrange
             var serverPark = new Mock<IServerPark>();
             serverPark.Setup(s => s.Surveys).Returns(It.IsAny<ISurveyCollection>());
+
+            var serverList = new List<IServer>();
+            var serverCollection = new Mock<IServerCollection>();
+            serverCollection.Setup(s => s.GetEnumerator()).Returns(serverList.GetEnumerator());
+            serverPark.Setup(s => s.Servers).Returns(serverCollection.Object);
 
             var instrument1Dto = new InstrumentDto
             {
