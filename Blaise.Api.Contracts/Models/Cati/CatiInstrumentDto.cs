@@ -13,7 +13,7 @@ namespace Blaise.Api.Contracts.Models.Cati
 
         public List<DateTime> SurveyDays;
 
-        public bool Expired;
+        public bool Active;
 
         public bool ActiveToday;
     }

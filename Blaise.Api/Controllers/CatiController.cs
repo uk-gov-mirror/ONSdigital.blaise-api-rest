@@ -34,6 +34,20 @@ namespace Blaise.Api.Controllers
             return Ok(instruments);
         }
 
+        [HttpGet]
+        [Route("serverparks/{serverParkName}/instruments")]
+        [ResponseType(typeof(IEnumerable<CatiInstrumentDto>))]
+        public IHttpActionResult GetInstruments([FromUri] string serverParkName)
+        {
+            LoggingService.LogInfo($"Obtaining a list of instruments from Cati for serverpark '{serverParkName}'");
+
+            var instruments = _catiService.GetCatiInstruments(serverParkName).ToList();
+
+            LoggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+
+            return Ok(instruments);
+        }
+
         [HttpPost]
         [Route("serverparks/{serverParkName}/instruments/{instrumentName}/daybatch")]
         public IHttpActionResult CreateDaybatch([FromUri] string serverParkName, [FromUri] string instrumentName, [FromBody] DayBatchDto dayBatchDto)

@@ -18,7 +18,8 @@ namespace Blaise.Api.Core.Mappers
                 InstallDate = instrumentDto.InstallDate,
                 Status = instrumentDto.Status,
                 SurveyDays = surveyDays,
-                Expired = surveyDays.All(s => s.Date < DateTime.Today),
+                Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
+                         surveyDays.Any(s => s.Date >= DateTime.Today),
                 ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today)
             };
 

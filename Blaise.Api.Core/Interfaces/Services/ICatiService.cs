@@ -7,6 +7,8 @@ namespace Blaise.Api.Core.Interfaces.Services
     {
         List<CatiInstrumentDto> GetCatiInstruments();
 
+        List<CatiInstrumentDto> GetCatiInstruments(string serverParkName);
+
         void CreateDayBatch(string instrumentName, string serverParkName, DayBatchDto dayBatchDate);
     }
 }
