@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Mappers;
 using Blaise.Nuget.Api.Contracts.Enums;
@@ -58,7 +58,42 @@ namespace Blaise.Api.Tests.Unit.Mappers
         }
 
         [Test]
-        public void Given_SurveyDays_Have_All_Passed_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Marked_As_Expired()
+        public void Given_No_Survey_Days_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Active()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>();
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(new InstrumentDto(), surveyDays);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.Active);
+        }
+
+        [Test]
+        public void Given_All_SurveyDays_Are_In_The_Future_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Active()
+        {
+            //arrange
+            var surveyDays = new List<DateTime>
+            {
+                DateTime.Today.AddDays(3),
+                DateTime.Today.AddDays(2),
+                DateTime.Today.AddDays(1)
+            };
+
+            //act
+            var result = _sut.MapToCatiInstrumentDto(new InstrumentDto(), surveyDays);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.IsFalse(result.Active);
+        }
+
+        [Test]
+        public void Given_SurveyDays_Have_All_Passed_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -74,11 +109,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<CatiInstrumentDto>(result);
-            Assert.IsTrue(result.Expired);
+            Assert.IsFalse(result.Active);
         }
 
         [Test]
-        public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Marked_As_Expired()
+        public void Given_There_Is_A_SurveyDay_In_The_Future_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -95,18 +130,15 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<CatiInstrumentDto>(result);
-            Assert.IsFalse(result.Expired);
+            Assert.IsTrue(result.Active);
         }
 
         [Test]
-        public void Given_There_Is_A_SurveyDay_For_Today_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Marked_As_Expired()
+        public void Given_There_A_SurveyDay_For_Today_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
             {
-                DateTime.Today.AddDays(-3),
-                DateTime.Today.AddDays(-2),
-                DateTime.Today.AddDays(-1),
                 DateTime.Today
             };
 
@@ -116,11 +148,11 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<CatiInstrumentDto>(result);
-            Assert.IsFalse(result.Expired);
+            Assert.IsTrue(result.Active);
         }
 
         [Test]
-        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Not_Marked_As_Expired()
+        public void Given_There_A_SurveyDay_For_Today_At_A_Later_Time_When_I_Call_MapToInstrumentDto_Then_The_Instrument_Is_Active()
         {
             //arrange
             var surveyDays = new List<DateTime>
@@ -134,7 +166,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             //assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<CatiInstrumentDto>(result);
-            Assert.IsFalse(result.Expired);
+            Assert.IsTrue(result.Active);
         }
 
         [Test]

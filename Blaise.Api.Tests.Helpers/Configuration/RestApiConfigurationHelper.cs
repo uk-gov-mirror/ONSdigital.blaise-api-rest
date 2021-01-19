@@ -4,7 +4,8 @@ namespace Blaise.Api.Tests.Helpers.Configuration
 {
     public static class RestApiConfigurationHelper
     {
-        public static string BaseUrl => ConfigurationExtensions.GetVariable("RestApiBaseUrl");
+        public static string BaseUrl => ConfigurationExtensions.GetVariable("ENV_RESTAPI_URL");
+
         public static string InstrumentsUrl =>
             $"/api/v1/serverparks/{BlaiseConfigurationHelper.ServerParkName}/instruments";
     }

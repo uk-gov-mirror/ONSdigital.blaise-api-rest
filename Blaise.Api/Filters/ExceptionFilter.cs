@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
-using Blaise.Api.Log.Services;
+using Blaise.Api.Logging.Services;
 using Blaise.Nuget.Api.Contracts.Exceptions;
 
 namespace Blaise.Api.Filters
@@ -25,7 +25,7 @@ namespace Blaise.Api.Filters
                     break;
             }
             
-            LogService.Error("Error: ", context.Exception);
+            LoggingService.LogError("Error: ", context.Exception);
         }
     }
 }

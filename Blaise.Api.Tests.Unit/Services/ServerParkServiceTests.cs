@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Contracts.Models.ServerPark;
+using Blaise.Api.Core.Interfaces.Mappers;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
@@ -17,9 +18,13 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<IServerParkDtoMapper> _mapperMock;
         private IServerParkService _sut;
 
+        private string _serverParkName;
+
         [SetUp]
         public void SetupTests()
         {
+            _serverParkName = "Park1";
+
             _blaiseApiMock = new Mock<IBlaiseServerParkApi>();
 
             _mapperMock = new Mock<IServerParkDtoMapper>();
@@ -81,18 +86,17 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetServerPark_Then_The_Correct_Method_Is_called_On_The_Api()
         {
             //arrange
-            var serverParkName = "ServerParkA";
             var serverPark1Mock = new Mock<IServerPark>();
-            serverPark1Mock.Setup(s => s.Name).Returns(serverParkName);
+            serverPark1Mock.Setup(s => s.Name).Returns(_serverParkName);
 
-            _blaiseApiMock.Setup(b => b.GetServerPark(serverParkName))
+            _blaiseApiMock.Setup(b => b.GetServerPark(_serverParkName))
                 .Returns(serverPark1Mock.Object);
 
             //act
-            _sut.GetServerPark(serverParkName);
+            _sut.GetServerPark(_serverParkName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetServerPark(serverParkName), Times.Once);
+            _blaiseApiMock.Verify(v => v.GetServerPark(_serverParkName), Times.Once);
             _mapperMock.Verify(v => v.MapToServerParkDto(serverPark1Mock.Object));
         }
 
@@ -100,17 +104,16 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_GetServerPark_Then_The_Correct_ServerParkDto_Is_returned()
         {
             //arrange
-            var serverParkName = "ServerParkA";
             var serverParkDto = new ServerParkDto();
 
-            _blaiseApiMock.Setup(b => b.GetServerPark(serverParkName))
+            _blaiseApiMock.Setup(b => b.GetServerPark(_serverParkName))
                 .Returns(It.IsAny<IServerPark>());
 
             _mapperMock.Setup(m => m.MapToServerParkDto(It.IsAny<IServerPark>()))
                 .Returns(serverParkDto);
 
             //act
-            var result = _sut.GetServerPark(serverParkName);
+            var result = _sut.GetServerPark(_serverParkName);
 
             //assert
             Assert.IsNotNull(result);
@@ -138,16 +141,14 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_ServerParkExists_Then_The_Correct_Method_Is_called_On_The_Api()
         {
             //arrange
-            var serverParkName = "ServerParkA";
-
-            _blaiseApiMock.Setup(b => b.ServerParkExists(serverParkName))
+            _blaiseApiMock.Setup(b => b.ServerParkExists(_serverParkName))
                 .Returns(It.IsAny<bool>());
 
             //act
-            _sut.ServerParkExists(serverParkName);
+            _sut.ServerParkExists(_serverParkName);
 
             //assert
-            _blaiseApiMock.Verify(v => v.ServerParkExists(serverParkName), Times.Once);
+            _blaiseApiMock.Verify(v => v.ServerParkExists(_serverParkName), Times.Once);
         }
 
         [TestCase(true)]
@@ -155,13 +156,11 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_I_Call_ServerParkExists_Then_The_Correct_Response_Is_returned(bool exists)
         {
             //arrange
-            var serverParkName = "ServerParkA";
-
-            _blaiseApiMock.Setup(b => b.ServerParkExists(serverParkName))
+            _blaiseApiMock.Setup(b => b.ServerParkExists(_serverParkName))
                 .Returns(exists);
 
             //act
-            var result = _sut.ServerParkExists(serverParkName);
+            var result = _sut.ServerParkExists(_serverParkName);
 
             //assert
             Assert.IsNotNull(result);
@@ -183,6 +182,164 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.ServerParkExists(null));
             Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_Valid_Arguments_When_I_Call_RegisterServerOnServerPark_Then_The_Correct_Service_Method_Is_Called()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = "Gusty01",
+                LogicalServerName = "Default",
+                Roles = new List<string> { "Web", "Cati" }
+            };
+
+            _blaiseApiMock.Setup(p => p.RegisterMachineOnServerPark(It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<string>>()));
+
+            //act
+            _sut.RegisterServerOnServerPark(_serverParkName, serverDto);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.RegisterMachineOnServerPark(_serverParkName,
+                serverDto.Name, serverDto.LogicalServerName, serverDto.Roles), Times.Once);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = "Gusty01",
+                LogicalServerName = "Default",
+                Roles = new List<string> { "Web", "Cati" }
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterServerOnServerPark(string.Empty,
+               serverDto));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = "Gusty01",
+                LogicalServerName = "Default",
+                Roles = new List<string> { "Web", "Cati" }
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterServerOnServerPark(null,
+                serverDto));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_Name_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = string.Empty,
+                LogicalServerName = "Default",
+                Roles = new List<string> { "Web", "Cati" }
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterServerOnServerPark(_serverParkName,
+                serverDto));
+            Assert.AreEqual("A value for the argument 'serverDto.Name' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_Name_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = null,
+                LogicalServerName = "Default",
+                Roles = new List<string> { "Web", "Cati" }
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterServerOnServerPark(_serverParkName,
+                serverDto));
+            Assert.AreEqual("serverDto.Name", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_logicalServerName_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = "Gusty01",
+                LogicalServerName = string.Empty,
+                Roles = new List<string> { "Web", "Cati" }
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterServerOnServerPark(_serverParkName,
+                serverDto));
+            Assert.AreEqual("A value for the argument 'serverDto.logicalServerName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_logicalServerName_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = "Gusty01",
+                LogicalServerName = null,
+                Roles = new List<string> { "Web", "Cati" }
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterServerOnServerPark(_serverParkName,
+                serverDto));
+            Assert.AreEqual("serverDto.logicalServerName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_List_Of_Roles_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = "Gusty01",
+                LogicalServerName = "Default",
+                Roles = new List<string>()
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.RegisterServerOnServerPark(_serverParkName,
+                serverDto));
+            Assert.AreEqual("A value for the argument 'serverDto.Roles' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_List_Of_Roles_When_I_Call_RegisterServerOnServerPark_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var serverDto = new ServerDto
+            {
+                Name = "Gusty01",
+                LogicalServerName = "Default",
+                Roles = null
+            };
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.RegisterServerOnServerPark(_serverParkName,
+                serverDto));
+            Assert.AreEqual("serverDto.Roles", exception.ParamName);
         }
     }
 }

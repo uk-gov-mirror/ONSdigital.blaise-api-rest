@@ -1,6 +1,7 @@
 using System.IO.Abstractions;
 using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Mappers;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Mappers;
 using Blaise.Api.Core.Services;
 using Blaise.Api.Providers;
@@ -31,6 +32,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IBlaiseHealthApi, BlaiseHealthApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseRoleApi, BlaiseRoleApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
+            container.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
 
             //providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
@@ -41,7 +43,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
             container.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
             container.RegisterType<ICatiInstrumentDtoMapper, CatiInstrumentDtoMapper>();
-            container.RegisterType<IRoleDtoMapper, RoleDtoMapper>();
+            container.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             container.RegisterType<IUserDtoMapper, UserDtoMapper>();
 
             //core services
@@ -50,7 +52,7 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IInstallInstrumentService, InstallInstrumentService>();
             container.RegisterType<ICatiService, CatiService>();
             container.RegisterType<IHealthCheckService, HealthCheckService>();
-            container.RegisterType<IRoleService, RoleService>();
+            container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IUserService, UserService>();
 
             //storage services

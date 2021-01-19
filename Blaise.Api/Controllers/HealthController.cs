@@ -4,16 +4,16 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Enums;
-using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Contracts.Models.Health;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Filters;
-using Blaise.Api.Log.Services;
+using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
     [ExceptionFilter]
     [RoutePrefix("api/v1/health")]
-    public class HealthController : ApiController
+    public class HealthController : BaseController
     {
         private readonly IHealthCheckService _healthService;
 
@@ -27,11 +27,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(List<HealthCheckResultDto>))]
         public IHttpActionResult HealthCheck()
         {
-            LogService.Info("performing Health check on Blaise connectivity");
+            LoggingService.LogInfo("performing Health check on Blaise connectivity");
 
             var results = _healthService.PerformCheck().ToList();
 
-            if (results.Any(r => r.StatusType == HealthStatusType.NotOk))
+            if (results.Any(r => r.StatusType == HealthStatusType.Error))
             {
                 return Content(HttpStatusCode.ServiceUnavailable, results);
             }

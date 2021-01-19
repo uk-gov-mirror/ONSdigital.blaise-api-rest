@@ -6,7 +6,8 @@ namespace Blaise.Api.Providers
 {
     public class ConfigurationProvider : IConfigurationProvider
     {
-        public string TempDownloadPath => Environment.GetEnvironmentVariable("ENV_TEMP_DOWNLOAD_PATH", EnvironmentVariableTarget.Machine)
-                                                ?? ConfigurationManager.AppSettings["TempDownloadPath"];
+        public string BaseUrl => ConfigurationManager.AppSettings["BASE_URL"];
+
+        public string TempPath => ConfigurationManager.AppSettings["TEMP_PATH"];
     }
 }

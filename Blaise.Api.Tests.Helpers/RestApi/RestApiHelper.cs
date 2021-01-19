@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Models.Questionnaire;
 using Blaise.Nuget.Api.Contracts.Enums;
@@ -34,6 +36,19 @@ namespace Blaise.Api.Tests.Helpers.RestApi
                 await GetListOfObjectsASync<Questionnaire>(RestApiConfigurationHelper.InstrumentsUrl);
             return questionnaires != null ? questionnaires.Where(q => q.Status == SurveyStatusType.Active).ToList()
                 : new List<Questionnaire>();
+        }
+
+        public async Task DeployQuestionnaire(string url, string bucketPath, string instrumentPackage)
+        {
+            var model = new InstallInstrumentDto
+            {
+                BucketPath = bucketPath,
+                InstrumentFile = instrumentPackage,
+                InstrumentName = Path.GetFileNameWithoutExtension(instrumentPackage)
+            };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(model));
+            await _httpClient.PostAsync(url, stringContent);
         }
 
         private static async Task<List<T>> GetListOfObjectsASync<T>(string url)

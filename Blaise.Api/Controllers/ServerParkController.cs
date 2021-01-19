@@ -2,16 +2,15 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
-using Blaise.Api.Filters;
-using Blaise.Api.Log.Services;
+using Blaise.Api.Contracts.Models.ServerPark;
+using Blaise.Api.Core.Interfaces.Services;
+using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
+    //[ExceptionFilter]
     [RoutePrefix("api/v1/serverparks")]
-    public class ServerParkController : ApiController
+    public class ServerParkController : BaseController
     {
         private readonly IServerParkService _serverParkService;
 
@@ -25,11 +24,11 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
-            LogService.Info("Obtaining a list of server parks");
+            LoggingService.LogInfo("Obtaining a list of server parks");
 
             var parks = _serverParkService.GetServerParks().ToList();
 
-            LogService.Info($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
+            LoggingService.LogInfo($"Successfully received a list of server parks '{string.Join(", ", parks)}'");
 
             return Ok(parks);
         }
@@ -41,7 +40,7 @@ namespace Blaise.Api.Controllers
         {
             var park = _serverParkService.GetServerPark(serverParkName);
 
-            LogService.Info($"Successfully received server park '{serverParkName}'");
+            LoggingService.LogInfo($"Successfully received server park '{serverParkName}'");
 
             return Ok(park);
         }
@@ -53,22 +52,22 @@ namespace Blaise.Api.Controllers
         {
             var exists = _serverParkService.ServerParkExists(serverParkName);
 
-            LogService.Info($"Successfully found server park '{serverParkName}'");
+            LoggingService.LogInfo($"Successfully found server park '{serverParkName}'");
 
             return Ok(exists);
         }
 
         [HttpPost]
-        [Route("{serverParkName}/machine")]
-        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] RegisterMachineDto registerMachineDto)
+        [Route("{serverParkName}/server")]
+        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] ServerDto serverDto)
         {
-            LogService.Info($"Attempt to register a machine '{registerMachineDto.MachineName}'");
+            LoggingService.LogInfo($"Attempt to register a server '{serverDto.Name}'");
 
-            _serverParkService.RegisterMachineOnServerPark(serverParkName, registerMachineDto.MachineName);
+            _serverParkService.RegisterServerOnServerPark(serverParkName, serverDto);
 
-            LogService.Info($"Successfully registered a machine '{registerMachineDto.MachineName}'");
+            LoggingService.LogInfo($"Successfully registered a server '{serverDto.Name}'");
 
-            return Ok();
+            return NoContent();
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blaise.Api.Contracts.Models;
+using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
-using Blaise.Api.Core.Interfaces;
+using Blaise.Api.Core.Interfaces.Mappers;
 
 namespace Blaise.Api.Core.Mappers
 {
@@ -18,7 +18,8 @@ namespace Blaise.Api.Core.Mappers
                 InstallDate = instrumentDto.InstallDate,
                 Status = instrumentDto.Status,
                 SurveyDays = surveyDays,
-                Expired = surveyDays.All(s => s.Date < DateTime.Today),
+                Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
+                         surveyDays.Any(s => s.Date >= DateTime.Today),
                 ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today)
             };
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using Blaise.Api.Contracts.Models;
-using Blaise.Api.Core.Interfaces;
+using System.Linq;
+using Blaise.Api.Contracts.Models.ServerPark;
+using Blaise.Api.Core.Interfaces.Mappers;
 using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Mappers
@@ -31,8 +32,26 @@ namespace Blaise.Api.Core.Mappers
             return new ServerParkDto
             {
                 Name = serverPark.Name,
-                Instruments = _mapper.MapToInstrumentDtos(serverPark.Surveys)
+                Instruments = _mapper.MapToInstrumentDtos(serverPark.Surveys),
+                Servers = MapToServerDtos(serverPark.Servers)
             };
+        }
+
+        private static IEnumerable<ServerDto> MapToServerDtos(IServerCollection servers)
+        {
+            var serverDtoList = new List<ServerDto>();
+
+            foreach (var server in servers)
+            {
+                serverDtoList.Add(new ServerDto
+                {
+                    Name = server.Name,
+                    LogicalServerName = server.LogicalRoot,
+                    Roles = server.Roles.ToList()
+                });
+            }
+
+            return serverDtoList;
         }
     }
 }

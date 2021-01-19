@@ -24,8 +24,11 @@ namespace Blaise.Api.Tests.Helpers.Instrument
 
         public void InstallInstrument()
         {
-            _blaiseSurveyApi.InstallSurvey(BlaiseConfigurationHelper.InstrumentPackage,
-                SurveyInterviewType.Cati, BlaiseConfigurationHelper.ServerParkName);
+            _blaiseSurveyApi.InstallSurvey(
+                BlaiseConfigurationHelper.InstrumentName,
+                BlaiseConfigurationHelper.ServerParkName,
+                BlaiseConfigurationHelper.InstrumentPackage,
+                SurveyInterviewType.Cati);
         }
 
         public bool SurveyHasInstalled(int timeoutInSeconds)
@@ -36,21 +39,26 @@ namespace Blaise.Api.Tests.Helpers.Instrument
 
         public void UninstallSurvey()
         {
-            _blaiseSurveyApi.UninstallSurvey(BlaiseConfigurationHelper.InstrumentName,
+            _blaiseSurveyApi.UninstallSurvey(
+                BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName);
         }
 
         public bool SetSurveyAsActive(int timeoutInSeconds)
         {
-            _blaiseSurveyApi.ActivateSurvey(BlaiseConfigurationHelper.InstrumentName,
+            _blaiseSurveyApi.ActivateSurvey(
+                BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName);
+
             return SurveyIsActive(BlaiseConfigurationHelper.InstrumentName, timeoutInSeconds);
         }
 
         public bool SetSurveyAsInactive()
         {
-            _blaiseSurveyApi.DeactivateSurvey(BlaiseConfigurationHelper.InstrumentName,
+            _blaiseSurveyApi.DeactivateSurvey(
+                BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName);
+
             return GetSurveyStatus(BlaiseConfigurationHelper.InstrumentName) == SurveyStatusType.Inactive;
         }
 

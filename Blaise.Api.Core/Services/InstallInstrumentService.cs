@@ -1,5 +1,6 @@
-﻿using Blaise.Api.Core.Extensions;
-using Blaise.Api.Core.Interfaces;
+﻿using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Core.Extensions;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
@@ -8,26 +9,42 @@ namespace Blaise.Api.Core.Services
 {
     public class InstallInstrumentService : IInstallInstrumentService
     {
-        private readonly IBlaiseSurveyApi _blaiseApi;
+        private readonly IBlaiseFileApi _blaiseFileApi;
+        private readonly IBlaiseSurveyApi _blaiseSurveyApi;
         private readonly IStorageService _storageService;
 
         public InstallInstrumentService(
-            IBlaiseSurveyApi blaiseApi, 
+            IBlaiseFileApi blaiseFileApi,
+            IBlaiseSurveyApi blaiseApi,
             IStorageService storageService)
         {
-            _blaiseApi = blaiseApi;
+            _blaiseFileApi = blaiseFileApi;
+            _blaiseSurveyApi = blaiseApi;
             _storageService = storageService;
+
         }
 
-        public void InstallInstrument(string bucketPath, string instrumentFileName, string serverParkName)
+        public void InstallInstrument(string serverParkName, InstallInstrumentDto installInstrumentDto)
         {
-            bucketPath.ThrowExceptionIfNullOrEmpty("bucketPath");
-            instrumentFileName.ThrowExceptionIfNullOrEmpty("instrumentFileName");
+            installInstrumentDto.InstrumentName.ThrowExceptionIfNullOrEmpty("installInstrumentDto.InstrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            installInstrumentDto.BucketPath.ThrowExceptionIfNullOrEmpty("installInstrumentDto.BucketPath");
+            installInstrumentDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("installInstrumentDto.InstrumentFile");
 
-            var instrumentFile = _storageService.DownloadFromBucket(bucketPath, instrumentFileName);
+            var instrumentFile = _storageService.DownloadFromBucket(
+                installInstrumentDto.BucketPath, 
+                installInstrumentDto.InstrumentFile);
 
-            _blaiseApi.InstallSurvey(instrumentFile, SurveyInterviewType.Cati, serverParkName);
+            _blaiseFileApi.UpdateInstrumentFileWithSqlConnection(
+                installInstrumentDto.InstrumentName,
+                instrumentFile);
+
+            _blaiseSurveyApi.InstallSurvey(
+                installInstrumentDto.InstrumentName, 
+                serverParkName, 
+                instrumentFile, 
+                SurveyInterviewType.Cati);
+
             _storageService.DeleteFile(instrumentFile);
         }
 
@@ -36,7 +53,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            _blaiseApi.UninstallSurvey(instrumentName, serverParkName);
+            _blaiseSurveyApi.UninstallSurvey(instrumentName, serverParkName);
         }
     }
 }
