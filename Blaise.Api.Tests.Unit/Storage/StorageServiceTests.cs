@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Abstractions;
+using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Api.Storage.Services;
@@ -30,7 +31,7 @@ namespace Blaise.Api.Tests.Unit.Storage
         }
 
         [Test]
-        public void Given_I_Call_DownloadFromBucket_Then_The_Correct_Services_Are_Called()
+        public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_Services_Are_Called()
         {
             //arrange
             const string bucketPath = "OPN";
@@ -47,17 +48,17 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            _sut.DownloadFromBucket(bucketPath, instrumentFileName);
+            await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName);
 
             //arrange
-            _storageProviderMock.Verify(v => v.Download(bucketPath, 
+            _storageProviderMock.Verify(v => v.DownloadAsync(bucketPath, 
                 instrumentFileName, filePath));
 
             _storageProviderMock.Verify(v => v.Dispose(), Times.Once);
         }
 
         [Test]
-        public void Given_I_Call_DownloadFromBucket_Then_The_Correct_File_Is_Returned()
+        public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_File_Is_Returned()
         {
             //arrange
             const string bucketPath = "OPN";
@@ -73,12 +74,12 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(instrumentFilePath);
 
             _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
-            _storageProviderMock.Setup(s => s.Download(bucketPath, instrumentFileName,
+            _storageProviderMock.Setup(s => s.DownloadAsync(bucketPath, instrumentFileName,
                 It.IsAny<string>()));
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            var result =_sut.DownloadFromBucket(bucketPath, instrumentFileName);
+            var result = await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName);
 
             //arrange
             Assert.AreEqual(instrumentFilePath, result);

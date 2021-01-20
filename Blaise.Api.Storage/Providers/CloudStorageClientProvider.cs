@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Abstractions;
+using System.Threading.Tasks;
 using Blaise.Api.Storage.Interfaces;
 using Google.Cloud.Storage.V1;
 
@@ -17,15 +18,21 @@ namespace Blaise.Api.Storage.Providers
             _fileSystem = fileSystem;
         }
 
-        public void Download(string bucketName, string fileName, string destinationFilePath)
+        public async Task DownloadAsync(string bucketName, string fileName, string destinationFilePath)
         {
             var storageClient = GetStorageClient();
             using (var fileStream = _fileSystem.FileStream.Create(destinationFilePath, FileMode.OpenOrCreate))
             {
-                storageClient.DownloadObject(bucketName, fileName, fileStream);
+                await storageClient.DownloadObjectAsync(bucketName, fileName, fileStream);
             }
         }
         
+        
+        public void Upload(string bucketName, string fileName)
+        {
+            var storageClient = GetStorageClient();
+        }
+
         public void Dispose()
         {
             _storageClient?.Dispose();

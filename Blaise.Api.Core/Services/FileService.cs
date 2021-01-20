@@ -22,5 +22,15 @@ namespace Blaise.Api.Core.Services
                 instrumentName,
                 instrumentFile);
         }
+
+        public void UpdateInstrumentFileWithData(string serverParkName, string instrumentName, string instrumentFile)
+        {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            instrumentFile.ThrowExceptionIfNullOrEmpty("instrumentFile");
+
+            _blaiseFileApi.UpdateInstrumentFileWithData(serverParkName,  instrumentName, 
+                instrumentFile);
+        }
     }
 }

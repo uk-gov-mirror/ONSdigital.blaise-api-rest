@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
+using Blaise.Api.Filters;
 using Blaise.Api.Logging.Services;
 using Blaise.Nuget.Api.Contracts.Enums;
 
 namespace Blaise.Api.Controllers
 {
+    [ExceptionFilter]
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments")]
     public class InstrumentController : BaseController
     {
@@ -100,15 +103,15 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public IHttpActionResult InstallInstrument([FromUri] string serverParkName, [FromBody] InstallInstrumentDto installInstrumentDto)
+        public async Task<IHttpActionResult> InstallInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
         {
-            LoggingService.LogInfo($"Attempting to install instrument '{installInstrumentDto.InstrumentFile}' on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
 
-            _installInstrumentService.InstallInstrument(serverParkName, installInstrumentDto);
+            await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto);
 
-            LoggingService.LogInfo($"Instrument '{installInstrumentDto.InstrumentFile}' installed on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
 
-            return Created($"{Request.RequestUri}/{installInstrumentDto.InstrumentName}", installInstrumentDto);
+            return Created($"{Request.RequestUri}/{instrumentPackageDto.InstrumentName}", instrumentPackageDto);
         }
 
         [HttpDelete]
@@ -124,6 +127,17 @@ namespace Blaise.Api.Controllers
             return NoContent();
         }
 
+        [HttpPost]
+        [Route("{instrumentName}/deliver")]
+        public IHttpActionResult DeliverInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
+        {
+            LoggingService.LogInfo($"Attempting to deliver instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
+
+ 
+            LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
+
+            return Created($"{Request.RequestUri}/{instrumentPackageDto.InstrumentName}", instrumentPackageDto);
+        }
 
         [HttpPatch]
         [Route("{instrumentName}/activate")]

@@ -1,4 +1,6 @@
 ﻿using System.IO.Abstractions;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 
@@ -20,13 +22,18 @@ namespace Blaise.Api.Storage.Services
             _fileSystem = fileSystem;
         }
 
-        public string DownloadFromBucket(string bucketPath, string fileName)
+        public async Task<string> DownloadFromBucketAsync(string bucketPath, string fileName)
         {
             var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, fileName);
-            _cloudStorageClient.Download(bucketPath, fileName, destinationFilePath);
+            await _cloudStorageClient.DownloadAsync(bucketPath, fileName, destinationFilePath);
             _cloudStorageClient.Dispose();
 
             return destinationFilePath;
+        }
+
+        public async Task UploadToBucketAsync(string bucketPath, string fileName)
+        {
+            _cloudStorageClient.Dispose();
         }
 
         public void DeleteFile(string instrumentFile)
