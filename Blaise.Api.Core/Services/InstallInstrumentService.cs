@@ -47,13 +47,5 @@ namespace Blaise.Api.Core.Services
 
             _storageService.DeleteFile(instrumentFile);
         }
-
-        public void UninstallInstrument(string instrumentName, string serverParkName)
-        {
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
-            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-
-            _blaiseSurveyApi.UninstallSurvey(instrumentName, serverParkName);
-        }
     }
 }

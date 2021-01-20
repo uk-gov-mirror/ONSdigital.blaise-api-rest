@@ -143,55 +143,5 @@ namespace Blaise.Api.Tests.Unit.Services
                 _installInstrumentDto));
             Assert.AreEqual("installInstrumentDto.BucketPath", exception.ParamName);
         }
-
-        [Test]
-        public void Given_I_Call_UninstallInstrument_Then_The_Correct_Services_Are_Called()
-        {
-            //arrange
-            _blaiseSurveyApiMock.Setup(b => b
-                .UninstallSurvey(_instrumentName, _serverParkName));
-            //act
-            _sut.UninstallInstrument(_instrumentName, _serverParkName);
-
-            //assert
-            _blaiseSurveyApiMock.Verify(v => v.UninstallSurvey(_instrumentName, _serverParkName)
-                , Times.Once);
-        }
-
-        [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_UninstallInstrument_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallInstrument(string.Empty,
-                _serverParkName));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_UninstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallInstrument(null,
-                _serverParkName));
-            Assert.AreEqual("instrumentName", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_ServerParkName_When_I_Call_UninstallInstrument_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UninstallInstrument(_instrumentName,
-                string.Empty));
-            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_ServerParkName_When_I_Call_UninstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UninstallInstrument(_instrumentName,
-                null));
-            Assert.AreEqual("serverParkName", exception.ParamName);
-        }
     }
 }

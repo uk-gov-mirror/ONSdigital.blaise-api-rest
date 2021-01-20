@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
+    <Compile Include="Interfaces\Services\IUninstallInstrumentService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentService.cs" />
     <Compile Include="Interfaces\Mappers\IServerParkDtoMapper.cs" />
     <Compile Include="Interfaces\Services\IServerParkService.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Services\HealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IHealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IInstallInstrumentService.cs" />
+    <Compile Include="Services\UninstallInstrumentService.cs" />
     <Compile Include="Services\InstallInstrumentService.cs" />
     <Compile Include="Services\InstrumentService.cs" />
     <Compile Include="Interfaces\Services\IUserRoleService.cs" />

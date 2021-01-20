@@ -15,13 +15,16 @@ namespace Blaise.Api.Controllers
     {
         private readonly IInstrumentService _instrumentService;
         private readonly IInstallInstrumentService _installInstrumentService;
+        private readonly IUninstallInstrumentService _uninstallInstrumentService;
 
         public InstrumentController(
             IInstrumentService instrumentService,
-            IInstallInstrumentService installInstrumentService)
+            IInstallInstrumentService installInstrumentService, 
+            IUninstallInstrumentService uninstallInstrumentService)
         {
             _instrumentService = instrumentService;
             _installInstrumentService = installInstrumentService;
+            _uninstallInstrumentService = uninstallInstrumentService;
         }
 
         [HttpGet]
@@ -110,13 +113,13 @@ namespace Blaise.Api.Controllers
 
         [HttpDelete]
         [Route("{instrumentName}")]
-        public IHttpActionResult UninstallInstrument([FromUri] string serverParkName,[FromUri] string name)
+        public IHttpActionResult UninstallInstrument([FromUri] string serverParkName,[FromUri] string instrumentName)
         {
-            LoggingService.LogInfo($"Attempting to uninstall instrument '{name}' on server park '{serverParkName}'");
+            LoggingService.LogInfo($"Attempting to uninstall instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            _installInstrumentService.UninstallInstrument(name, serverParkName);
+            _uninstallInstrumentService.UninstallInstrument(instrumentName, serverParkName);
 
-            LoggingService.LogInfo($"Instrument '{name}' has been uninstalled from server park '{serverParkName}'");
+            LoggingService.LogInfo($"Instrument '{instrumentName}' has been uninstalled from server park '{serverParkName}'");
 
             return NoContent();
         }
