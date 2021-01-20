@@ -9,19 +9,18 @@ namespace Blaise.Api.Core.Services
 {
     public class InstallInstrumentService : IInstallInstrumentService
     {
-        private readonly IBlaiseFileApi _blaiseFileApi;
         private readonly IBlaiseSurveyApi _blaiseSurveyApi;
+        private readonly IFileService _fileService;
         private readonly IStorageService _storageService;
 
         public InstallInstrumentService(
-            IBlaiseFileApi blaiseFileApi,
             IBlaiseSurveyApi blaiseApi,
+            IFileService fileService,
             IStorageService storageService)
         {
-            _blaiseFileApi = blaiseFileApi;
             _blaiseSurveyApi = blaiseApi;
+            _fileService = fileService;
             _storageService = storageService;
-
         }
 
         public void InstallInstrument(string serverParkName, InstallInstrumentDto installInstrumentDto)
@@ -35,7 +34,7 @@ namespace Blaise.Api.Core.Services
                 installInstrumentDto.BucketPath, 
                 installInstrumentDto.InstrumentFile);
 
-            _blaiseFileApi.UpdateInstrumentFileWithSqlConnection(
+            _fileService.UpdateInstrumentFileWithSqlConnection(
                 installInstrumentDto.InstrumentName,
                 instrumentFile);
 

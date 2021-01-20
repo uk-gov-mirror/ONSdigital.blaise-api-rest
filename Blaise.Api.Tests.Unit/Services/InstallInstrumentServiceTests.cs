@@ -1,5 +1,6 @@
 ﻿using System;
 using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Nuget.Api.Contracts.Enums;
@@ -13,8 +14,8 @@ namespace Blaise.Api.Tests.Unit.Services
     {
         private InstallInstrumentService _sut;
 
-        private Mock<IBlaiseFileApi> _blaiseFileApiMock;
         private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
+        private Mock<IFileService> _fileServiceMock;
         private Mock<IStorageService> _storageServiceMock;
         private MockSequence _mockSequence;
 
@@ -27,8 +28,8 @@ namespace Blaise.Api.Tests.Unit.Services
         [SetUp]
         public void SetUpTests()
         {
-            _blaiseFileApiMock = new Mock<IBlaiseFileApi>(MockBehavior.Strict);
             _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>(MockBehavior.Strict);
+            _fileServiceMock = new Mock<IFileService>(MockBehavior.Strict);
             _storageServiceMock = new Mock<IStorageService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
@@ -45,8 +46,8 @@ namespace Blaise.Api.Tests.Unit.Services
             };
 
             _sut = new InstallInstrumentService(
-                _blaiseFileApiMock.Object,
                 _blaiseSurveyApiMock.Object,
+                _fileServiceMock.Object,
                 _storageServiceMock.Object);
         }
 
@@ -60,7 +61,7 @@ namespace Blaise.Api.Tests.Unit.Services
                     _instrumentFileName))
                 .Returns(instrumentFilePath);
 
-            _blaiseFileApiMock.InSequence(_mockSequence).Setup(b => b
+            _fileServiceMock.InSequence(_mockSequence).Setup(b => b
                 .UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath));
 
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
@@ -73,7 +74,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadFromBucket(_bucketPath, _instrumentFileName), Times.Once);
-            _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
                 instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
             _storageServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);
