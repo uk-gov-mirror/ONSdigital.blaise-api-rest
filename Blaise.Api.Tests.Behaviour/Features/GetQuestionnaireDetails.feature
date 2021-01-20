@@ -1,4 +1,5 @@
-﻿Feature: Get Questionnaire Details
+﻿@questionnaires
+Feature: Get Questionnaire Details
 	As a stakeholder
 	I want to see a list of all questionnaires in Blaise
 	So that I can see that the restful API is working
