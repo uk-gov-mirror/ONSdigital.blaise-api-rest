@@ -205,7 +205,6 @@
     <Compile Include="ApiService.Designer.cs">
       <DependentUpon>ApiService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\PortConfig.cs" />
     <Compile Include="Configuration\SwaggerConfig.cs" />
     <Compile Include="Configuration\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />

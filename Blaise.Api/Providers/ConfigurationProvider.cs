@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using Blaise.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Providers

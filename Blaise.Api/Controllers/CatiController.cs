@@ -39,7 +39,7 @@ namespace Blaise.Api.Controllers
         [ResponseType(typeof(IEnumerable<CatiInstrumentDto>))]
         public IHttpActionResult GetInstruments([FromUri] string serverParkName)
         {
-            LoggingService.LogInfo($"Obtaining a list of instruments from Cati for serverpark '{serverParkName}'");
+            LoggingService.LogInfo($"Obtaining a list of instruments from Cati for server park '{serverParkName}'");
 
             var instruments = _catiService.GetCatiInstruments(serverParkName).ToList();
 
