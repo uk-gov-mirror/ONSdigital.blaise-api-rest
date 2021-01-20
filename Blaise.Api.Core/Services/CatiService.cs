@@ -33,9 +33,21 @@ namespace Blaise.Api.Core.Services
 
         public List<CatiInstrumentDto> GetCatiInstruments(string serverParkName)
         {
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
             var instruments = _instrumentService.GetInstruments(serverParkName);
 
             return GetCatiInstruments(instruments);
+        }
+
+        public CatiInstrumentDto GetCatiInstrument(string serverParkName, string instrumentName)
+        {
+            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
+            serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
+
+            var instrument = _instrumentService.GetInstrument(instrumentName, serverParkName);
+
+            return GetCatiInstrumentDto(instrument);
         }
 
         public void CreateDayBatch(string instrumentName, string serverParkName, DayBatchDto dayBatchDto)
@@ -53,12 +65,16 @@ namespace Blaise.Api.Core.Services
 
             foreach (var instrument in instruments)
             {
-                var surveyDays = _blaiseApi.GetSurveyDays(instrument.Name, instrument.ServerParkName);
-                var catiInstrument = _mapper.MapToCatiInstrumentDto(instrument, surveyDays);
-                catiInstruments.Add(catiInstrument);
+                catiInstruments.Add(GetCatiInstrumentDto(instrument));
             }
 
             return catiInstruments;
+        }
+
+        private CatiInstrumentDto GetCatiInstrumentDto(InstrumentDto instrument)
+        {
+            var surveyDays = _blaiseApi.GetSurveyDays(instrument.Name, instrument.ServerParkName);
+            return _mapper.MapToCatiInstrumentDto(instrument, surveyDays);
         }
     }
 }

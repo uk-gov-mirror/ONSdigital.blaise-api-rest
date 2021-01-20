@@ -163,6 +163,122 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetCatiInstruments_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiInstruments(string.Empty));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_GetCatiInstruments_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiInstruments(null));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+   [Test]
+        public void Given_Correct_Arguments_When_I_Call_GetCatiInstrument_Then_I_Get_A_CatiInstrumentDto_Back()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+
+            _instrumentServiceMock.Setup(i => i.GetInstrument(instrumentName, serverParkName))
+                .Returns(new InstrumentDto());
+
+            _blaiseApiMock.Setup(b => b.GetSurveyDays(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<DateTime>());
+
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(It.IsAny<InstrumentDto>(), It.IsAny<List<DateTime>>()))
+                .Returns(new CatiInstrumentDto());
+
+            //act
+            var result = _sut.GetCatiInstrument(serverParkName, instrumentName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+        }
+
+        [Test]
+        public void Given_A_ServerPark_When_I_Call_GetCatiInstrument_Then_I_Get_A_Correct_List_Of_CatiInstrumentDto_Returned()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+            var serverParkName = "ServerParkA";
+
+            var instrument1 = new InstrumentDto { Name = instrumentName, ServerParkName = serverParkName };
+
+            _instrumentServiceMock.Setup(i => i.GetInstrument(instrumentName, serverParkName))
+                .Returns(instrument1);
+
+            var surveyDays1 = new List<DateTime> { DateTime.Today.AddDays(-1) };
+
+            _blaiseApiMock.Setup(b => b.GetSurveyDays(instrument1.Name, instrument1.ServerParkName))
+                .Returns(surveyDays1);
+
+            var catiInstrument1 = new CatiInstrumentDto { Name = instrumentName, SurveyDays = surveyDays1 };
+
+            _mapperMock.Setup(m => m.MapToCatiInstrumentDto(instrument1, surveyDays1)).Returns(catiInstrument1);
+
+            //act
+            var result = _sut.GetCatiInstrument(serverParkName, instrumentName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<CatiInstrumentDto>(result);
+            Assert.AreSame(catiInstrument1, result);
+        }
+
+        
+        [Test]
+        public void Given_An_Empty_InstrumentName_When_I_Call_GetCatiInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            const string serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiInstrument(serverParkName, string.Empty));
+            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentName_When_I_Call_GetCatiInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            const string serverParkName = "ServerParkA";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiInstrument(serverParkName, null));
+            Assert.AreEqual("instrumentName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_ServerParkName_When_I_Call_GetCatiInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.GetCatiInstrument(string.Empty,
+                instrumentName));
+            Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_ServerParkName_When_I_Call_GetCatiInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            var instrumentName = "OPN2101A";
+
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.GetCatiInstrument(null, instrumentName));
+            Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
         public void Given_A_SurveyDay_Exists_When_I_Call_CreateDayBatch_Then_The_Correct_Service_Is_Called()
         {
             //arrange
