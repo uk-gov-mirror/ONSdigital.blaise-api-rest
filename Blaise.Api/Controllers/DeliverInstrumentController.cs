@@ -7,13 +7,13 @@ using Blaise.Api.Logging.Services;
 namespace Blaise.Api.Controllers
 {
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/deliver")]
-    public class DataDeliveryController : BaseController
+    public class DeliverInstrumentController : BaseController
     {
-        private readonly IDataDeliveryService _dataDeliveryService;
+        private readonly IDeliverInstrumentService _deliverInstrumentService;
 
-        public DataDeliveryController(IDataDeliveryService dataDeliveryService)
+        public DeliverInstrumentController(IDeliverInstrumentService dataDeliveryService)
         {
-            _dataDeliveryService = dataDeliveryService;
+            _deliverInstrumentService = dataDeliveryService;
         }
 
         [HttpPost]
@@ -22,7 +22,7 @@ namespace Blaise.Api.Controllers
         {
             LoggingService.LogInfo($"Attempting to deliver instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
 
-            await _dataDeliveryService.DeliverInstrumentAsync(serverParkName, instrumentPackageDto);
+            await _deliverInstrumentService.DeliverInstrumentWithDataAsync(serverParkName, instrumentPackageDto);
 
             LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
 

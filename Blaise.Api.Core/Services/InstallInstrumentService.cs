@@ -11,13 +11,13 @@ namespace Blaise.Api.Core.Services
     public class InstallInstrumentService : IInstallInstrumentService
     {
         private readonly IBlaiseSurveyApi _blaiseSurveyApi;
-        private readonly IFileService _fileService;
-        private readonly IStorageService _storageService;
+        private readonly IBlaiseFileService _fileService;
+        private readonly ICloudStorageService _storageService;
 
         public InstallInstrumentService(
             IBlaiseSurveyApi blaiseApi,
-            IFileService fileService,
-            IStorageService storageService)
+            IBlaiseFileService fileService,
+            ICloudStorageService storageService)
         {
             _blaiseSurveyApi = blaiseApi;
             _fileService = fileService;
@@ -33,6 +33,7 @@ namespace Blaise.Api.Core.Services
 
             var instrumentFile = await _storageService.DownloadFromBucketAsync(
                 instrumentPackageDto.BucketPath, 
+                instrumentPackageDto.InstrumentFile,
                 instrumentPackageDto.InstrumentFile);
 
             _fileService.UpdateInstrumentFileWithSqlConnection(
@@ -45,7 +46,7 @@ namespace Blaise.Api.Core.Services
                 instrumentFile, 
                 SurveyInterviewType.Cati);
 
-            _storageService.DeleteFile(instrumentFile);
+            _fileService.DeleteFile(instrumentFile);
         }
     }
 }

@@ -1,18 +1,17 @@
 ﻿using System.IO.Abstractions;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 
 namespace Blaise.Api.Storage.Services
 {
-    public class StorageService : IStorageService
+    public class CloudStorageService : ICloudStorageService
     {
         private readonly IConfigurationProvider _configurationProvider;
         private readonly ICloudStorageClientProvider _cloudStorageClient;
         private readonly IFileSystem _fileSystem;
 
-        public StorageService(
+        public CloudStorageService(
             IConfigurationProvider configurationProvider, 
             ICloudStorageClientProvider cloudStorageClient,
             IFileSystem fileSystem)
@@ -22,23 +21,17 @@ namespace Blaise.Api.Storage.Services
             _fileSystem = fileSystem;
         }
 
-        public async Task<string> DownloadFromBucketAsync(string bucketPath, string fileName)
+        public async Task<string> DownloadFromBucketAsync(string bucketPath, string bucketFileName, string localFileName)
         {
-            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, fileName);
-            await _cloudStorageClient.DownloadAsync(bucketPath, fileName, destinationFilePath);
-            _cloudStorageClient.Dispose();
+            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, localFileName);
+            await _cloudStorageClient.DownloadAsync(bucketPath, bucketFileName, destinationFilePath);
 
             return destinationFilePath;
         }
 
-        public async Task UploadToBucketAsync(string bucketPath, string fileName)
+        public async Task UploadToBucketAsync(string bucketPath, string filePath)
         {
-            _cloudStorageClient.Dispose();
-        }
-
-        public void DeleteFile(string instrumentFile)
-        {
-            _fileSystem.File.Delete(instrumentFile);
+            await _cloudStorageClient.UploadAsync(bucketPath, filePath);
         }
     }
 }

@@ -70,6 +70,12 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.112.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Abstractions, Version=12.0.0.0, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.12.0.5\lib\net461\System.IO.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Abstractions.TestingHelpers, Version=12.0.0.0, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.TestingHelpers.12.0.5\lib\net461\System.IO.Abstractions.TestingHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -121,13 +127,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\Services\ICatiService.cs" />
     <Compile Include="Services\CatiService.cs" />
-    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\BlaiseFileService.cs" />
     <Compile Include="Services\HealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IHealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IInstallInstrumentService.cs" />
-    <Compile Include="Interfaces\Services\IFileService.cs" />
-    <Compile Include="Services\DataDeliveryService.cs" />
-    <Compile Include="Interfaces\Services\IDataDeliveryService.cs" />
+    <Compile Include="Interfaces\Services\IBlaiseFileService.cs" />
+    <Compile Include="Services\DeliverInstrumentService.cs" />
+    <Compile Include="Interfaces\Services\IDeliverInstrumentService.cs" />
     <Compile Include="Services\UninstallInstrumentService.cs" />
     <Compile Include="Services\InstallInstrumentService.cs" />
     <Compile Include="Services\InstrumentService.cs" />

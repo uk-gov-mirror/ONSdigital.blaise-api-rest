@@ -16,8 +16,8 @@ namespace Blaise.Api.Tests.Unit.Services
         private InstallInstrumentService _sut;
 
         private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
-        private Mock<IFileService> _fileServiceMock;
-        private Mock<IStorageService> _storageServiceMock;
+        private Mock<IBlaiseFileService> _fileServiceMock;
+        private Mock<ICloudStorageService> _storageServiceMock;
         private MockSequence _mockSequence;
 
         private string _serverParkName;
@@ -31,8 +31,8 @@ namespace Blaise.Api.Tests.Unit.Services
         public void SetUpTests()
         {
             _blaiseSurveyApiMock = new Mock<IBlaiseSurveyApi>(MockBehavior.Strict);
-            _fileServiceMock = new Mock<IFileService>(MockBehavior.Strict);
-            _storageServiceMock = new Mock<IStorageService>(MockBehavior.Strict);
+            _fileServiceMock = new Mock<IBlaiseFileService>(MockBehavior.Strict);
+            _storageServiceMock = new Mock<ICloudStorageService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
             _bucketPath = "OPN";
@@ -60,7 +60,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadFromBucketAsync(_bucketPath,
-                    _instrumentFile))
+                    _instrumentFile, _instrumentFile))
                 .ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
@@ -69,17 +69,17 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
 
-            _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(instrumentFilePath));
+            _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(instrumentFilePath));
 
             //act
             await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto);
 
             //assert
-            _storageServiceMock.Verify(v => v.DownloadFromBucketAsync(_bucketPath, _instrumentFile), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadFromBucketAsync(_bucketPath, _instrumentFile, _instrumentFile), Times.Once);
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName, instrumentFilePath), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
                 instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
-            _storageServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);
         }
 
         [Test]

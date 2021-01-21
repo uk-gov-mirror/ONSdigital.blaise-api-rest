@@ -7,11 +7,9 @@ using Google.Cloud.Storage.V1;
 
 namespace Blaise.Api.Storage.Providers
 {
-    public class CloudStorageClientProvider : ICloudStorageClientProvider, IDisposable
+    public class CloudStorageClientProvider : ICloudStorageClientProvider
     {
         private readonly IFileSystem _fileSystem;
-
-        private StorageClient _storageClient;
 
         public CloudStorageClientProvider(IFileSystem fileSystem)
         {
@@ -20,35 +18,26 @@ namespace Blaise.Api.Storage.Providers
 
         public async Task DownloadAsync(string bucketName, string fileName, string destinationFilePath)
         {
-            var storageClient = GetStorageClient();
-            using (var fileStream = _fileSystem.FileStream.Create(destinationFilePath, FileMode.OpenOrCreate))
+            using (var storageClient = await StorageClient.CreateAsync())
             {
-                await storageClient.DownloadObjectAsync(bucketName, fileName, fileStream);
+                using (var fileStream = _fileSystem.FileStream.Create(destinationFilePath, FileMode.OpenOrCreate))
+                {
+                    await storageClient.DownloadObjectAsync(bucketName, fileName, fileStream);
+                }
             }
         }
-        
-        
-        public void Upload(string bucketName, string fileName)
-        {
-            var storageClient = GetStorageClient();
-        }
 
-        public void Dispose()
+        public async Task UploadAsync(string bucketName, string filePath)
         {
-            _storageClient?.Dispose();
-            _storageClient = null;
-        }
-
-        private StorageClient GetStorageClient()
-        {
-            var client = _storageClient;
-
-            if (client != null)
+            using (var storageClient = await StorageClient.CreateAsync())
             {
-                return client;
-            }
+                var fileName = Path.GetFileName(filePath);
 
-            return _storageClient = StorageClient.Create();
+                using (var fileStream = _fileSystem.FileStream.Create(filePath, FileMode.OpenOrCreate))
+                {
+                    await storageClient.UploadObjectAsync(bucketName, fileName, null, fileStream);
+                }
+            }
         }
     }
 }

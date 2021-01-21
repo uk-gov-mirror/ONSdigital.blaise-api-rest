@@ -56,10 +56,10 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IHealthCheckService, HealthCheckService>();
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IFileService, FileService>();
+            container.RegisterType<IBlaiseFileService, BlaiseFileService>();
 
             //storage services
-            container.RegisterType<IStorageService, StorageService>();
+            container.RegisterType<ICloudStorageService, CloudStorageService>();
 
             return container;
         }
