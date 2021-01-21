@@ -4,6 +4,7 @@ using System.Linq;
 using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Mappers;
+using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Mappers
 {
@@ -17,6 +18,7 @@ namespace Blaise.Api.Core.Mappers
                 ServerParkName = instrumentDto.ServerParkName,
                 InstallDate = instrumentDto.InstallDate,
                 Status = instrumentDto.Status,
+                DataRecordCount = instrumentDto.DataRecordCount,
                 SurveyDays = surveyDays,
                 Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
                          surveyDays.Any(s => s.Date >= DateTime.Today),
@@ -25,6 +27,5 @@ namespace Blaise.Api.Core.Mappers
 
             return catiInstrument;
         }
-
     }
 }

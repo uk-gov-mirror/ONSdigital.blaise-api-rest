@@ -42,7 +42,8 @@ namespace Blaise.Api.Tests.Unit.Mappers
                 Name = "OPN2021A",
                 ServerParkName = "ServerParkA",
                 InstallDate = DateTime.Now,
-                Status = SurveyStatusType.Inactive.FullName()
+                Status = SurveyStatusType.Inactive.FullName(),
+                DataRecordCount = 10
             };
 
             //act
@@ -55,6 +56,7 @@ namespace Blaise.Api.Tests.Unit.Mappers
             Assert.AreEqual(instrumentDto.ServerParkName, result.ServerParkName);
             Assert.AreEqual(instrumentDto.InstallDate, result.InstallDate);
             Assert.AreEqual(instrumentDto.Status, result.Status);
+            Assert.AreEqual(instrumentDto.DataRecordCount, result.DataRecordCount);
         }
 
         [Test]
