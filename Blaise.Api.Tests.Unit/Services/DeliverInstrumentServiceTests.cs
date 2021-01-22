@@ -54,6 +54,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //arrange
             const string deliveryFile = @"dd_OPN2004A_08042020_154000.zip";
             const string instrumentFilePath = @"d:\temp\dd_OPN2004A_08042020_154000.zip";
+            var expectedUploadBucketPath = $@"{_bucketPath}/delivery/OPN2010A";
 
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f
                     .GenerateUniqueInstrumentFile(It.IsAny<string>(), It.IsAny<string>()))
@@ -84,7 +85,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithData(_serverParkName,
                 _instrumentName, instrumentFilePath), Times.Once);
 
-            _storageServiceMock.Verify(v => v.UploadToBucketAsync(_bucketPath, instrumentFilePath), Times.Once);
+            _storageServiceMock.Verify(v => v.UploadToBucketAsync(expectedUploadBucketPath, instrumentFilePath), Times.Once);
 
             _fileServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);
         }

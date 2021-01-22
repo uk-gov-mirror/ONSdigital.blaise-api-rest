@@ -30,7 +30,7 @@ namespace Blaise.Api.Core.Services
       
             _fileService.UpdateInstrumentFileWithData(serverParkName, instrumentPackageDto.InstrumentName, instrumentFile);
 
-            await UploadInstrumentAsync(instrumentPackageDto.BucketPath, instrumentFile);
+            await UploadInstrumentAsync(instrumentPackageDto.BucketPath, instrumentPackageDto.InstrumentName, instrumentFile);
         }
 
         private async Task<string> DownloadInstrumentAsync(InstrumentPackageDto instrumentPackageDto)
@@ -42,9 +42,10 @@ namespace Blaise.Api.Core.Services
                 instrumentPackageDto.InstrumentFile,dataDeliveryFile);
         }
 
-        private async Task UploadInstrumentAsync(string bucketPath, string instrumentFile)
+        private async Task UploadInstrumentAsync(string bucketPath, string instrumentName,string instrumentFile)
         {
-            await _storageService.UploadToBucketAsync(bucketPath, instrumentFile);
+            var deliveryBucketPath = $"{bucketPath}/delivery/{instrumentName}";
+            await _storageService.UploadToBucketAsync(deliveryBucketPath, instrumentFile);
 
             _fileService.DeleteFile(instrumentFile);
         }
