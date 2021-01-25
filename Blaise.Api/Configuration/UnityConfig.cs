@@ -43,7 +43,6 @@ namespace Blaise.Api.Configuration
             //core mappers
             container.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
             container.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
-            container.RegisterType<ICatiInstrumentDtoMapper, CatiInstrumentDtoMapper>();
             container.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             container.RegisterType<IUserDtoMapper, UserDtoMapper>();
 
