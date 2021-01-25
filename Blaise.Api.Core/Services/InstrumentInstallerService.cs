@@ -8,13 +8,13 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
 {
-    public class InstallInstrumentService : IInstallInstrumentService
+    public class InstrumentInstallerService : IInstrumentInstallerService
     {
         private readonly IBlaiseSurveyApi _blaiseSurveyApi;
         private readonly IBlaiseFileService _fileService;
         private readonly ICloudStorageService _storageService;
 
-        public InstallInstrumentService(
+        public InstrumentInstallerService(
             IBlaiseSurveyApi blaiseApi,
             IBlaiseFileService fileService,
             ICloudStorageService storageService)

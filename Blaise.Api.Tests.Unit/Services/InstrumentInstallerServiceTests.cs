@@ -11,9 +11,9 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class InstallInstrumentServiceTests
+    public class InstrumentInstallerServiceTests
     {
-        private InstallInstrumentService _sut;
+        private InstrumentInstallerService _sut;
 
         private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
         private Mock<IBlaiseFileService> _fileServiceMock;
@@ -47,7 +47,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 InstrumentFile = _instrumentFile
             };
 
-            _sut = new InstallInstrumentService(
+            _sut = new InstrumentInstallerService(
                 _blaiseSurveyApiMock.Object,
                 _fileServiceMock.Object,
                 _storageServiceMock.Object);

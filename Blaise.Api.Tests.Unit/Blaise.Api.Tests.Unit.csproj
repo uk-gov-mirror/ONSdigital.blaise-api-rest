@@ -175,13 +175,13 @@
     <Compile Include="Mappers\ServerParkDtoMapperTests.cs" />
     <Compile Include="Providers\ConfigurationProviderTests.cs" />
     <Compile Include="Services\BlaiseFileServiceTests.cs" />
-    <Compile Include="Services\DeliverInstrumentServiceTests.cs" />
-    <Compile Include="Services\UninstallInstrumentServiceTests.cs" />
+    <Compile Include="Services\InstrumentDataServiceTests.cs" />
+    <Compile Include="Services\InstrumentUninstallerServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />
     <Compile Include="Services\UserRoleServiceTests.cs" />
     <Compile Include="Services\CatiServiceTests.cs" />
     <Compile Include="Services\HealthCheckServiceTests.cs" />
-    <Compile Include="Services\InstallInstrumentServiceTests.cs" />
+    <Compile Include="Services\InstrumentInstallerServiceTests.cs" />
     <Compile Include="Services\InstrumentServiceTests.cs" />
     <Compile Include="Services\ServerParkServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

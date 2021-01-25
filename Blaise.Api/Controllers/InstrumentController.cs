@@ -15,13 +15,13 @@ namespace Blaise.Api.Controllers
     public class InstrumentController : BaseController
     {
         private readonly IInstrumentService _instrumentService;
-        private readonly IInstallInstrumentService _installInstrumentService;
-        private readonly IUninstallInstrumentService _uninstallInstrumentService;
+        private readonly IInstrumentInstallerService _installInstrumentService;
+        private readonly IInstrumentUninstallerService _uninstallInstrumentService;
 
         public InstrumentController(
             IInstrumentService instrumentService,
-            IInstallInstrumentService installInstrumentService, 
-            IUninstallInstrumentService uninstallInstrumentService)
+            IInstrumentInstallerService installInstrumentService, 
+            IInstrumentUninstallerService uninstallInstrumentService)
         {
             _instrumentService = instrumentService;
             _installInstrumentService = installInstrumentService;

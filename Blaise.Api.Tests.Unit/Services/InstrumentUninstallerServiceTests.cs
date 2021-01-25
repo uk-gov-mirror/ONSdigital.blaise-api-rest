@@ -8,9 +8,9 @@ using StatNeth.Blaise.API.DataRecord;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class UninstallInstrumentServiceTests
+    public class InstrumentUninstallerServiceTests
     {
-        private UninstallInstrumentService _sut;
+        private InstrumentUninstallerService _sut;
 
         private Mock<IBlaiseSurveyApi> _blaiseSurveyApiMock;
         private Mock<IBlaiseCaseApi> _blaiseCaseApiMock;
@@ -30,7 +30,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _serverParkName = "ServerParkA";
             _instrumentName = "OPN2010A";
 
-            _sut = new UninstallInstrumentService(
+            _sut = new InstrumentUninstallerService(
                 _blaiseSurveyApiMock.Object,
                 _blaiseCaseApiMock.Object);
         }

@@ -111,7 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
-    <Compile Include="Interfaces\Services\IUninstallInstrumentService.cs" />
+    <Compile Include="Interfaces\Services\IInstrumentUninstallerService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentService.cs" />
     <Compile Include="Interfaces\Mappers\IServerParkDtoMapper.cs" />
     <Compile Include="Interfaces\Services\IServerParkService.cs" />
@@ -130,12 +130,12 @@
     <Compile Include="Services\BlaiseFileService.cs" />
     <Compile Include="Services\HealthCheckService.cs" />
     <Compile Include="Interfaces\Services\IHealthCheckService.cs" />
-    <Compile Include="Interfaces\Services\IInstallInstrumentService.cs" />
+    <Compile Include="Interfaces\Services\IInstrumentInstallerService.cs" />
     <Compile Include="Interfaces\Services\IBlaiseFileService.cs" />
-    <Compile Include="Services\DeliverInstrumentService.cs" />
-    <Compile Include="Interfaces\Services\IDeliverInstrumentService.cs" />
-    <Compile Include="Services\UninstallInstrumentService.cs" />
-    <Compile Include="Services\InstallInstrumentService.cs" />
+    <Compile Include="Services\InstrumentDataService.cs" />
+    <Compile Include="Interfaces\Services\IInstrumentDataService.cs" />
+    <Compile Include="Services\InstrumentUninstallerService.cs" />
+    <Compile Include="Services\InstrumentInstallerService.cs" />
     <Compile Include="Services\InstrumentService.cs" />
     <Compile Include="Interfaces\Services\IUserRoleService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
