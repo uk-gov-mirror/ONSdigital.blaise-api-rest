@@ -52,7 +52,7 @@ stages:
       - task: CopyFiles@2
         inputs:
           SourceFolder: '$(System.DefaultWorkingDirectory)'
-          Contents: '**\Blaise.api\bin\$(BuildConfiguration)\**'
+          Contents: '**\bin\$(BuildConfiguration)\**'
           TargetFolder: '$(build.artifactstagingdirectory)'
           CleanTargetFolder: true
           OverWrite: true
