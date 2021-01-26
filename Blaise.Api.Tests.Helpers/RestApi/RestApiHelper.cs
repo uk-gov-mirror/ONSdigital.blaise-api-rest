@@ -40,7 +40,7 @@ namespace Blaise.Api.Tests.Helpers.RestApi
 
         public async Task DeployQuestionnaire(string url, string bucketPath, string instrumentPackage)
         {
-            var model = new InstallInstrumentDto
+            var model = new InstrumentPackageDto
             {
                 BucketPath = bucketPath,
                 InstrumentFile = instrumentPackage,

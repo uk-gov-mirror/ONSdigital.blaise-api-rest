@@ -3,13 +3,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Filters;
 using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
-    [RoutePrefix("api/v1/users/roles")]
+    [RoutePrefix("api/v1/roles/user")]
     public class UserRoleController : BaseController
     {
         private readonly IUserRoleService _roleService;

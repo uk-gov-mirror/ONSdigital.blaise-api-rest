@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Abstractions;
+using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
 using Blaise.Api.Storage.Services;
@@ -8,9 +9,9 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Storage
 {
-    public class StorageServiceTests
+    public class CloudStorageServiceTests
     {
-        private StorageService _sut;
+        private CloudStorageService _sut;
 
         private Mock<IConfigurationProvider> _configurationProviderMock;
         private Mock<ICloudStorageClientProvider> _storageProviderMock;
@@ -23,20 +24,21 @@ namespace Blaise.Api.Tests.Unit.Storage
             _storageProviderMock = new Mock<ICloudStorageClientProvider>();
             _fileSystemMock = new Mock<IFileSystem>();
        
-            _sut = new StorageService(
+            _sut = new CloudStorageService(
                 _configurationProviderMock.Object,
                 _storageProviderMock.Object,
                 _fileSystemMock.Object);
         }
 
         [Test]
-        public void Given_I_Call_DownloadFromBucket_Then_The_Correct_Services_Are_Called()
+        public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_Services_Are_Called()
         {
             //arrange
             const string bucketPath = "OPN";
             const string instrumentFileName = "OPN1234.zip";
-            const string tempPath = "d:\\temp";
-            var filePath = $"{tempPath}\\{Guid.NewGuid()}";
+            const string localFileName = "DD_OPN1234.zip";
+            const string tempPath = @"d:\temp";
+            var filePath = $@"{tempPath}\{Guid.NewGuid()}";
     
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
@@ -47,56 +49,40 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            _sut.DownloadFromBucket(bucketPath, instrumentFileName);
+            await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName, localFileName);
 
-            //arrange
-            _storageProviderMock.Verify(v => v.Download(bucketPath, 
+            //assert
+            _storageProviderMock.Verify(v => v.DownloadAsync(bucketPath, 
                 instrumentFileName, filePath));
-
-            _storageProviderMock.Verify(v => v.Dispose(), Times.Once);
         }
 
         [Test]
-        public void Given_I_Call_DownloadFromBucket_Then_The_Correct_File_Is_Returned()
+        public async Task Given_I_Call_DownloadFromBucket_Then_The_Correct_File_Is_Returned()
         {
             //arrange
             const string bucketPath = "OPN";
             const string instrumentFileName = "OPN1234.zip";
-            const string tempPath = "d:\\temp";
+            const string localFileName = "DD_OPN1234.zip";
+            const string tempPath = @"d:\temp";
             var filePath = $"{tempPath}";
-            var instrumentFilePath = $"{tempPath}\\{instrumentFileName}";
+            var instrumentFilePath = $@"{tempPath}\{localFileName}";
 
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
             
-            _fileSystemMock.Setup(s => s.Path.Combine(filePath, instrumentFileName))
+            _fileSystemMock.Setup(s => s.Path.Combine(filePath, localFileName))
                 .Returns(instrumentFilePath);
 
             _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
-            _storageProviderMock.Setup(s => s.Download(bucketPath, instrumentFileName,
+            _storageProviderMock.Setup(s => s.DownloadAsync(bucketPath, instrumentFileName,
                 It.IsAny<string>()));
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            var result =_sut.DownloadFromBucket(bucketPath, instrumentFileName);
+            var result = await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName, localFileName);
 
             //arrange
             Assert.AreEqual(instrumentFilePath, result);
-        }
-
-        [Test]
-        public void Given_I_Call_DeleteFile_Then_The_Correct_Services_Are_Called()
-        {
-            //arrange
-            const string instrumentFile = @"d:\\temp\\OPN2001A.zip";
-
-            _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
-
-            //act
-            _sut.DeleteFile(instrumentFile);
-
-            //arrange
-            _fileSystemMock.Verify(f =>f.File.Delete(instrumentFile));
         }
     }
 }

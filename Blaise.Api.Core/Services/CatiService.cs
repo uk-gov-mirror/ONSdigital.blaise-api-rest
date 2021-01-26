@@ -1,41 +1,48 @@
 ﻿using System.Collections.Generic;
 using Blaise.Api.Contracts.Models.Cati;
-using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Mappers;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
+using StatNeth.Blaise.API.ServerManager;
 
 namespace Blaise.Api.Core.Services
 {
     public class CatiService : ICatiService
     {
         private readonly IBlaiseCatiApi _blaiseApi;
-        private readonly IInstrumentService _instrumentService;
-        private readonly ICatiInstrumentDtoMapper _mapper;
+        private readonly IServerParkService _serverParkService;
+        private readonly IInstrumentDtoMapper _mapper;
 
         public CatiService(
             IBlaiseCatiApi blaiseApi,
-            IInstrumentService instrumentService,
-            ICatiInstrumentDtoMapper mapper)
+            IServerParkService serverParkService,
+            IInstrumentDtoMapper mapper)
         {
             _blaiseApi = blaiseApi;
-            _instrumentService = instrumentService;
+            _serverParkService = serverParkService;
             _mapper = mapper;
         }
 
         public List<CatiInstrumentDto> GetCatiInstruments()
         {
-            var instruments = _instrumentService.GetAllInstruments();
+            var serverParks = _serverParkService.GetServerParks();
+            var catiInstruments = new List<CatiInstrumentDto>();
 
-            return GetCatiInstruments(instruments);
+            foreach (var serverPark in serverParks)
+            {
+                var instruments = _blaiseApi.GetInstalledSurveys(serverPark.Name);
+                catiInstruments.AddRange(GetCatiInstruments(instruments));
+            }
+
+            return catiInstruments;
         }
 
         public List<CatiInstrumentDto> GetCatiInstruments(string serverParkName)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            var instruments = _instrumentService.GetInstruments(serverParkName);
+            var instruments = _blaiseApi.GetInstalledSurveys(serverParkName);
 
             return GetCatiInstruments(instruments);
         }
@@ -45,7 +52,7 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            var instrument = _instrumentService.GetInstrument(instrumentName, serverParkName);
+            var instrument = _blaiseApi.GetInstalledSurvey(instrumentName, serverParkName);
 
             return GetCatiInstrumentDto(instrument);
         }
@@ -58,8 +65,8 @@ namespace Blaise.Api.Core.Services
 
             _blaiseApi.CreateDayBatch(instrumentName, serverParkName, dayBatchDto.DaybatchDate);
         }
-
-        private List<CatiInstrumentDto> GetCatiInstruments(IEnumerable<InstrumentDto> instruments)
+        
+        private List<CatiInstrumentDto> GetCatiInstruments(IEnumerable<ISurvey> instruments)
         {
             var catiInstruments = new List<CatiInstrumentDto>();
 
@@ -71,9 +78,9 @@ namespace Blaise.Api.Core.Services
             return catiInstruments;
         }
 
-        private CatiInstrumentDto GetCatiInstrumentDto(InstrumentDto instrument)
+        private CatiInstrumentDto GetCatiInstrumentDto(ISurvey instrument)
         {
-            var surveyDays = _blaiseApi.GetSurveyDays(instrument.Name, instrument.ServerParkName);
+            var surveyDays = _blaiseApi.GetSurveyDays(instrument.Name, instrument.ServerPark);
             return _mapper.MapToCatiInstrumentDto(instrument, surveyDays);
         }
     }
