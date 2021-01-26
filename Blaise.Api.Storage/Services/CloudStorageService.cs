@@ -11,8 +11,8 @@ namespace Blaise.Api.Storage.Services
         private readonly ICloudStorageClientProvider _cloudStorageClient;
         private readonly IFileSystem _fileSystem;
 
-        public CloudStorageService(
-            IConfigurationProvider configurationProvider, 
+        public StorageService(
+            IConfigurationProvider configurationProvider,
             ICloudStorageClientProvider cloudStorageClient,
             IFileSystem fileSystem)
         {
@@ -23,8 +23,15 @@ namespace Blaise.Api.Storage.Services
 
         public async Task<string> DownloadFromBucketAsync(string bucketPath, string bucketFileName, string localFileName)
         {
-            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, localFileName);
-            await _cloudStorageClient.DownloadAsync(bucketPath, bucketFileName, destinationFilePath);
+            if (!_fileSystem.Directory.Exists(_configurationProvider.TempPath))
+            {
+                _fileSystem.Directory.CreateDirectory(_configurationProvider.TempPath);
+            }
+            
+            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, fileName);
+
+            _cloudStorageClient.Download(bucketPath, fileName, destinationFilePath);
+            _cloudStorageClient.Dispose();
 
             return destinationFilePath;
         }
