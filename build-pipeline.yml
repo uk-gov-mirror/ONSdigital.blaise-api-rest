@@ -51,8 +51,8 @@ stages:
           
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/_$(Build.DefinitionName)/$(Build.DefinitionName)/bin/release'
-          Contents: '**\bin\$(BuildConfiguration)\**'
+          SourceFolder: '$(System.DefaultWorkingDirectory)'
+          Contents: '**\Blaise.api\bin\$(BuildConfiguration)\**'
           TargetFolder: '$(build.artifactstagingdirectory)'
           CleanTargetFolder: true
           OverWrite: true
