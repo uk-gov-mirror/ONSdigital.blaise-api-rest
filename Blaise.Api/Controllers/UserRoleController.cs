@@ -8,7 +8,6 @@ using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
     [RoutePrefix("api/v1/users/roles")]
     public class UserRoleController : BaseController
     {

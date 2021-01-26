@@ -9,7 +9,6 @@ using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
     [RoutePrefix("api/v1/cati")]
     public class CatiController : BaseController
     {
