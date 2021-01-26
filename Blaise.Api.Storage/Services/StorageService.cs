@@ -11,7 +11,7 @@ namespace Blaise.Api.Storage.Services
         private readonly IFileSystem _fileSystem;
 
         public StorageService(
-            IConfigurationProvider configurationProvider, 
+            IConfigurationProvider configurationProvider,
             ICloudStorageClientProvider cloudStorageClient,
             IFileSystem fileSystem)
         {
@@ -22,7 +22,13 @@ namespace Blaise.Api.Storage.Services
 
         public string DownloadFromBucket(string bucketPath, string fileName)
         {
+            if (!_fileSystem.Directory.Exists(_configurationProvider.TempPath))
+            {
+                _fileSystem.Directory.CreateDirectory(_configurationProvider.TempPath);
+            }
+            
             var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, fileName);
+
             _cloudStorageClient.Download(bucketPath, fileName, destinationFilePath);
             _cloudStorageClient.Dispose();
 
