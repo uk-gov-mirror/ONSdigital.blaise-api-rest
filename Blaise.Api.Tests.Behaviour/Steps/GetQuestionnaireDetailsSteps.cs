@@ -57,7 +57,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenDetailsOfQuestionnaireAIsReturned()
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
-            Assert.AreEqual(1, listOfActiveQuestionnaires.Count);
             Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.InstrumentName));
         }
 
@@ -76,7 +75,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.IsTrue(instrumentHasInstalled, "The instrument has not been installed, or is not active");
         }
 
-        [AfterScenario("questionnaires")]
+        [AfterFeature("regression")]
         public void CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
