@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using Blaise.Api.Tests.Helpers.Cloud;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
+using NUnit.Framework;
 using TechTalk.SpecFlow;
 
 namespace Blaise.Api.Tests.Behaviour.Steps
@@ -28,10 +31,12 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [When(@"the API is called to deploy the questionnaire")]
         public async Task WhenTheApiIsCalledToDeployTheQuestionnaire()
         {
-            await RestApiHelper.GetInstance().DeployQuestionnaire(
+            var response = await RestApiHelper.GetInstance().DeployQuestionnaire(
                 RestApiConfigurationHelper.InstrumentsUrl,
                 BlaiseConfigurationHelper.InstrumentBucketPath,
-                BlaiseConfigurationHelper.InstrumentPackage);
+                BlaiseConfigurationHelper.InstrumentName);
+
+            Assert.AreEqual(HttpStatusCode.OK, response);
         }
 
 
