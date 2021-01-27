@@ -36,7 +36,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
                 BlaiseConfigurationHelper.InstrumentBucketPath,
                 BlaiseConfigurationHelper.InstrumentName);
 
-            Assert.AreEqual(HttpStatusCode.OK, response);
+            Assert.AreEqual(HttpStatusCode.Created, response);
         }
 
 
