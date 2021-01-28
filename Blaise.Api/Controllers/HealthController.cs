@@ -6,12 +6,10 @@ using System.Web.Http.Description;
 using Blaise.Api.Contracts.Enums;
 using Blaise.Api.Contracts.Models.Health;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Filters;
 using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [ExceptionFilter]
     [RoutePrefix("api/v1/health")]
     public class HealthController : BaseController
     {

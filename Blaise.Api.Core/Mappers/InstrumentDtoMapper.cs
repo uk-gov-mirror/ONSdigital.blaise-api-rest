@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Blaise.Api.Contracts.Models.Cati;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Mappers;
 using StatNeth.Blaise.API.ServerManager;
@@ -29,6 +32,24 @@ namespace Blaise.Api.Core.Mappers
                 Status = instrument.Status,
                 DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2)
             };
+        }
+
+        public CatiInstrumentDto MapToCatiInstrumentDto(ISurvey instrument, List<DateTime> surveyDays)
+        {
+            var catiInstrument = new CatiInstrumentDto
+            {
+                Name = instrument.Name,
+                ServerParkName = instrument.ServerPark,
+                InstallDate = instrument.InstallDate,
+                Status = instrument.Status,
+                DataRecordCount = GetNumberOfDataRecords(instrument as ISurvey2),
+                SurveyDays = surveyDays,
+                Active = surveyDays.Any(s => s.Date <= DateTime.Today) &&
+                         surveyDays.Any(s => s.Date >= DateTime.Today),
+                ActiveToday = surveyDays.Any(s => s.Date == DateTime.Today)
+            };
+
+            return catiInstrument;
         }
 
         private static int GetNumberOfDataRecords(ISurvey2 instrument)

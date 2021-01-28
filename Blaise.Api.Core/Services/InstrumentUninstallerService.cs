@@ -4,12 +4,12 @@ using Blaise.Nuget.Api.Contracts.Interfaces;
 
 namespace Blaise.Api.Core.Services
 {
-    public class UninstallInstrumentService : IUninstallInstrumentService
+    public class InstrumentUninstallerService : IInstrumentUninstallerService
     {
         private readonly IBlaiseSurveyApi _blaiseSurveyApi;
         private readonly IBlaiseCaseApi _blaiseCaseApi;
 
-        public UninstallInstrumentService(
+        public InstrumentUninstallerService(
             IBlaiseSurveyApi blaiseApi, 
             IBlaiseCaseApi blaiseCaseApi)
         {

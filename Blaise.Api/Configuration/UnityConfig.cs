@@ -43,23 +43,22 @@ namespace Blaise.Api.Configuration
             //core mappers
             container.RegisterType<IServerParkDtoMapper, ServerParkDtoMapper>();
             container.RegisterType<IInstrumentDtoMapper, InstrumentDtoMapper>();
-            container.RegisterType<ICatiInstrumentDtoMapper, CatiInstrumentDtoMapper>();
             container.RegisterType<IUserRoleDtoMapper, UserRoleDtoMapper>();
             container.RegisterType<IUserDtoMapper, UserDtoMapper>();
 
             //core services
             container.RegisterType<IServerParkService, ServerParkService>();
             container.RegisterType<IInstrumentService, InstrumentService>();
-            container.RegisterType<IInstallInstrumentService, InstallInstrumentService>();
-            container.RegisterType<IUninstallInstrumentService, UninstallInstrumentService>();
+            container.RegisterType<IInstrumentInstallerService, InstrumentInstallerService>();
+            container.RegisterType<IInstrumentUninstallerService, InstrumentUninstallerService>();
             container.RegisterType<ICatiService, CatiService>();
             container.RegisterType<IHealthCheckService, HealthCheckService>();
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IFileService, FileService>();
+            container.RegisterType<IBlaiseFileService, BlaiseFileService>();
 
             //storage services
-            container.RegisterType<IStorageService, StorageService>();
+            container.RegisterType<ICloudStorageService, CloudStorageService>();
 
             return container;
         }
