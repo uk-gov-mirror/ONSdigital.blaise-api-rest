@@ -76,7 +76,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [AfterFeature("regression")]
-        public void CleanUpScenario()
+        public static void CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
         }
