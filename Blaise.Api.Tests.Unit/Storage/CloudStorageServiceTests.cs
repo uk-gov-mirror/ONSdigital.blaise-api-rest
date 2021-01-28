@@ -70,6 +70,8 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             _fileSystemMock.Setup(s => s.Directory.Exists(tempPath)).Returns(true);
 
+            _fileSystemMock.Setup(s => s.Directory.Exists(tempPath)).Returns(true);
+
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
             
