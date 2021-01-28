@@ -16,14 +16,14 @@ namespace Blaise.Api.Tests.Unit.Storage
         private Mock<IConfigurationProvider> _configurationProviderMock;
         private Mock<ICloudStorageClientProvider> _storageProviderMock;
         private Mock<IFileSystem> _fileSystemMock;
-        
+
         [SetUp]
         public void SetUpTests()
         {
             _configurationProviderMock = new Mock<IConfigurationProvider>();
             _storageProviderMock = new Mock<ICloudStorageClientProvider>();
             _fileSystemMock = new Mock<IFileSystem>();
-       
+
             _sut = new CloudStorageService(
                 _configurationProviderMock.Object,
                 _storageProviderMock.Object,
@@ -39,7 +39,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             const string localFileName = "DD_OPN1234.zip";
             const string tempPath = @"d:\temp";
             var filePath = $@"{tempPath}\{Guid.NewGuid()}";
-    
+
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
 
@@ -52,7 +52,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             await _sut.DownloadFromBucketAsync(bucketPath, instrumentFileName, localFileName);
 
             //assert
-            _storageProviderMock.Verify(v => v.DownloadAsync(bucketPath, 
+            _storageProviderMock.Verify(v => v.DownloadAsync(bucketPath,
                 instrumentFileName, filePath));
         }
 
@@ -69,7 +69,7 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>()))
                 .Returns(filePath);
-            
+
             _fileSystemMock.Setup(s => s.Path.Combine(filePath, localFileName))
                 .Returns(instrumentFilePath);
 

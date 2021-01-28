@@ -64,9 +64,9 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult AddUserRole([FromBody] UserRoleDto roleDto)
         {
             LoggingService.LogInfo($"Attempting to add user role '{roleDto.Name}'");
-            
+
             _roleService.AddUserRole(roleDto);
-            
+
             LoggingService.LogInfo($"Successfully added user role '{roleDto.Name}'");
 
             return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
