@@ -7,7 +7,7 @@ using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
-    [RoutePrefix("api/v1/users/roles")]
+    [RoutePrefix("api/v1/roles/user")]
     public class UserRoleController : BaseController
     {
         private readonly IUserRoleService _roleService;
@@ -64,9 +64,9 @@ namespace Blaise.Api.Controllers
         public IHttpActionResult AddUserRole([FromBody] UserRoleDto roleDto)
         {
             LoggingService.LogInfo($"Attempting to add user role '{roleDto.Name}'");
-            
+
             _roleService.AddUserRole(roleDto);
-            
+
             LoggingService.LogInfo($"Successfully added user role '{roleDto.Name}'");
 
             return Created($"{Request.RequestUri}/{roleDto.Name}", roleDto);
