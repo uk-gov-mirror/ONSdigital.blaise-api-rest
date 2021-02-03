@@ -4,5 +4,7 @@
     {
         string BaseUrl { get; }
         string TempPath { get; }
+        string DqsBucket { get; }
+        string PackageExtension { get; }
     }
 }

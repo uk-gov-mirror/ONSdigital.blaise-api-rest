@@ -1,10 +1,9 @@
-﻿using System;
-using Blaise.Api.Core.Extensions;
+﻿using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
-using System.IO;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
+using Blaise.Api.Contracts.Interfaces;
 
 [assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
@@ -13,30 +12,34 @@ namespace Blaise.Api.Core.Services
     {
         private readonly IBlaiseFileApi _blaiseFileApi;
         private readonly IFileSystem _fileSystem;
+        private readonly IConfigurationProvider _configurationProvider;
 
         public BlaiseFileService(
             IBlaiseFileApi blaiseFileApi, 
-            IFileSystem fileSystem)
+            IFileSystem fileSystem, 
+            IConfigurationProvider configurationProvider)
         {
             _blaiseFileApi = blaiseFileApi;
             _fileSystem = fileSystem;
+            _configurationProvider = configurationProvider;
         }
 
-        public void UpdateInstrumentFileWithSqlConnection(string instrumentName, string instrumentFile)
+        public void UpdateInstrumentFileWithSqlConnection(string instrumentFile)
         {
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             instrumentFile.ThrowExceptionIfNullOrEmpty("instrumentFile");
+            var instrumentName = GetInstrumentNameFromFile(instrumentFile);
 
             _blaiseFileApi.UpdateInstrumentFileWithSqlConnection(
                 instrumentName,
                 instrumentFile);
         }
 
-        public void UpdateInstrumentFileWithData(string serverParkName, string instrumentName, string instrumentFile)
+        public void UpdateInstrumentFileWithData(string serverParkName, string instrumentFile)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
-            instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             instrumentFile.ThrowExceptionIfNullOrEmpty("instrumentFile");
+
+            var instrumentName = GetInstrumentNameFromFile(instrumentFile);
 
             _blaiseFileApi.UpdateInstrumentFileWithData(serverParkName, instrumentName,
                 instrumentFile);
@@ -46,22 +49,14 @@ namespace Blaise.Api.Core.Services
             _fileSystem.File.Delete(instrumentFile);
         }
 
-        public string GenerateUniqueInstrumentFile(string instrumentFile, string instrumentName)
+        public string GetInstrumentNameFromFile(string instrumentFile)
         {
-            return GenerateUniqueInstrumentFile(instrumentFile, instrumentName, DateTime.Now);
+            return _fileSystem.Path.GetFileNameWithoutExtension(instrumentFile);
         }
 
-        internal string GenerateUniqueInstrumentFile(string instrumentFile, string instrumentName, DateTime dateTime)
+        public string GetInstrumentPackageName(string instrumentName)
         {
-            var uniqueInstrumentName = GenerateUniqueInstrumentFileName(instrumentName, dateTime);
-            var fileInfo = _fileSystem.FileInfo.FromFileName(instrumentFile);
-            
-            return Path.Combine(fileInfo.DirectoryName, $"{uniqueInstrumentName}{fileInfo.Extension}");
-        }
-
-        internal string GenerateUniqueInstrumentFileName(string instrumentName, DateTime dateTime)
-        {
-            return $"dd_{instrumentName}_{dateTime:ddMMyyyy}_{dateTime:HHmmss}";
+            return $"{instrumentName}.{_configurationProvider.PackageExtension}";
         }
     }
 }

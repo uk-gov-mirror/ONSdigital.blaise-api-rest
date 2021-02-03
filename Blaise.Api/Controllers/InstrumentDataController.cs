@@ -1,32 +1,32 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
-using Blaise.Api.Contracts.Models.Instrument;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
-using Blaise.Api.Logging.Services;
 
 namespace Blaise.Api.Controllers
 {
     [RoutePrefix("api/v1/serverparks/{serverParkName}/instruments/{instrumentName}/data")]
     public class InstrumentDataController : BaseController
     {
-        private readonly IInstrumentDataService _deliverInstrumentService;
-
-        public InstrumentDataController(IInstrumentDataService dataDeliveryService)
+        private readonly IInstrumentDataService _instrumentDataService;
+        private readonly ILoggingService _loggingService;
+        
+        public InstrumentDataController(
+            IInstrumentDataService dataDeliveryService, 
+            ILoggingService loggingService)
         {
-            _deliverInstrumentService = dataDeliveryService;
+            _instrumentDataService = dataDeliveryService;
+            _loggingService = loggingService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("")]
-        public async Task<IHttpActionResult> DeliverInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
+        public async Task<IHttpActionResult> GetInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            LoggingService.LogInfo($"Attempting to deliver instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
+            _loggingService.LogInfo($"Attempting to download instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            var bucketPath = await _deliverInstrumentService.CreateInstrumentPackageWithDataAsync(serverParkName, instrumentPackageDto);
-
-            LoggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' delivered with data");
-
-            return Created($@"gs://{bucketPath}", instrumentPackageDto);
+            var instrumentFile = await _instrumentDataService.GetInstrumentPackageWithDataAsync(serverParkName, instrumentName);
+            return DownloadFile(instrumentFile);
         }
     }
 }

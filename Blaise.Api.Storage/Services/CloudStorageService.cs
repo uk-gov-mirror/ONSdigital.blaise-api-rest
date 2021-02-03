@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
@@ -21,17 +22,27 @@ namespace Blaise.Api.Storage.Services
             _fileSystem = fileSystem;
         }
 
-        public async Task<string> DownloadFromBucketAsync(string bucketPath, string bucketFileName, string localFileName)
+        public async Task<string> DownloadFromInstrumentBucketAsync(string fileName)
         {
-            var destinationFilePath = _fileSystem.Path.Combine(_configurationProvider.TempPath, localFileName);
-            await _cloudStorageClient.DownloadAsync(bucketPath, bucketFileName, destinationFilePath);
+            var filePath = _fileSystem.Path.Combine(
+                _configurationProvider.TempPath,
+                "InstrumentPackages",
+                Guid.NewGuid().ToString());
 
-            return destinationFilePath;
+            return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, filePath);
         }
 
-        public async Task UploadToBucketAsync(string bucketPath, string filePath)
+        public async Task<string> DownloadFromBucketAsync(string bucketName, string fileName, string filePath)
         {
-            await _cloudStorageClient.UploadAsync(bucketPath, filePath);
+            if (!_fileSystem.Directory.Exists(filePath))
+            {
+                _fileSystem.Directory.CreateDirectory(filePath);
+            }
+
+            var destinationFilePath = _fileSystem.Path.Combine(filePath, fileName);
+            await _cloudStorageClient.DownloadAsync(bucketName, fileName, destinationFilePath);
+
+            return destinationFilePath;
         }
     }
 }

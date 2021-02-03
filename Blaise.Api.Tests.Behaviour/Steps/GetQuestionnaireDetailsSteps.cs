@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Configuration;
+using Blaise.Api.Tests.Helpers.Files;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
 using Blaise.Api.Tests.Models.Questionnaire;
@@ -47,7 +50,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [When(@"the API is queried to return all active questionnaires")]
-        public async System.Threading.Tasks.Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
+        public async Task WhenTheApiIsQueriedToReturnAllActiveQuestionnairesAsync()
         {
             var listOfActiveQuestionnaires =  await RestApiHelper.GetInstance().GetAllActiveQuestionnaires();
             _scenarioContext.Set(listOfActiveQuestionnaires, ApiResponse);
@@ -75,10 +78,11 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.IsTrue(instrumentHasInstalled, "The instrument has not been installed, or is not active");
         }
 
-        [AfterFeature("regression")]
+        [AfterFeature("questionnaires")]
         public static void CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
+            FileSystemHelper.GetInstance().CleanUpTempFiles();
         }
     }
 }

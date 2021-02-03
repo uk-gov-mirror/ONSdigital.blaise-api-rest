@@ -39,18 +39,31 @@ namespace Blaise.Api.Tests.Helpers.RestApi
                 : new List<Questionnaire>();
         }
 
-        public async Task<HttpStatusCode> DeployQuestionnaire(string url, string bucketPath, string instrumentFile)
+        public async Task<HttpStatusCode> DeployQuestionnaire(string url, string instrumentFile)
         {
             var model = new InstrumentPackageDto
             {
-                BucketPath = bucketPath,
-                InstrumentFile = $"{instrumentFile}.zip",
-                InstrumentName = instrumentFile
+                InstrumentFile = instrumentFile
             };
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, stringContent);
             return response.StatusCode;
+        }
+
+        public async Task<string> GetInstrumentWithData(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+
+            var fileName = response.Content.Headers.ContentDisposition.FileName;
+            var filePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
+            {
+                await response.Content.CopyToAsync(fileStream);
+            }
+
+            return filePath;
         }
 
         private static async Task<List<T>> GetListOfObjectsASync<T>(string url)

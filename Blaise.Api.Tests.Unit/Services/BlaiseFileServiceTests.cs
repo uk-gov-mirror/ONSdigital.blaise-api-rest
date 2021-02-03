@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
@@ -13,7 +14,10 @@ namespace Blaise.Api.Tests.Unit.Services
         private BlaiseFileService _sut;
 
         private Mock<IBlaiseFileApi> _blaiseFileApiMock;
+
         private IFileSystem _fileSystemMock;
+
+        private Mock<IConfigurationProvider> _configurationProviderMock;
 
         private string _serverParkName;
         private string _instrumentName;
@@ -23,13 +27,16 @@ namespace Blaise.Api.Tests.Unit.Services
         public void SetUpTests()
         {
             _blaiseFileApiMock = new Mock<IBlaiseFileApi>();
+
             _fileSystemMock = new MockFileSystem();
 
+            _configurationProviderMock = new Mock<IConfigurationProvider>();
+
             _serverParkName = "ServerParkA";
-            _instrumentFile = "OPN1234.zip";
+            _instrumentFile = "OPN2010A.zip";
             _instrumentName = "OPN2010A";
 
-            _sut = new BlaiseFileService(_blaiseFileApiMock.Object, _fileSystemMock);
+            _sut = new BlaiseFileService(_blaiseFileApiMock.Object, _fileSystemMock, _configurationProviderMock.Object);
         }
                 
         [Test]
@@ -40,7 +47,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _instrumentFile));
 
             //act
-            _sut.UpdateInstrumentFileWithData(_serverParkName, _instrumentName, _instrumentFile);
+            _sut.UpdateInstrumentFileWithData(_serverParkName, _instrumentFile);
 
             //assert
             _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithData(_serverParkName, _instrumentName, 
@@ -53,7 +60,6 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithData(string.Empty,
-                _instrumentName,
                 _instrumentFile));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -63,28 +69,8 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithData(null,
-                _instrumentName,
                 _instrumentFile));
             Assert.AreEqual("serverParkName", exception.ParamName);
-        }
-
-        [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_UpdateInstrumentFileWithData_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                string.Empty, _instrumentFile));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_UpdateInstrumentFileWithData_Then_An_ArgumentNullException_Is_Thrown()
-        {
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                null, _instrumentFile));
-            Assert.AreEqual("instrumentName", exception.ParamName);
         }
 
         [Test]
@@ -92,7 +78,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                _instrumentName, string.Empty));
+                string.Empty));
             Assert.AreEqual("A value for the argument 'instrumentFile' must be supplied", exception.Message);
         }
 
@@ -101,7 +87,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithData(_serverParkName,
-                _instrumentName, null));
+                null));
             Assert.AreEqual("instrumentFile", exception.ParamName);
         }
 
@@ -113,7 +99,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _instrumentName, _instrumentFile));
 
             //act
-            _sut.UpdateInstrumentFileWithSqlConnection(_instrumentName, _instrumentFile);
+            _sut.UpdateInstrumentFileWithSqlConnection(_instrumentFile);
 
             //assert
             _blaiseFileApiMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(_instrumentName,
@@ -121,30 +107,10 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_InstrumentName_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                string.Empty, _instrumentFile));
-            Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_InstrumentName_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentNullException_Is_Thrown()
-        {
-
-            //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                null, _instrumentFile));
-            Assert.AreEqual("instrumentName", exception.ParamName);
-        }
-
-        [Test]
         public void Given_An_Empty_InstrumentFile_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                _instrumentName, string.Empty));
+            var exception = Assert.Throws<ArgumentException>(() => _sut.UpdateInstrumentFileWithSqlConnection(string.Empty));
             Assert.AreEqual("A value for the argument 'instrumentFile' must be supplied", exception.Message);
         }
 
@@ -152,8 +118,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_InstrumentFile_When_I_Call_UpdateInstrumentFileWithSqlConnection_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithSqlConnection(
-                _instrumentName, null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.UpdateInstrumentFileWithSqlConnection(null));
             Assert.AreEqual("instrumentFile", exception.ParamName);
         }
 
@@ -165,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var fileSystemMock = new Mock<IFileSystem>();
             fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
-            var sut = new BlaiseFileService(_blaiseFileApiMock.Object, fileSystemMock.Object);
+            var sut = new BlaiseFileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
 
             //act
             sut.DeleteFile(instrumentFile);
@@ -175,56 +140,29 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_Valid_Arguments_When_I_Call_GenerateUniqueInstrumentFileName_Then_I_Get_A_String_Containing_Instrument_Name_Back()
+        public void Given_I_Call_GetInstrumentNameFromFile_Then_The_Correct_Services_Are_Called()
         {
-            //arrange
-            const string instrumentFile = "OPN2004A.zip";
-            const string instrumentName = "OPN2004A";
-
             //act
-            var result = _sut.GenerateUniqueInstrumentFile(instrumentFile, instrumentName);
+            var result = _sut.GetInstrumentNameFromFile(_instrumentFile);
 
             //assert
-            Assert.NotNull(result);
-            Assert.IsInstanceOf<string>(result);
-            Assert.IsTrue(result.Contains(instrumentName));
+            Assert.AreEqual(_instrumentName, result);
         }
 
         [Test]
-        public void Given_Valid_Arguments_When_I_Call_GenerateUniqueInstrumentFile_Then_I_Get_The_Expected_Format_Back()
+        public void Given_I_Call_GetInstrumentPackageName_Then_The_Correct_Services_Are_Called()
         {
             //arrange
-            const string instrumentFile = @"c:\OPN2004A.zip";
-            const string expectedFileName = @"c:\dd_OPN2004A_08042020_154000.zip";
-            const string instrumentName = "OPN2004A";
-            var dateTime = DateTime.ParseExact("2020-04-08 15:40:00,000", "yyyy-MM-dd HH:mm:ss,fff",
-                System.Globalization.CultureInfo.InvariantCulture);
+            var packageExtension = "bpkg";
+            var expectedPackageName = $"{_instrumentName}.{packageExtension}";
+
+            _configurationProviderMock.Setup(c => c.PackageExtension).Returns(packageExtension);
 
             //act
-            var result = _sut.GenerateUniqueInstrumentFile(instrumentFile, instrumentName, dateTime);
+            var result = _sut.GetInstrumentPackageName(_instrumentName);
 
             //assert
-            Assert.NotNull(result);
-            Assert.IsInstanceOf<string>(result);
-            Assert.AreEqual(expectedFileName, result);
-        }
-
-        [Test]
-        public void Given_Valid_Arguments_When_I_Call_GenerateUniqueInstrumentFileName_Then_I_Get_The_Expected_Format_Back()
-        {
-            //arrange
-            const string expectedFileName = "dd_OPN2004A_08042020_154000";
-            const string instrumentName = "OPN2004A";
-            var dateTime = DateTime.ParseExact("2020-04-08 15:40:00,000", "yyyy-MM-dd HH:mm:ss,fff",
-                System.Globalization.CultureInfo.InvariantCulture);
-
-            //act
-            var result = _sut.GenerateUniqueInstrumentFileName(instrumentName, dateTime);
-
-            //assert
-            Assert.NotNull(result);
-            Assert.IsInstanceOf<string>(result);
-            Assert.AreEqual(expectedFileName, result);
+            Assert.AreEqual(expectedPackageName, result);
         }
     }
 }
