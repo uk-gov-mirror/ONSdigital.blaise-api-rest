@@ -62,12 +62,12 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
             Assert.IsTrue(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.InstrumentName));
         }
-
-        [Then(@"an empty list is returned")]
-        public void ThenAnEmptyListIsReturned()
+        
+        [Then(@"the details of the questionnaire is not returned")]
+        public void ThenDetailsOfQuestionnaireAIsNotReturned()
         {
             var listOfActiveQuestionnaires = _scenarioContext.Get<List<Questionnaire>>(ApiResponse);
-            Assert.AreEqual(0, listOfActiveQuestionnaires.Count);
+            Assert.IsFalse(listOfActiveQuestionnaires.Any(q => q.Name == BlaiseConfigurationHelper.InstrumentName));
         }
 
         [Then(@"the questionnaire is available to use in the Blaise environment")]
