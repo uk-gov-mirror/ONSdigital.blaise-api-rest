@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Text;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -32,6 +33,27 @@ namespace Blaise.Api.Controllers
                 return ResponseMessage(responseMsg);
             }
             finally
+            {
+                CleanUpTempFiles(filePath);
+            }
+        }
+
+        private void CleanUpTempFiles(string filePath)
+        {
+            var path = Path.GetDirectoryName(filePath);
+           
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+            
+            var pathIsGuid = Guid.TryParse(new DirectoryInfo(path).Name, out _);
+
+            if (pathIsGuid) // delete containing folder if it is a temp guid
+            {
+                Directory.Delete(path, true);
+            }
+            else
             {
                 File.Delete(filePath);
             }
