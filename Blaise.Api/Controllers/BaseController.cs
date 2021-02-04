@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,15 +19,22 @@ namespace Blaise.Api.Controllers
 
         internal IHttpActionResult DownloadFile(string filePath)
         {
-            var responseMsg = new HttpResponseMessage(HttpStatusCode.OK)
+            try
             {
-                Content = new ByteArrayContent(File.ReadAllBytes(filePath))
-            };
+                var responseMsg = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new ByteArrayContent(File.ReadAllBytes(filePath))
+                };
 
-            responseMsg.Content.Headers.ContentDisposition =  new ContentDispositionHeaderValue("attachment") {FileName = Path.GetFileName(filePath)};
-            responseMsg.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                responseMsg.Content.Headers.ContentDisposition =  new ContentDispositionHeaderValue("attachment") {FileName = Path.GetFileName(filePath)};
+                responseMsg.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             
-            return ResponseMessage(responseMsg);
+                return ResponseMessage(responseMsg);
+            }
+            finally
+            {
+                File.Delete(filePath);
+            }
         }
     }
 }
