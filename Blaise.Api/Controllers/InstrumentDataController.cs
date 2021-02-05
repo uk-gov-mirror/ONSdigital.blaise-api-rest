@@ -37,7 +37,8 @@ namespace Blaise.Api.Controllers
         {
             _loggingService.LogInfo($"Attempting to ingest data for instrument '{instrumentName}' on server park '{serverParkName}'");
 
-            return await Task.FromResult(Created("{Request.RequestUri}", instrumentDataDto));
+            await _instrumentDataService.ImportOnlineDataAsync(instrumentDataDto.InstrumentDataPath, serverParkName, instrumentName);
+            return Created("{Request.RequestUri}", instrumentDataDto);
         }
     }
 }

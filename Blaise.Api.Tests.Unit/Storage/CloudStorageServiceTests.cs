@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO.Abstractions;
+﻿using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
@@ -32,7 +31,7 @@ namespace Blaise.Api.Tests.Unit.Storage
 
 
         [Test]
-        public async Task Given_I_Call_DownloadFromInstrumentBucket_Then_The_Correct_BucketName_Is_Provided()
+        public async Task Given_I_Call_DownloadPackageFromInstrumentBucketAsync_Then_The_Correct_BucketName_Is_Provided()
         {
             //arrange
             const string bucketName = "OPN";
@@ -53,7 +52,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromInstrumentBucketAsync(fileName);
+            await _sut.DownloadPackageFromInstrumentBucketAsync(fileName);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,

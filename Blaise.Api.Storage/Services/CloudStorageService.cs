@@ -22,27 +22,44 @@ namespace Blaise.Api.Storage.Services
             _fileSystem = fileSystem;
         }
 
-        public async Task<string> DownloadFromInstrumentBucketAsync(string fileName)
+        public async Task<string> DownloadPackageFromInstrumentBucketAsync(string fileName)
         {
-            var filePath = _fileSystem.Path.Combine(
+            var localFilePath = _fileSystem.Path.Combine(
                 _configurationProvider.TempPath,
                 "InstrumentPackages",
                 Guid.NewGuid().ToString());
 
-            return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, filePath);
+            return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, localFilePath);
         }
 
-        public async Task<string> DownloadFromBucketAsync(string bucketName, string fileName, string filePath)
+        public async Task<string> DownloadDatabaseFilesFromNisraBucketAsync(string bucketPath)
         {
-            if (!_fileSystem.Directory.Exists(filePath))
+            var localFilePath = _fileSystem.Path.Combine(
+                _configurationProvider.TempPath,
+                "InstrumentFiles",
+                Guid.NewGuid().ToString());
+
+            var files = await _cloudStorageClient.GetListOfFiles(_configurationProvider.NisraBucket, bucketPath);
+
+            foreach (var file in files)
             {
-                _fileSystem.Directory.CreateDirectory(filePath);
+                await DownloadFromBucketAsync(_configurationProvider.NisraBucket, file, localFilePath);
             }
 
-            var destinationFilePath = _fileSystem.Path.Combine(filePath, fileName);
-            await _cloudStorageClient.DownloadAsync(bucketName, fileName, destinationFilePath);
+            return localFilePath;
+        }
 
-            return destinationFilePath;
+        public async Task<string> DownloadFromBucketAsync(string bucketName, string fileName, string localFilePath)
+        {
+            if (!_fileSystem.Directory.Exists(localFilePath))
+            {
+                _fileSystem.Directory.CreateDirectory(localFilePath);
+            }
+
+            var downloadedFile = _fileSystem.Path.Combine(localFilePath, fileName);
+            await _cloudStorageClient.DownloadAsync(bucketName, fileName, downloadedFile);
+
+            return downloadedFile;
         }
     }
 }

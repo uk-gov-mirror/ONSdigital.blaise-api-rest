@@ -21,7 +21,7 @@ namespace Blaise.Api.Configuration
     {
         public static IUnityContainer GetConfiguredContainer()
         {
-			var container = new UnityContainer();
+            var container = new UnityContainer();
 
             //blaise api
             var blaiseConfigurationProvider = new BlaiseConfigurationProvider();
@@ -60,7 +60,9 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IHealthCheckService, HealthCheckService>();
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IBlaiseFileService, BlaiseFileService>();
+            container.RegisterType<IFileService, FileService>();
+            container.RegisterType<ICaseService, CaseService>();
+            container.RegisterType<IUpdateCaseService, UpdateCaseService>();
 
             //storage services
             container.RegisterType<ICloudStorageService, CloudStorageService>();

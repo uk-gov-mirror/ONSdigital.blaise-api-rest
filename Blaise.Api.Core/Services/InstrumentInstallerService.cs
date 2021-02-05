@@ -11,12 +11,12 @@ namespace Blaise.Api.Core.Services
     public class InstrumentInstallerService : IInstrumentInstallerService
     {
         private readonly IBlaiseSurveyApi _blaiseSurveyApi;
-        private readonly IBlaiseFileService _fileService;
+        private readonly IFileService _fileService;
         private readonly ICloudStorageService _storageService;
 
         public InstrumentInstallerService(
             IBlaiseSurveyApi blaiseApi,
-            IBlaiseFileService fileService,
+            IFileService fileService,
             ICloudStorageService storageService)
         {
             _blaiseSurveyApi = blaiseApi;
@@ -30,7 +30,7 @@ namespace Blaise.Api.Core.Services
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             instrumentPackageDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentFile");
 
-            var instrumentFile = await _storageService.DownloadFromInstrumentBucketAsync(
+            var instrumentFile = await _storageService.DownloadPackageFromInstrumentBucketAsync(
                 instrumentPackageDto.InstrumentFile);
 
             _fileService.UpdateInstrumentFileWithSqlConnection(instrumentFile);

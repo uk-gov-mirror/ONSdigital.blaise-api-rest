@@ -9,9 +9,9 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class BlaiseFileServiceTests
+    public class FileServiceTests
     {
-        private BlaiseFileService _sut;
+        private FileService _sut;
 
         private Mock<IBlaiseFileApi> _blaiseFileApiMock;
 
@@ -36,7 +36,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _instrumentFile = "OPN2010A.zip";
             _instrumentName = "OPN2010A";
 
-            _sut = new BlaiseFileService(_blaiseFileApiMock.Object, _fileSystemMock, _configurationProviderMock.Object);
+            _sut = new FileService(_blaiseFileApiMock.Object, _fileSystemMock, _configurationProviderMock.Object);
         }
                 
         [Test]
@@ -130,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var fileSystemMock = new Mock<IFileSystem>();
             fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
-            var sut = new BlaiseFileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
+            var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
 
             //act
             sut.DeleteFile(instrumentFile);
@@ -140,7 +140,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_GetInstrumentNameFromFile_Then_The_Correct_Services_Are_Called()
+        public void Given_I_Call_GetInstrumentNameFromFile_Then_The_Correct_Name_Is_Returned()
         {
             //act
             var result = _sut.GetInstrumentNameFromFile(_instrumentFile);
@@ -150,7 +150,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_GetInstrumentPackageName_Then_The_Correct_Services_Are_Called()
+        public void Given_I_Call_GetInstrumentPackageName_Then_The_Correct_Name_Is_Returned()
         {
             //arrange
             var packageExtension = "bpkg";
@@ -163,6 +163,20 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             Assert.AreEqual(expectedPackageName, result);
+        }
+
+        [Test]
+        public void Given_I_Call_GetDatabaseFile_Then_The_Correct_Name_Is_Returned()
+        {
+            //arrange
+            var filePath = @"d:\test";
+            var expectedName = $@"{filePath}\{_instrumentName}.bdix";
+
+            //act
+            var result = _sut.GetDatabaseFile(filePath, _instrumentName);
+
+            //assert
+            Assert.AreEqual(expectedName, result);
         }
     }
 }
