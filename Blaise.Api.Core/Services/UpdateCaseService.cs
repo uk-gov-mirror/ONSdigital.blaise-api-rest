@@ -2,7 +2,9 @@
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using StatNeth.Blaise.API.DataRecord;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
 {
     public class UpdateCaseService : IUpdateCaseService
@@ -49,7 +51,7 @@ namespace Blaise.Api.Core.Services
             _loggingService.LogInfo($"Not processed: NISRA case '{serialNumber}' (HOut = '{existingOutcome}' < '{nisraOutcome}')'");
         }
 
-        private void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName,
+        internal void UpdateCase(IDataRecord newDataRecord, IDataRecord existingDataRecord, string instrumentName,
             string serverParkName)
         {
             var fieldData = _blaiseApi.GetRecordDataFields(newDataRecord);

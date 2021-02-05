@@ -273,5 +273,20 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _blaiseApiMock.VerifyNoOtherCalls();
         }
+
+        [Test]
+        public void Given_I_Call_UpdateCase_Then_The_Online_FieldData_Is_Added_To_Indicate_It_Came_From_Online()
+        {
+            //arrange
+            var fieldData = new Dictionary<string, string>();
+            _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(fieldData);
+
+            //act
+            _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _instrumentName, _serverParkName);
+
+            //assert
+            Assert.True(fieldData.ContainsKey("QHAdmin.Online"));
+            Assert.AreEqual("1", fieldData["QHAdmin.Online"]);
+        }
     }
 }
