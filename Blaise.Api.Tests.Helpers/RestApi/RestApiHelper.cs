@@ -66,6 +66,18 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             return filePath;
         }
 
+        public async Task<HttpStatusCode> ImportOnlineCases(string url, string instrumentDataPath)
+        {
+            var model = new InstrumentDataDto
+            {
+                InstrumentDataPath = instrumentDataPath
+            };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(url, stringContent);
+            return response.StatusCode;
+        }
+
         private static async Task<List<T>> GetListOfObjectsASync<T>(string url)
         {
             var response = await _httpClient.GetAsync(url);

@@ -22,7 +22,7 @@ namespace Blaise.Api.Tests.Helpers.Instrument
             return _currentInstance ?? (_currentInstance = new InstrumentHelper());
         }
 
-        public void InstallInstrument()
+        public void InstallSurvey()
         {
             _blaiseSurveyApi.InstallSurvey(
                 BlaiseConfigurationHelper.InstrumentName,
