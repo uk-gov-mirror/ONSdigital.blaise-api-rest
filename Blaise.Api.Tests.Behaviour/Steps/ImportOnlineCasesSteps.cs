@@ -93,7 +93,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [BeforeFeature("onlinedata")]
-        public void SetupUpFeature()
+        public static void SetupUpFeature()
         {
             InstrumentHelper.GetInstance().InstallSurvey();
         }
@@ -132,15 +132,15 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         }
 
         [AfterScenario("onlinedata")]
-        public void CleanUpScenario()
+        public static async Task CleanUpScenario()
         {
             CaseHelper.GetInstance().DeleteCases();
             FileSystemHelper.GetInstance().CleanUpTempFiles();
-            OnlineFileHelper.GetInstance().CleanUpFiles();
+            await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
         }
         
         [AfterFeature("onlinedata")]
-        public void CleanUpFeature()
+        public static void CleanUpFeature()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
         }

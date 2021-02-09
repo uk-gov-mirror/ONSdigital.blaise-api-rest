@@ -39,6 +39,11 @@ namespace Blaise.Api.Tests.Helpers.Files
             
             return primaryKey;
         }
+        public async Task CleanUpOnlineFiles()
+        {
+            await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.OnlineFileBucket,
+                BlaiseConfigurationHelper.InstrumentName);
+        }
 
         private async Task<string> DownloadPackageFromBucket()
         {
@@ -62,11 +67,6 @@ namespace Blaise.Api.Tests.Helpers.Files
 
             await CloudStorageHelper.GetInstance().UploadToBucketAsync(
                 uploadPath, filePath);
-        }
-
-        public void CleanUpFiles()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

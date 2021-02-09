@@ -37,18 +37,21 @@ namespace Blaise.Api.Tests.Helpers.Cloud
             return destinationFilePath;
         }
 
-        public async Task DeleteFromBucketAsync(string bucketPath, string fileName)
+        public async Task DeleteFileInBucketAsync(string bucketPath, string fileName)
         {
             var storageClient = GetStorageClient();
             await storageClient.DeleteObjectAsync(bucketPath, fileName);
         }
 
-        public bool FileExists(string bucketPath, string fileName)
+        public async Task DeleteFilesInBucketAsync(string bucketName, string bucketPath)
         {
             var storageClient = GetStorageClient();
-            var storageObjects = storageClient.ListObjects(bucketPath);
-            return storageObjects.Any(
-                s => s.Name.Equals(fileName, StringComparison.CurrentCultureIgnoreCase));
+            var storageObjects = storageClient.ListObjects(bucketName, bucketPath);
+
+            foreach (var storageObject in storageObjects)
+            {
+                await storageClient.DeleteObjectAsync(bucketName, storageObject.Name);
+            }
         }
 
         private StorageClient GetStorageClient()
