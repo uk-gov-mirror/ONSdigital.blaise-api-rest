@@ -99,13 +99,12 @@ namespace Blaise.Api.Tests.Helpers.Case
             return _blaiseCaseApi.GetNumberOfCases(dataInterfaceFile);
         }
 
-        public string GetMode(string primaryKey)
+        public ModeType GetMode(string primaryKey)
         {
             var field = _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.InstrumentName,
                 BlaiseConfigurationHelper.ServerParkName, FieldNameType.Mode);
-            var enumMode = field.EnumerationValue.ToString(CultureInfo.InvariantCulture);
-            Enum.TryParse(enumMode, out ModeType modeType);
-            return modeType.ToString();
+
+            return (ModeType) field.EnumerationValue;
         }
     }
 }

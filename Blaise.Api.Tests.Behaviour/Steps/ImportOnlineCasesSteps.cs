@@ -82,7 +82,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
-            Assert.AreEqual(ModeType.Web.ToString(), modeType);
+            Assert.AreEqual(ModeType.Web, modeType);
         }
 
         [Then(@"the existing blaise case is kept")]
@@ -90,7 +90,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
-            Assert.AreEqual(ModeType.Tel.ToString(), modeType);
+            Assert.AreEqual(ModeType.Tel, modeType);
         }
 
         [BeforeFeature("onlinedata")]
