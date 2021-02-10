@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Configuration;
@@ -139,7 +138,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public static async Task CleanUpScenario()
         {
             CaseHelper.GetInstance().DeleteCases();
-            FileSystemHelper.GetInstance().CleanUpTempFiles();
             await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
         }
         

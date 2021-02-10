@@ -38,6 +38,7 @@ namespace Blaise.Api.Tests.Helpers.Files
                 outcomeCode, ModeType.Web);
 
             await UploadFilesToBucket(extractedFilePath);
+            Directory.Delete(extractedFilePath, true);
 
             return primaryKey;
         }
@@ -58,6 +59,7 @@ namespace Blaise.Api.Tests.Helpers.Files
         {
             var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, BlaiseConfigurationHelper.InstrumentName);
             instrumentPackage.ExtractFiles(extractedFilePath);
+            File.Delete(instrumentPackage);
 
             return extractedFilePath;
         }
