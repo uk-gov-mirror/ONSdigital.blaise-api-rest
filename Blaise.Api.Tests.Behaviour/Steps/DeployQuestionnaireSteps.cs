@@ -40,7 +40,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             
             var fileName = Path.GetFileName(BlaiseConfigurationHelper.InstrumentPackage);
             
-            await CloudStorageHelper.GetInstance().DeleteFromBucketAsync(
+            await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
                 fileName);
 

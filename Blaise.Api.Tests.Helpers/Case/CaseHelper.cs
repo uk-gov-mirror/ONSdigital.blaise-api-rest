@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Enums;
@@ -58,7 +59,7 @@ namespace Blaise.Api.Tests.Helpers.Case
                 BlaiseConfigurationHelper.InstrumentName, BlaiseConfigurationHelper.ServerParkName);
         }
 
-        public string CreateCaseInFile(string databaseFile, int outcome = 110, ModeType mode = ModeType.Tel)
+        public string CreateCaseInFile(string databaseFile, int outcome = 110, ModeType mode = ModeType.Web)
         {
             var dataFields = new Dictionary<string, string>
             {
@@ -100,9 +101,11 @@ namespace Blaise.Api.Tests.Helpers.Case
 
         public string GetMode(string primaryKey)
         {
-            return _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.InstrumentName,
-                BlaiseConfigurationHelper.ServerParkName, FieldNameType.Mode)
-                .IntegerValue.ToString(CultureInfo.InvariantCulture);
+            var field = _blaiseCaseApi.GetFieldValue(primaryKey, BlaiseConfigurationHelper.InstrumentName,
+                BlaiseConfigurationHelper.ServerParkName, FieldNameType.Mode);
+            var enumMode = field.EnumerationValue.ToString(CultureInfo.InvariantCulture);
+            Enum.TryParse(enumMode, out ModeType modeType);
+            return modeType.ToString();
         }
     }
 }

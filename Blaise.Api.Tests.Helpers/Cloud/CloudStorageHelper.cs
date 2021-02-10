@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Blaise.Api.Tests.Helpers.Configuration;
 using Google.Cloud.Storage.V1;
 
 namespace Blaise.Api.Tests.Helpers.Cloud
@@ -24,17 +25,31 @@ namespace Blaise.Api.Tests.Helpers.Cloud
                 await storageClient.UploadObjectAsync(bucketPath, Path.GetFileName(filePath), null, fileStream);
             }
         }
-        
+
+        public async Task UploadFolderToBucketAsync(string bucketPath, string folderPath)
+        {
+            var storageClient = GetStorageClient();
+            var filesInFolder = Directory.GetFiles(folderPath, $"{BlaiseConfigurationHelper.InstrumentName}.*");
+            foreach (var file in filesInFolder)
+            {
+                using (var fileStream = File.OpenRead(file))
+                {
+                    await storageClient.UploadObjectAsync(bucketPath, $"{BlaiseConfigurationHelper.InstrumentName}/{Path.GetFileName(file)}", null, fileStream);
+                }
+            }          
+        }
+
         public async Task<string> DownloadFromBucketAsync(string bucketPath, string fileName, string destinationFilePath)
         {
             var storageClient = GetStorageClient();
+            var downloadedFile = Path.Combine(destinationFilePath, fileName);
 
-            using (var fileStream = File.OpenRead(destinationFilePath))
+            using (var fileStream = File.OpenWrite(downloadedFile))
             {
                 await storageClient.DownloadObjectAsync(bucketPath, fileName, fileStream);
             }
 
-            return destinationFilePath;
+            return downloadedFile;
         }
 
         public async Task DeleteFileInBucketAsync(string bucketPath, string fileName)
@@ -43,10 +58,16 @@ namespace Blaise.Api.Tests.Helpers.Cloud
             await storageClient.DeleteObjectAsync(bucketPath, fileName);
         }
 
+        public async Task DeleteFolderInBucketAsync(string bucketPath, string fileName)
+        {
+            var storageClient = GetStorageClient();
+            await storageClient.DeleteObjectAsync(bucketPath, $"{fileName}/");
+        }
+
         public async Task DeleteFilesInBucketAsync(string bucketName, string bucketPath)
         {
             var storageClient = GetStorageClient();
-            var storageObjects = storageClient.ListObjects(bucketName, bucketPath);
+            var storageObjects = storageClient.ListObjects(bucketName, $"{bucketPath}/");
 
             foreach (var storageObject in storageObjects)
             {

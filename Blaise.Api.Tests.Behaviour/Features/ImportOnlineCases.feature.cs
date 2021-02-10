@@ -213,61 +213,6 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("A case in the online file is complete and in Blaise it is between the range 210-5" +
-            "42, we take the online case")]
-        [NUnit.Framework.TestCaseAttribute("210", "Partially completed survey", null)]
-        [NUnit.Framework.TestCaseAttribute("310", "Non-contact", null)]
-        [NUnit.Framework.TestCaseAttribute("430", "HQ refusal", null)]
-        [NUnit.Framework.TestCaseAttribute("440", "Person not available", null)]
-        [NUnit.Framework.TestCaseAttribute("460", "Refuses cooperation - hard refusal", null)]
-        [NUnit.Framework.TestCaseAttribute("461", "Refuses cooperation - soft refusal could be contacted again", null)]
-        [NUnit.Framework.TestCaseAttribute("541", "Language difficulties - notified by Head Office", null)]
-        [NUnit.Framework.TestCaseAttribute("542", "Language difficulties - notified to interviewer", null)]
-        public virtual void ACaseInTheOnlineFileIsCompleteAndInBlaiseItIsBetweenTheRange210_542WeTakeTheOnlineCase(string existingOutcome, string description, string[] exampleTags)
-        {
-            string[] tagsOfScenario = exampleTags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("existingOutcome", existingOutcome);
-            argumentsOfScenario.Add("description", description);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is complete and in Blaise it is between the range 210-5" +
-                    "42, we take the online case", null, tagsOfScenario, argumentsOfScenario);
-#line 29
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 30
- testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 31
- testRunner.And(string.Format("the same case exists in Blaise with the outcome code \'{0}\'", existingOutcome), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 32
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 33
- testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A case in the online file that has not started and in Blaise it is complete, we k" +
             "eep the existing blaise case")]
         public virtual void ACaseInTheOnlineFileThatHasNotStartedAndInBlaiseItIsCompleteWeKeepTheExistingBlaiseCase()
@@ -351,60 +296,6 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 57
- testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("A case in the online file is partially complete and in Blaise and it is between t" +
-            "he range 310-542, we take the online case")]
-        [NUnit.Framework.TestCaseAttribute("310", "Non-contact", null)]
-        [NUnit.Framework.TestCaseAttribute("430", "HQ refusal", null)]
-        [NUnit.Framework.TestCaseAttribute("440", "Person not available", null)]
-        [NUnit.Framework.TestCaseAttribute("460", "Refuses cooperation - hard refusal", null)]
-        [NUnit.Framework.TestCaseAttribute("461", "Refuses cooperation - soft refusal could be contacted again", null)]
-        [NUnit.Framework.TestCaseAttribute("541", "Language difficulties - notified by Head Office", null)]
-        [NUnit.Framework.TestCaseAttribute("542", "Language difficulties - notified to interviewer", null)]
-        public virtual void ACaseInTheOnlineFileIsPartiallyCompleteAndInBlaiseAndItIsBetweenTheRange310_542WeTakeTheOnlineCase(string existingOutcome, string description, string[] exampleTags)
-        {
-            string[] tagsOfScenario = exampleTags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("existingOutcome", existingOutcome);
-            argumentsOfScenario.Add("description", description);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is partially complete and in Blaise and it is between t" +
-                    "he range 310-542, we take the online case", null, tagsOfScenario, argumentsOfScenario);
-#line 60
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 61
- testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 62
- testRunner.And(string.Format("the same case exists in Blaise with the outcome code \'{0}\'", existingOutcome), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 63
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 64
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

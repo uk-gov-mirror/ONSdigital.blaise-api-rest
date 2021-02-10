@@ -16,13 +16,14 @@ namespace Blaise.Api.Tests.Helpers.Files
         {
             return _currentInstance ?? (_currentInstance = new OnlineFileHelper());
         }
-        
+
         public async Task CreateCasesInOnlineFileAsync(int numberOfCases)
         {
             var instrumentPackage = await DownloadPackageFromBucket();
             var extractedFilePath = ExtractPackageFiles(instrumentPackage);
+            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
-            CaseHelper.GetInstance().CreateCasesInFile(extractedFilePath, numberOfCases);
+            CaseHelper.GetInstance().CreateCasesInFile(instrumentDatabase, numberOfCases);
 
             await UploadFilesToBucket(extractedFilePath);
         }
@@ -31,17 +32,18 @@ namespace Blaise.Api.Tests.Helpers.Files
         {
             var instrumentPackage = await DownloadPackageFromBucket();
             var extractedFilePath = ExtractPackageFiles(instrumentPackage);
+            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
-            var primaryKey = CaseHelper.GetInstance().CreateCaseInFile(extractedFilePath, 
+            var primaryKey = CaseHelper.GetInstance().CreateCaseInFile(instrumentDatabase,
                 outcomeCode, ModeType.Web);
 
             await UploadFilesToBucket(extractedFilePath);
-            
+
             return primaryKey;
         }
         public async Task CleanUpOnlineFiles()
         {
-            await CloudStorageHelper.GetInstance().DeleteFileInBucketAsync(BlaiseConfigurationHelper.OnlineFileBucket,
+            await CloudStorageHelper.GetInstance().DeleteFilesInBucketAsync(BlaiseConfigurationHelper.OnlineFileBucket,
                 BlaiseConfigurationHelper.InstrumentName);
         }
 
@@ -49,7 +51,7 @@ namespace Blaise.Api.Tests.Helpers.Files
         {
             return await CloudStorageHelper.GetInstance().DownloadFromBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
-                BlaiseConfigurationHelper.InstrumentPackage, BlaiseConfigurationHelper.TempDownloadPath);
+                BlaiseConfigurationHelper.InstrumentFile, BlaiseConfigurationHelper.TempDownloadPath);
         }
 
         private string ExtractPackageFiles(string instrumentPackage)
@@ -62,10 +64,9 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         private async Task UploadFilesToBucket(string filePath)
         {
-            var uploadPath = Path.Combine(BlaiseConfigurationHelper.OnlineFileBucket,
-                BlaiseConfigurationHelper.InstrumentName);
+            var uploadPath = Path.Combine(BlaiseConfigurationHelper.OnlineFileBucket);
 
-            await CloudStorageHelper.GetInstance().UploadToBucketAsync(
+            await CloudStorageHelper.GetInstance().UploadFolderToBucketAsync(
                 uploadPath, filePath);
         }
     }

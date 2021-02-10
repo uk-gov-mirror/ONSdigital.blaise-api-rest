@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
@@ -56,7 +57,8 @@ namespace Blaise.Api.Storage.Services
                 _fileSystem.Directory.CreateDirectory(localFilePath);
             }
 
-            var downloadedFile = _fileSystem.Path.Combine(localFilePath, fileName);
+            var downloadedFile = _fileSystem.Path.Combine(localFilePath, _fileSystem.Path.GetFileName(fileName));
+
             await _cloudStorageClient.DownloadAsync(bucketName, fileName, downloadedFile);
 
             return downloadedFile;
