@@ -34,7 +34,7 @@ namespace Blaise.Api.Core.Services
                     _loggingService.LogInfo($"Case with serial number '{primaryKey}' exists in Blaise");
 
                     var existingCase = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
-                    _updateCaseService.UpdateExistingCaseWithOnlineData(newRecord, existingCase, instrumentName, serverParkName, primaryKey);
+                    _updateCaseService.UpdateExistingCaseWithOnlineData(newRecord, existingCase, serverParkName, instrumentName,  primaryKey);
                 }
                 else
                 {

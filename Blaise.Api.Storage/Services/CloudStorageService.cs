@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.IO.Abstractions;
+using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
@@ -12,15 +12,18 @@ namespace Blaise.Api.Storage.Services
         private readonly IConfigurationProvider _configurationProvider;
         private readonly ICloudStorageClientProvider _cloudStorageClient;
         private readonly IFileSystem _fileSystem;
+        private readonly ILoggingService _loggingService;
 
         public CloudStorageService(
             IConfigurationProvider configurationProvider,
             ICloudStorageClientProvider cloudStorageClient,
-            IFileSystem fileSystem)
+            IFileSystem fileSystem, 
+            ILoggingService loggingService)
         {
             _configurationProvider = configurationProvider;
             _cloudStorageClient = cloudStorageClient;
             _fileSystem = fileSystem;
+            _loggingService = loggingService;
         }
 
         public async Task<string> DownloadPackageFromInstrumentBucketAsync(string fileName)
@@ -40,7 +43,8 @@ namespace Blaise.Api.Storage.Services
                 "InstrumentFiles",
                 Guid.NewGuid().ToString());
 
-            var files = await _cloudStorageClient.GetListOfFiles(_configurationProvider.NisraBucket, bucketPath);
+            var files = (await _cloudStorageClient.GetListOfFiles(_configurationProvider.NisraBucket, bucketPath)).ToList();
+            _loggingService.LogInfo($"Found '{files.Count}' files to download from Nisra bucket");
 
             foreach (var file in files)
             {
@@ -50,17 +54,19 @@ namespace Blaise.Api.Storage.Services
             return localFilePath;
         }
 
-        public async Task<string> DownloadFromBucketAsync(string bucketName, string fileName, string localFilePath)
+        public async Task<string> DownloadFromBucketAsync(string bucketName, string bucketFilePath, string localFilePath)
         {
             if (!_fileSystem.Directory.Exists(localFilePath))
             {
                 _fileSystem.Directory.CreateDirectory(localFilePath);
             }
 
-            var downloadedFile = _fileSystem.Path.Combine(localFilePath, _fileSystem.Path.GetFileName(fileName));
+            var fileName = _fileSystem.Path.GetFileName(bucketFilePath);
+            var downloadedFile = _fileSystem.Path.Combine(localFilePath, fileName);
 
-            await _cloudStorageClient.DownloadAsync(bucketName, fileName, downloadedFile);
-
+            _loggingService.LogInfo($"Attempting to download '{bucketFilePath}' from Nisra bucket '{_configurationProvider.NisraBucket}'");
+            await _cloudStorageClient.DownloadAsync(bucketName, bucketFilePath, downloadedFile);
+            _loggingService.LogInfo($"Downloaded '{fileName}' from Nisra bucket '{_configurationProvider.NisraBucket}' to '{localFilePath}'");
             return downloadedFile;
         }
     }

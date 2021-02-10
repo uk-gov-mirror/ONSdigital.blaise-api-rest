@@ -42,7 +42,7 @@ namespace Blaise.Api.Core.Services
             var filePath = await DownloadDatabaseFilesFromBucketAsync(bucketPath);
             var databaseFile = _fileService.GetDatabaseFile(filePath, instrumentName);
 
-            _caseService.ImportOnlineDatabaseFile(databaseFile, serverParkName, instrumentName);
+            _caseService.ImportOnlineDatabaseFile(databaseFile, instrumentName, serverParkName);
         }
 
         private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName)

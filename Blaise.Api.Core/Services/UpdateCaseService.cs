@@ -20,7 +20,7 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public void UpdateExistingCaseWithOnlineData(IDataRecord onlineDataRecord, IDataRecord existingDataRecord, string serverPark, string instrumentName, string serialNumber)
+        public void UpdateExistingCaseWithOnlineData(IDataRecord onlineDataRecord, IDataRecord existingDataRecord, string serverParkName, string instrumentName, string serialNumber)
         {
             var nisraOutcome = _blaiseApi.GetOutcomeCode(onlineDataRecord);
 
@@ -42,7 +42,7 @@ namespace Blaise.Api.Core.Services
 
             if (existingOutcome == 0 || nisraOutcome <= existingOutcome)
             {
-                UpdateCase(onlineDataRecord, existingDataRecord, instrumentName, serverPark);
+                UpdateCase(onlineDataRecord, existingDataRecord, instrumentName, serverParkName);
                 _loggingService.LogInfo($"processed: NISRA case '{serialNumber}' (HOut = '{nisraOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
 
                 return;

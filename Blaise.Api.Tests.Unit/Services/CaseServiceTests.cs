@@ -134,7 +134,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _dataSetMock.Verify(v => v.MoveNext(), Times.Once);
 
             _updateCaseServiceMock.Verify(v => v.UpdateExistingCaseWithOnlineData(_newDataRecordMock.Object, _existingDataRecordMock.Object,
-                _instrumentName, _serverParkName, _serialNumber), Times.Once);
+                _serverParkName, _instrumentName , _serialNumber), Times.Once);
 
             _blaiseApiMock.VerifyNoOtherCalls();
             _updateCaseServiceMock.VerifyNoOtherCalls();

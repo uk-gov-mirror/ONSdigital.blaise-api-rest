@@ -15,6 +15,7 @@ namespace Blaise.Api.Tests.Unit.Storage
         private Mock<IConfigurationProvider> _configurationProviderMock;
         private Mock<ICloudStorageClientProvider> _storageProviderMock;
         private Mock<IFileSystem> _fileSystemMock;
+        private Mock<ILoggingService> _loggingMock;
 
         [SetUp]
         public void SetUpTests()
@@ -22,11 +23,13 @@ namespace Blaise.Api.Tests.Unit.Storage
             _configurationProviderMock = new Mock<IConfigurationProvider>();
             _storageProviderMock = new Mock<ICloudStorageClientProvider>();
             _fileSystemMock = new Mock<IFileSystem>();
+            _loggingMock = new Mock<ILoggingService>();
 
             _sut = new CloudStorageService(
                 _configurationProviderMock.Object,
                 _storageProviderMock.Object,
-                _fileSystemMock.Object);
+                _fileSystemMock.Object,
+                _loggingMock.Object);
         }
 
 
@@ -36,6 +39,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             //arrange
             const string bucketName = "OPN";
             const string tempPath = @"d:\Temp";
+            const string bucketFilePath = "OPN1234/OPN1234.zip";
             const string fileName = "OPN1234.zip";
             const string filePath = @"d:\temp";
             var destinationFilePath = $@"{filePath}\{fileName}";
@@ -47,16 +51,17 @@ namespace Blaise.Api.Tests.Unit.Storage
                 .Returns(filePath);
 
             _fileSystemMock.Setup(f => f.Directory.Exists(filePath)).Returns(true);
+            _fileSystemMock.Setup(f => f.Path.GetFileName(bucketFilePath)).Returns(fileName);
             _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
                 .Returns(destinationFilePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadPackageFromInstrumentBucketAsync(fileName);
+            await _sut.DownloadPackageFromInstrumentBucketAsync(bucketFilePath);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
-                fileName, destinationFilePath));
+                bucketFilePath, destinationFilePath));
         }
 
         [Test]
@@ -64,21 +69,23 @@ namespace Blaise.Api.Tests.Unit.Storage
         {
             //arrange
             const string bucketName = "OPN";
+            const string bucketFilePath = "OPN1234/OPN1234.zip";
             const string fileName = "OPN1234.zip";
             const string filePath = @"d:\temp";
             var destinationFilePath = $@"{filePath}\{fileName}";
 
             _fileSystemMock.Setup(f => f.Directory.Exists(filePath)).Returns(true);
+            _fileSystemMock.Setup(f => f.Path.GetFileName(bucketFilePath)).Returns(fileName);
             _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
                 .Returns(destinationFilePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            await _sut.DownloadFromBucketAsync(bucketName, fileName, filePath);
+            await _sut.DownloadFromBucketAsync(bucketName, bucketFilePath, filePath);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
-                fileName, destinationFilePath));
+                bucketFilePath, destinationFilePath));
         }
 
         [Test]
@@ -86,17 +93,19 @@ namespace Blaise.Api.Tests.Unit.Storage
         {
             //arrange
             const string bucketName = "OPN";
+            const string bucketFilePath = "OPN1234/OPN1234.zip";
             const string fileName = "OPN1234.zip";
             const string filePath = @"d:\temp";
             var destinationFilePath = $@"{filePath}\{fileName}";
 
             _fileSystemMock.Setup(f => f.Directory.Exists(filePath)).Returns(true);
+            _fileSystemMock.Setup(f => f.Path.GetFileName(bucketFilePath)).Returns(fileName);
             _fileSystemMock.Setup(s => s.Path.Combine(filePath, fileName))
                 .Returns(destinationFilePath);
             _fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
             //act
-            var result = await _sut.DownloadFromBucketAsync(bucketName, fileName, filePath);
+            var result = await _sut.DownloadFromBucketAsync(bucketName, bucketFilePath, filePath);
 
             //arrange
             Assert.AreEqual(destinationFilePath, result);
