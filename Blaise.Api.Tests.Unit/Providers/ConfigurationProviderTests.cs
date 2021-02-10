@@ -41,7 +41,7 @@ namespace Blaise.Api.Tests.Unit.Providers
         }
 
         [Test]
-        public void Given_BucketPath_Value_Is_Set_When_I_Call_BucketPath_I_Get_The_Correct_Value_Back()
+        public void Given_DqsBucket_Value_Is_Set_When_I_Call_DqsBucket_I_Get_The_Correct_Value_Back()
         {
             //act
             var result = _sut.DqsBucket;
@@ -49,6 +49,17 @@ namespace Blaise.Api.Tests.Unit.Providers
             //assert
             Assert.NotNull(result);
             Assert.AreEqual(@"dqs-bucket", result);
+        }
+
+        [Test]
+        public void Given_NisraBucket_Value_Is_Set_When_I_Call_NisraBucket_I_Get_The_Correct_Value_Back()
+        {
+            //act
+            var result = _sut.NisraBucket;
+
+            //assert
+            Assert.NotNull(result);
+            Assert.AreEqual(@"nisra-bucket", result);
         }
         
         [Test]
