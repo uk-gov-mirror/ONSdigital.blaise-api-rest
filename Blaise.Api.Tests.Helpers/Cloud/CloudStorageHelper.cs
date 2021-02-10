@@ -29,7 +29,7 @@ namespace Blaise.Api.Tests.Helpers.Cloud
         public async Task UploadFolderToBucketAsync(string bucketPath, string folderPath)
         {
             var storageClient = GetStorageClient();
-            var filesInFolder = Directory.GetFiles(folderPath, $"{BlaiseConfigurationHelper.InstrumentName}.*");
+            var filesInFolder = Directory.GetFiles(folderPath);
             foreach (var file in filesInFolder)
             {
                 using (var fileStream = File.OpenRead(file))

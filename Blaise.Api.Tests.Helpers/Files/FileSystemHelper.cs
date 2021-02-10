@@ -16,10 +16,8 @@ namespace Blaise.Api.Tests.Helpers.Files
         {
             if (Directory.Exists(BlaiseConfigurationHelper.TempDownloadPath))
             {
-                foreach (var directory in Directory.GetDirectories(BlaiseConfigurationHelper.TempDownloadPath))
-                {
-                    Directory.Delete(directory, true);
-                }
+                var tempFolder = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, BlaiseConfigurationHelper.InstrumentName);
+                Directory.Delete(tempFolder, true);
 
                 foreach (var file in Directory.GetFiles(BlaiseConfigurationHelper.TempDownloadPath))
                 {

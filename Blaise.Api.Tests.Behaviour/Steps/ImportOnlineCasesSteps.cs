@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Configuration;
@@ -19,6 +20,12 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public ImportOnlineCasesSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
+        }
+
+        [BeforeFeature("onlinedata")]
+        public static void SetupUpFeature()
+        {
+            InstrumentHelper.GetInstance().InstallSurvey();
         }
 
         [Given(@"there is a not a online file available")]
@@ -73,8 +80,10 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [When(@"the online file is imported")]
         public async Task WhenTheOnlineFileIsImported()
         {
-            await RestApiHelper.GetInstance().ImportOnlineCases(RestApiConfigurationHelper.InstrumentDataUrl,
+           var statusCode = await RestApiHelper.GetInstance().ImportOnlineCases(RestApiConfigurationHelper.InstrumentDataUrl,
                 BlaiseConfigurationHelper.InstrumentName);
+
+            Assert.AreEqual(HttpStatusCode.Created, statusCode);
         }
 
         [Then(@"the existing blaise case is overwritten with the online case")]
@@ -91,12 +100,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
             var modeType = CaseHelper.GetInstance().GetMode(primaryKey);
             Assert.AreEqual(ModeType.Tel, modeType);
-        }
-
-        [BeforeFeature("onlinedata")]
-        public static void SetupUpFeature()
-        {
-            InstrumentHelper.GetInstance().InstallSurvey();
         }
 
         [Given(@"there is a online file that contains '(.*)' cases")]

@@ -2,8 +2,8 @@
 {
     public enum ModeType
     {
-        NotSpecified,
-        Tel,
-        Web
+        NotSpecified = 1,
+        Tel = 2,
+        Web = 3
     }
 }
