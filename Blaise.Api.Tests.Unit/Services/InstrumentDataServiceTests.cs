@@ -128,6 +128,8 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _caseServiceMock.InSequence(_mockSequence).Setup(c => c.ImportOnlineDatabaseFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
+            _fileServiceMock.InSequence(_mockSequence).Setup(f => f.DeletePath(It.IsAny<string>()));
+
             //act
             await _sut.ImportOnlineDataAsync(_bucketPath, _serverParkName, _instrumentName);
 
@@ -137,6 +139,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.GetDatabaseFile(filePath, _instrumentName), Times.Once);
 
             _caseServiceMock.Verify(v => v.ImportOnlineDatabaseFile(dataBaseFilePath, _instrumentName, _serverParkName), Times.Once);
+
+            _fileServiceMock.Verify(v => v.DeletePath(filePath), Times.Once);
         }
 
         [Test]
