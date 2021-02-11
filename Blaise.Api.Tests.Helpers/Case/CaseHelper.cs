@@ -52,7 +52,7 @@ namespace Blaise.Api.Tests.Helpers.Case
             {
                 { "SerialNumber", primaryKey },
                 { FieldNameType.HOut.FullName(), outcome.ToString() },
-                { FieldNameType.Mode.FullName(), mode.ToString() }
+                { FieldNameType.Mode.FullName(), ((int)mode).ToString() }
             };
 
             _blaiseCaseApi.CreateCase(primaryKey, dataFields,
@@ -65,7 +65,7 @@ namespace Blaise.Api.Tests.Helpers.Case
             {
                 { "SerialNumber", _primaryKey.ToString() },
                 { FieldNameType.HOut.FullName(), outcome.ToString() },
-                { FieldNameType.Mode.FullName(), mode.ToString() }
+                { FieldNameType.Mode.FullName(), ((int)mode).ToString() }
             };
 
             _blaiseCaseApi.CreateCase(databaseFile, _primaryKey.ToString(), dataFields);
