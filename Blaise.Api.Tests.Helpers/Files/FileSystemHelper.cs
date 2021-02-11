@@ -17,14 +17,27 @@ namespace Blaise.Api.Tests.Helpers.Files
             if (Directory.Exists(BlaiseConfigurationHelper.TempDownloadPath))
             {
                 var tempFolder = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, BlaiseConfigurationHelper.InstrumentName);
-                
-                if (Directory.Exists(tempFolder))
-                        Directory.Delete(tempFolder, true);
+                DirectoryInfo directory = new DirectoryInfo(tempFolder);
+                if (directory.Exists)
+                {
+                    setAttributesNormal(directory);
+                    Directory.Delete(tempFolder, true);
+                }
 
                 foreach (var file in Directory.GetFiles(BlaiseConfigurationHelper.TempDownloadPath))
                 {
                     File.Delete(file);
                 }
+            }
+        }
+
+        public void setAttributesNormal(DirectoryInfo directory)
+        {
+            foreach (var subDir in directory.GetDirectories())
+                setAttributesNormal(subDir);
+            foreach (var file in directory.GetFiles())
+            {
+                file.Attributes = FileAttributes.Normal;
             }
         }
     }
