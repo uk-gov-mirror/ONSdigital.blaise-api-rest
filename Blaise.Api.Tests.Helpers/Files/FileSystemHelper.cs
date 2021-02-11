@@ -16,7 +16,7 @@ namespace Blaise.Api.Tests.Helpers.Files
         {
             if (Directory.Exists(BlaiseConfigurationHelper.TempTestsPath))
             {
-               Directory.Delete(BlaiseConfigurationHelper.TempTestsPath, true);
+               //Directory.Delete(BlaiseConfigurationHelper.TempTestsPath, true);
             }
         }
     }
