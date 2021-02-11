@@ -8,6 +8,6 @@
         string GetInstrumentNameFromFile(string instrumentFile);
         string GetInstrumentPackageName(string instrumentName);
         string GetDatabaseFile(string filePath, string instrumentName);
-        void DeletePath(string filePath);
+        void DeletePathAndFiles(string filePath);
     }
 }

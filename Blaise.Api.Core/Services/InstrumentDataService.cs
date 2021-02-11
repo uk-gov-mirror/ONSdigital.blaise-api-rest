@@ -43,7 +43,7 @@ namespace Blaise.Api.Core.Services
             var databaseFile = _fileService.GetDatabaseFile(filePath, instrumentName);
 
             _caseService.ImportOnlineDatabaseFile(databaseFile, instrumentName, serverParkName);
-            _fileService.DeletePath(filePath);
+            _fileService.DeletePathAndFiles(filePath);
         }
 
         private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName)

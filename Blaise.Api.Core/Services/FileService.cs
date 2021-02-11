@@ -64,12 +64,16 @@ namespace Blaise.Api.Core.Services
             return _fileSystem.Path.Combine(filePath, $"{instrumentName}.bdix");
         }
 
-        public void DeletePath(string filePath)
+        public void DeletePathAndFiles(string filePath)
         {
-            if (_fileSystem.Directory.Exists(filePath))
+            if (!_fileSystem.Directory.Exists(filePath)) return;
+
+            foreach (var file in _fileSystem.Directory.GetFiles(filePath))
             {
-                _fileSystem.Directory.Delete(filePath, true);
+                _fileSystem.File.Delete(file);
             }
+
+            _fileSystem.Directory.Delete(filePath, true);
         }
     }
 }
