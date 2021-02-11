@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
 
@@ -10,7 +11,9 @@ namespace Blaise.Api.Controllers
     {
         private readonly IInstrumentDataService _instrumentDataService;
   
-        public InstrumentDataController(IInstrumentDataService dataDeliveryService)
+        public InstrumentDataController(
+            IInstrumentDataService dataDeliveryService, 
+            ILoggingService loggingService) : base(loggingService)
         {
             _instrumentDataService = dataDeliveryService;
         }

@@ -27,6 +27,9 @@ namespace Blaise.Api.Configuration
             var blaiseConfigurationProvider = new BlaiseConfigurationProvider();
             var connectionModel = blaiseConfigurationProvider.GetConnectionModel();
 
+            //logging
+            container.RegisterType<ILoggingService, FileLoggingService>();
+
             container.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseCatiApi, BlaiseCatiApi>(new InjectionConstructor(connectionModel));
@@ -35,9 +38,6 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
-
-            //logging
-            container.RegisterType<ILoggingService, FileLoggingService>();
 
             //providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();

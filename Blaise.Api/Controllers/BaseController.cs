@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Filters;
 
 namespace Blaise.Api.Controllers
@@ -12,6 +13,13 @@ namespace Blaise.Api.Controllers
     [ExceptionFilter]
     public class BaseController : ApiController
     {
+        private readonly ILoggingService _loggingService;
+
+        public BaseController(ILoggingService loggingService)
+        {
+            _loggingService = loggingService;
+        }
+
         internal StatusCodeResult NoContent()
         {
             return StatusCode(HttpStatusCode.NoContent);
@@ -21,25 +29,27 @@ namespace Blaise.Api.Controllers
         {
             try
             {
+                _loggingService.LogInfo($"Downloading file '{filePath}'");
                 var responseMsg = new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new ByteArrayContent(File.ReadAllBytes(filePath))
                 };
 
-                responseMsg.Content.Headers.ContentDisposition =  new ContentDispositionHeaderValue("attachment") {FileName = Path.GetFileName(filePath)};
+                responseMsg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = Path.GetFileName(filePath) };
                 responseMsg.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            
+
                 return ResponseMessage(responseMsg);
             }
             finally
             {
+                _loggingService.LogInfo($"Cleanup files '{filePath}'");
                 CleanUpTempFiles(filePath);
             }
         }
 
         private void CleanUpTempFiles(string filePath)
         {
-            Console.WriteLine($"Attempting to delete file '{filePath}'");
+            _loggingService.LogInfo($"Deleted file '{filePath}'");
             File.Delete(filePath);
 
             var path = Path.GetDirectoryName(filePath);
@@ -54,21 +64,18 @@ namespace Blaise.Api.Controllers
 
         private void DeleteTemporaryGuidFolders(string path)
         {
-            Console.WriteLine($"Attempting to delete guid folders under path '{path}'");
             while (true)
             {
                 var folderName = new DirectoryInfo(path).Name;
                 var pathIsGuid = Guid.TryParse(folderName, out _);
 
-                Console.WriteLine($"Folder '{folderName}' is guid = {pathIsGuid}");
-
+                _loggingService.LogInfo($"Folder '{folderName}' is not a Guid so do not delete");
                 if (!pathIsGuid) return;
 
+                _loggingService.LogInfo($"Deleted folder '{folderName}'");
                 Directory.Delete(path, true);
-                Console.WriteLine($"Deleted Folder '{folderName}'");
 
                 path = Directory.GetParent(path).FullName;
-                Console.WriteLine($"Process path '{path}'");
             }
         }
     }
