@@ -20,31 +20,12 @@ namespace Blaise.Api.Tests.Helpers.Files
 
             try
             {
-                Thread.Sleep(5000);
-                DeleteDirectoryAndFilesInPath(BlaiseConfigurationHelper.TempTestsPath);
+                Thread.Sleep(10000);
+                Directory.Delete(BlaiseConfigurationHelper.TempTestsPath);
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Could not cleanup folders, {e.Message}, {e}");
-            }
-        }
-
-        public static void DeleteDirectoryAndFilesInPath(string path)
-        {
-            var dirInfo = new DirectoryInfo(path);
-            foreach (var dir in dirInfo.GetDirectories())
-            {
-                foreach (var file in dir.GetFiles())
-                {
-                    file.Delete();
-                }
-
-                dir.Delete(true);
-            }
-
-            foreach (var file in Directory.GetFiles(path))
-            {
-                File.Delete(file);
             }
         }
     }
