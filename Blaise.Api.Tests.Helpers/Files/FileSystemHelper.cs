@@ -14,9 +14,11 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         public void CleanUpTempFiles()
         {
-            if (Directory.Exists(BlaiseConfigurationHelper.TempTestsPath))
+            if (!Directory.Exists(BlaiseConfigurationHelper.TempTestsPath)) return;
+
+            foreach (var directory in Directory.GetDirectories(BlaiseConfigurationHelper.TempTestsPath))
             {
-               //Directory.Delete(BlaiseConfigurationHelper.TempTestsPath, true);
+                Directory.Delete(directory, true);
             }
         }
     }
