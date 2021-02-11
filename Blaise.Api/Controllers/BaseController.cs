@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -49,8 +48,8 @@ namespace Blaise.Api.Controllers
 
         private void CleanUpTempFiles(string filePath)
         {
-            _loggingService.LogInfo($"Deleted file '{filePath}'");
             File.Delete(filePath);
+            _loggingService.LogInfo($"Deleted file '{filePath}'");
 
             var path = Path.GetDirectoryName(filePath);
 
@@ -59,24 +58,8 @@ namespace Blaise.Api.Controllers
                 return;
             }
 
-            DeleteTemporaryGuidFolders(path);
-        }
-
-        private void DeleteTemporaryGuidFolders(string path)
-        {
-            while (true)
-            {
-                var folderName = new DirectoryInfo(path).Name;
-                var pathIsGuid = Guid.TryParse(folderName, out _);
-
-                _loggingService.LogInfo($"Folder '{folderName}' is not a Guid so do not delete");
-                if (!pathIsGuid) return;
-
-                _loggingService.LogInfo($"Deleted folder '{folderName}'");
-                Directory.Delete(path, true);
-
-                path = Directory.GetParent(path).FullName;
-            }
+            Directory.Delete(path, false);
+            _loggingService.LogInfo($"Deleted folder '{path}'");
         }
     }
 }
