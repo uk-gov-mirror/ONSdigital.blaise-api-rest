@@ -139,6 +139,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             CaseHelper.GetInstance().DeleteCases();
             await OnlineFileHelper.GetInstance().CleanUpOnlineFiles();
+            FileSystemHelper.GetInstance().CleanUpTempFiles();
         }
         
         [AfterFeature("onlinedata")]
