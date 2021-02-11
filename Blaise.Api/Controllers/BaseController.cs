@@ -58,7 +58,7 @@ namespace Blaise.Api.Controllers
                 return;
             }
 
-            Directory.Delete(path, false);
+            Directory.Delete(path, true);
             _loggingService.LogInfo($"Deleted folder '{path}'");
         }
     }
