@@ -4,7 +4,6 @@ Feature: Import online cases
 	As a service
 	I want to be given cases to import representing the data captured online
 
-@smoke
 #Scenario 1 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is complete and in Blaise it is complete, we take the online case
 	Given there is a online file that contains a case that is complete
