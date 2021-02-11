@@ -50,17 +50,14 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         private async Task<string> DownloadPackageFromBucket()
         {
-            var downloadPath = Path.Combine(BlaiseConfigurationHelper.TempTestsPath, Guid.NewGuid().ToString());
-
             return await CloudStorageHelper.GetInstance().DownloadFromBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
-                BlaiseConfigurationHelper.InstrumentFile, downloadPath);
+                BlaiseConfigurationHelper.InstrumentFile, BlaiseConfigurationHelper.TempTestsPath);
         }
 
         private string ExtractPackageFiles(string instrumentPackage)
         {
-            var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempTestsPath, Guid.NewGuid().ToString(),
-                BlaiseConfigurationHelper.InstrumentName);
+            var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempTestsPath, BlaiseConfigurationHelper.InstrumentName);
 
             instrumentPackage.ExtractFiles(extractedFilePath);
 
