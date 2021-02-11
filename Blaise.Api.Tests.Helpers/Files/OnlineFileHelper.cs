@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Cloud;
@@ -50,14 +51,18 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         private async Task<string> DownloadPackageFromBucket()
         {
+            var downloadPath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, Guid.NewGuid().ToString());
             return await CloudStorageHelper.GetInstance().DownloadFromBucketAsync(
                 BlaiseConfigurationHelper.InstrumentPackageBucket,
-                BlaiseConfigurationHelper.InstrumentFile, BlaiseConfigurationHelper.TempDownloadPath);
+                BlaiseConfigurationHelper.InstrumentFile, downloadPath);
         }
 
         private string ExtractPackageFiles(string instrumentPackage)
         {
-            var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, BlaiseConfigurationHelper.InstrumentName);
+            var extractedFilePath = Path.Combine(
+                BlaiseConfigurationHelper.TempDownloadPath, 
+                Guid.NewGuid().ToString(),
+                BlaiseConfigurationHelper.InstrumentName);
             instrumentPackage.ExtractFiles(extractedFilePath);
             File.Delete(instrumentPackage);
 

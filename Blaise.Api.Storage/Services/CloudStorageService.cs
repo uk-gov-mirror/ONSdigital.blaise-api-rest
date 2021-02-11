@@ -66,6 +66,7 @@ namespace Blaise.Api.Storage.Services
 
             _loggingService.LogInfo($"Attempting to download '{bucketFilePath}' from Nisra bucket '{_configurationProvider.NisraBucket}'");
             await _cloudStorageClient.DownloadAsync(bucketName, bucketFilePath, downloadedFile);
+
             _loggingService.LogInfo($"Downloaded '{fileName}' from Nisra bucket '{_configurationProvider.NisraBucket}' to '{localFilePath}'");
             return downloadedFile;
         }
