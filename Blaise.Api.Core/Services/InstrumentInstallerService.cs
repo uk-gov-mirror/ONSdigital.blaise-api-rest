@@ -43,7 +43,7 @@ namespace Blaise.Api.Core.Services
                 instrumentFile, 
                 SurveyInterviewType.Cati);
 
-            _fileService.DeleteFile(instrumentFile);
+            _fileService.DeletePathAndFiles(instrumentFile);
 
             return instrumentName;
         }

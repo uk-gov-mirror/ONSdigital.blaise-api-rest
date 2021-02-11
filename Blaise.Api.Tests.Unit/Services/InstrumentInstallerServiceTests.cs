@@ -67,7 +67,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
 
-            _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(instrumentFilePath));
+            _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeletePathAndFiles(instrumentFilePath));
 
             //act
             await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto);
@@ -78,7 +78,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.GetInstrumentNameFromFile(_instrumentFile), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
                 instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
-            _fileServiceMock.Verify(v => v.DeleteFile(instrumentFilePath), Times.Once);
+            _fileServiceMock.Verify(v => v.DeletePathAndFiles(instrumentFilePath), Times.Once);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
 
-            _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeleteFile(instrumentFilePath));
+            _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeletePathAndFiles(instrumentFilePath));
 
             //act
             var result = await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto);
