@@ -12,7 +12,7 @@ Scenario: A case in the online file is complete and in Blaise it is complete, we
 	When the online file is imported
 	Then the existing blaise case is overwritten with the online case
 
-@smoke
+
 #Scenario 2 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario:  A case in the online file is partially complete and in Blaise it is complete, we keep the existing blaise case
 	Given there is a online file that contains a case that is partially complete
@@ -20,7 +20,7 @@ Scenario:  A case in the online file is partially complete and in Blaise it is c
 	When the online file is imported
 	Then the existing blaise case is kept
 
-@smoke
+
 #Scenario 3 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is complete and in Blaise it is partially complete, we take the online case
 	Given there is a online file that contains a case that is complete
@@ -45,7 +45,7 @@ Scenario Outline: A case in the online file is complete and in Blaise it is betw
 	| 541             | Language difficulties - notified by Head Office             |
 	| 542             | Language difficulties - notified to interviewer             |
 
-@smoke
+
 #Scenario 5 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file that has not started and in Blaise it is complete, we keep the existing blaise case
 	Given there is a online file that contains a case that has not been started
@@ -53,7 +53,7 @@ Scenario: A case in the online file that has not started and in Blaise it is com
 	When the online file is imported
 	Then  the existing blaise case is kept
 
-@smoke
+
 #Scenario 6  https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is partially complete and in Blaise it is partially complete, we take the online case
 	Given there is a online file that contains a case that is partially complete
@@ -77,7 +77,7 @@ Scenario Outline: A case in the online file is partially complete and in Blaise 
 	| 541             | Language difficulties - notified by Head Office             |
 	| 542             | Language difficulties - notified to interviewer             |
 
-@smoke
+
 #Scenario 8 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file that has not started and in Blaise it is non-contact, we keep the existing blaise case
 	Given there is a online file that contains a case that has not been started
@@ -85,7 +85,7 @@ Scenario: A case in the online file that has not started and in Blaise it is non
 	When the online file is imported
 	Then  the existing blaise case is kept
 
-@smoke
+
 #Scenario 9 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file that is partially complete and in Blaise it marked as respondent request for data to be deleted, we keep the existing blaise case
 	Given there is a online file that contains a case that is partially complete
@@ -93,7 +93,7 @@ Scenario: A case in the online file that is partially complete and in Blaise it 
 	When the online file is imported
 	Then  the existing blaise case is kept
 
-@smoke
+
 #Scenario 10 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file that is complete and in Blaise it marked as respondent request for data to be deleted, we keep the existing blaise case
 	Given there is a online file that contains a case that is complete
