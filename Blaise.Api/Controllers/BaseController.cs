@@ -39,6 +39,7 @@ namespace Blaise.Api.Controllers
 
         private void CleanUpTempFiles(string filePath)
         {
+            Console.WriteLine($"Attempting to delete file '{filePath}'");
             File.Delete(filePath);
 
             var path = Path.GetDirectoryName(filePath);
@@ -53,15 +54,21 @@ namespace Blaise.Api.Controllers
 
         private void DeleteTemporaryGuidFolders(string path)
         {
+            Console.WriteLine($"Attempting to delete guid folders under path '{path}'");
             while (true)
             {
-                var pathIsGuid = Guid.TryParse(new DirectoryInfo(path).Name, out _);
+                var folderName = new DirectoryInfo(path).Name;
+                var pathIsGuid = Guid.TryParse(folderName, out _);
+
+                Console.WriteLine($"Folder '{folderName}' is guid = {pathIsGuid}");
 
                 if (!pathIsGuid) return;
 
                 Directory.Delete(path, true);
+                Console.WriteLine($"Deleted Folder '{folderName}'");
 
                 path = Directory.GetParent(path).FullName;
+                Console.WriteLine($"Process path '{path}'");
             }
         }
     }

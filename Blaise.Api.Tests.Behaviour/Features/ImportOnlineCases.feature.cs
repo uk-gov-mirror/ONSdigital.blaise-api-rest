@@ -174,11 +174,9 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A case in the online file is complete and in Blaise it is partially complete, we " +
             "take the online case")]
-        [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void ACaseInTheOnlineFileIsCompleteAndInBlaiseItIsPartiallyCompleteWeTakeTheOnlineCase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "smoke"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is complete and in Blaise it is partially complete, we " +
                     "take the online case", null, tagsOfScenario, argumentsOfScenario);
@@ -276,11 +274,9 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A case in the online file that has not started and in Blaise it is complete, we k" +
             "eep the existing blaise case")]
-        [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void ACaseInTheOnlineFileThatHasNotStartedAndInBlaiseItIsCompleteWeKeepTheExistingBlaiseCase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "smoke"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that has not started and in Blaise it is complete, we k" +
                     "eep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
@@ -323,11 +319,9 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A case in the online file is partially complete and in Blaise it is partially com" +
             "plete, we take the online case")]
-        [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void ACaseInTheOnlineFileIsPartiallyCompleteAndInBlaiseItIsPartiallyCompleteWeTakeTheOnlineCase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "smoke"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is partially complete and in Blaise it is partially com" +
                     "plete, we take the online case", null, tagsOfScenario, argumentsOfScenario);
@@ -424,11 +418,9 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A case in the online file that has not started and in Blaise it is non-contact, w" +
             "e keep the existing blaise case")]
-        [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void ACaseInTheOnlineFileThatHasNotStartedAndInBlaiseItIsNon_ContactWeKeepTheExistingBlaiseCase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "smoke"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that has not started and in Blaise it is non-contact, w" +
                     "e keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
@@ -471,11 +463,9 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A case in the online file that is partially complete and in Blaise it marked as r" +
             "espondent request for data to be deleted, we keep the existing blaise case")]
-        [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void ACaseInTheOnlineFileThatIsPartiallyCompleteAndInBlaiseItMarkedAsRespondentRequestForDataToBeDeletedWeKeepTheExistingBlaiseCase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "smoke"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that is partially complete and in Blaise it marked as r" +
                     "espondent request for data to be deleted, we keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
@@ -518,11 +508,9 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("A case in the online file that is complete and in Blaise it marked as respondent " +
             "request for data to be deleted, we keep the existing blaise case")]
-        [NUnit.Framework.CategoryAttribute("smoke")]
         public virtual void ACaseInTheOnlineFileThatIsCompleteAndInBlaiseItMarkedAsRespondentRequestForDataToBeDeletedWeKeepTheExistingBlaiseCase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "smoke"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that is complete and in Blaise it marked as respondent " +
                     "request for data to be deleted, we keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);

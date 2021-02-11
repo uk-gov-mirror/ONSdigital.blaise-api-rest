@@ -41,6 +41,11 @@ namespace Blaise.Api.Tests.Helpers.Files
 
                 dir.Delete(true);
             }
+
+            foreach (var file in Directory.GetFiles(path))
+            {
+                File.Delete(file);
+            }
         }
     }
 }
