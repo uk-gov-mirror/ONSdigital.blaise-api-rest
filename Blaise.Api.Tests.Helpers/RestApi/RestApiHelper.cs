@@ -56,7 +56,7 @@ namespace Blaise.Api.Tests.Helpers.RestApi
             var response = await _httpClient.GetAsync(url);
 
             var fileName = response.Content.Headers.ContentDisposition.FileName;
-            var filePath = Path.Combine(BlaiseConfigurationHelper.TempTestsPath, fileName);
+            var filePath = Path.Combine(BlaiseConfigurationHelper.TempPath, fileName);
 
             using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
             {
