@@ -39,23 +39,15 @@ namespace Blaise.Api.Controllers
 
         private void CleanUpTempFiles(string filePath)
         {
+            File.Delete(filePath);
             var path = Path.GetDirectoryName(filePath);
-           
+
             if (string.IsNullOrEmpty(path))
             {
                 return;
             }
-            
-            var pathIsGuid = Guid.TryParse(new DirectoryInfo(path).Name, out _);
 
-            if (pathIsGuid) // delete containing folder if it is a temp guid
-            {
-                Directory.Delete(path, true);
-            }
-            else
-            {
-                File.Delete(filePath);
-            }
+            Directory.Delete(path, false);
         }
     }
 }

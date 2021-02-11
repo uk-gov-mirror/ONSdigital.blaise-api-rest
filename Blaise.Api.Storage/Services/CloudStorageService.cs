@@ -33,6 +33,8 @@ namespace Blaise.Api.Storage.Services
                 "InstrumentPackages",
                 Guid.NewGuid().ToString());
 
+            _loggingService.LogInfo($"Attempting to download '{fileName}' from bucket '{_configurationProvider.DqsBucket}'");
+
             return await DownloadFromBucketAsync(_configurationProvider.DqsBucket, fileName, localFilePath);
         }
 
@@ -48,6 +50,7 @@ namespace Blaise.Api.Storage.Services
 
             foreach (var file in files)
             {
+                _loggingService.LogInfo($"Attempting to download '{file}' from bucket '{_configurationProvider.NisraBucket}'");
                 await DownloadFromBucketAsync(_configurationProvider.NisraBucket, file, localFilePath);
             }
 
@@ -64,10 +67,10 @@ namespace Blaise.Api.Storage.Services
             var fileName = _fileSystem.Path.GetFileName(bucketFilePath);
             var downloadedFile = _fileSystem.Path.Combine(localFilePath, fileName);
 
-            _loggingService.LogInfo($"Attempting to download '{bucketFilePath}' from Nisra bucket '{_configurationProvider.NisraBucket}'");
+            _loggingService.LogInfo($"Attempting to download '{bucketFilePath}' from bucket '{bucketName}'");
             await _cloudStorageClient.DownloadAsync(bucketName, bucketFilePath, downloadedFile);
 
-            _loggingService.LogInfo($"Downloaded '{fileName}' from Nisra bucket '{_configurationProvider.NisraBucket}' to '{localFilePath}'");
+            _loggingService.LogInfo($"Downloaded '{fileName}' from bucket '{bucketName}' to '{localFilePath}'");
             return downloadedFile;
         }
     }
