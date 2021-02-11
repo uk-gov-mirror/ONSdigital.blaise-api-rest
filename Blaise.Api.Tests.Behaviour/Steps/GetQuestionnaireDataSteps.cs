@@ -53,7 +53,6 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
             var extractedFilePath = Path.Combine(
                 BlaiseConfigurationHelper.TempTestsPath, 
-                Guid.NewGuid().ToString(),
                 BlaiseConfigurationHelper.InstrumentName);
 
             deliveredFile.ExtractFiles(extractedFilePath);

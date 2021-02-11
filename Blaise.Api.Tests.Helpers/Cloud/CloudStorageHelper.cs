@@ -42,6 +42,12 @@ namespace Blaise.Api.Tests.Helpers.Cloud
         public async Task<string> DownloadFromBucketAsync(string bucketPath, string fileName, string destinationFilePath)
         {
             var storageClient = GetStorageClient();
+
+            if (!Directory.Exists(destinationFilePath))
+            {
+                Directory.CreateDirectory(destinationFilePath);
+            }
+
             var downloadedFile = Path.Combine(destinationFilePath, fileName);
 
             using (var fileStream = File.OpenWrite(downloadedFile))
