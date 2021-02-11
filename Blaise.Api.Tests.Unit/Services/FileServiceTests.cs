@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using Blaise.Api.Contracts.Interfaces;
@@ -181,7 +180,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_A_Path_Exists_When_I_Call_DeletePathAndFiles_Then_The_Path_And_All_Files_Are_Deleted()
+        public void Given_I_Call_DeletePathAndFiles_Then_The_Path_And_All_Files_Are_Deleted()
         {
             //arrange
             const string filePath = @"d:\temp\File1.bdix";
@@ -198,6 +197,24 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             fileSystemMock.Verify(f =>f.Path.GetDirectoryName(filePath),Times.Once);
+            fileSystemMock.Verify(f =>f.Directory.Delete(path, true),Times.Once);
+        }
+
+        [Test]
+        public void Given_I_Call_DeletePath_Then_The_Path_Is_Deleted()
+        {
+            //arrange
+            const string path = @"d:\temp";
+
+            var fileSystemMock = new Mock<IFileSystem>();
+            fileSystemMock.Setup(s => s.Directory.Delete(It.IsAny<string>()));
+
+            var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
+
+            //act
+            sut.DeletePath(path);
+
+            //assert
             fileSystemMock.Verify(f =>f.Directory.Delete(path, true),Times.Once);
         }
     }

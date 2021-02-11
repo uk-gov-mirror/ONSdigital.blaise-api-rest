@@ -68,6 +68,11 @@ namespace Blaise.Api.Core.Services
         {
             var path = _fileSystem.Path.GetDirectoryName(filePath);
 
+            DeletePath(path);
+        }
+
+        public void DeletePath(string path)
+        {
             _fileSystem.Directory.Delete(path, true);
         }
     }
