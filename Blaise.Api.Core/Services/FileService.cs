@@ -66,14 +66,9 @@ namespace Blaise.Api.Core.Services
 
         public void DeletePathAndFiles(string filePath)
         {
-            if (!_fileSystem.Directory.Exists(filePath)) return;
+            var path = _fileSystem.Path.GetDirectoryName(filePath);
 
-            foreach (var file in _fileSystem.Directory.GetFiles(filePath))
-            {
-                _fileSystem.File.Delete(file);
-            }
-
-            _fileSystem.Directory.Delete(filePath, true);
+            _fileSystem.Directory.Delete(path, true);
         }
     }
 }

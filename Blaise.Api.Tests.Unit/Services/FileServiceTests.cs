@@ -184,44 +184,21 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Path_Exists_When_I_Call_DeletePathAndFiles_Then_The_Path_And_All_Files_Are_Deleted()
         {
             //arrange
+            const string filePath = @"d:\temp\File1.bdix";
             const string path = @"d:\temp";
-            var files = new List<string>{"File1.bdix", "files2.blix"};
 
             var fileSystemMock = new Mock<IFileSystem>();
-            fileSystemMock.Setup(s => s.Directory.Exists(It.IsAny<string>())).Returns(true);
-            fileSystemMock.Setup(f => f.Directory.GetFiles(It.IsAny<string>())).Returns(files.ToArray);
-            fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
+            fileSystemMock.Setup(s => s.Path.GetDirectoryName(It.IsAny<string>())).Returns(path);
             fileSystemMock.Setup(s => s.Directory.Delete(It.IsAny<string>()));
 
             var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
 
             //act
-            sut.DeletePathAndFiles(path);
+            sut.DeletePathAndFiles(filePath);
 
             //assert
-            foreach (var file in files)
-            {
-                fileSystemMock.Verify(f =>f.File.Delete(file),Times.Once);
-            }
-
+            fileSystemMock.Verify(f =>f.Path.GetDirectoryName(filePath),Times.Once);
             fileSystemMock.Verify(f =>f.Directory.Delete(path, true),Times.Once);
-        }
-
-        [Test]
-        public void Given_A_Path_Does_Not_Exist_When_I_Call_DeletePath_Then_No_Calls_Are_Made()
-        {
-            //arrange
-            const string path = @"d:\temp";
-            var fileSystemMock = new Mock<IFileSystem>();
-            fileSystemMock.Setup(s => s.Directory.Exists(It.IsAny<string>())).Returns(false);
-
-            var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
-
-            //act
-            sut.DeletePathAndFiles(path);
-
-            //assert
-            fileSystemMock.Verify(f =>f.Directory.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never);
         }
     }
 }
