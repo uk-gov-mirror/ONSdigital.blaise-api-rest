@@ -53,21 +53,15 @@ namespace Blaise.Api.Controllers
 
         private void DeleteTemporaryGuidFolders(string path)
         {
-            var rootDir = Directory.GetDirectoryRoot(path);
-            
-            if (string.IsNullOrEmpty(rootDir))
+            while (true)
             {
-                return;
-            }
+                var pathIsGuid = Guid.TryParse(new DirectoryInfo(path).Name, out _);
 
-            var subDirectories = Directory.GetDirectories(rootDir);
-            foreach (var subDirectory in subDirectories)
-            {
-                var pathIsGuid = Guid.TryParse(new DirectoryInfo(subDirectory).Name, out _);
+                if (!pathIsGuid) return;
 
-                if (!pathIsGuid) continue;
+                Directory.Delete(path, true);
 
-                Directory.Delete(subDirectory, true);
+                path = Directory.GetParent(path).FullName;
             }
         }
     }
