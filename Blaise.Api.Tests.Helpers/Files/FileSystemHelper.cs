@@ -21,7 +21,7 @@ namespace Blaise.Api.Tests.Helpers.Files
             try
             {
                 Thread.Sleep(5000);
-                DeleteDirectoryAndFiles(BlaiseConfigurationHelper.TempTestsPath);
+                DeleteDirectoryAndFilesInPath(BlaiseConfigurationHelper.TempTestsPath);
             }
             catch (Exception e)
             {
@@ -29,7 +29,7 @@ namespace Blaise.Api.Tests.Helpers.Files
             }
         }
 
-        public static void DeleteDirectoryAndFiles(string path)
+        public static void DeleteDirectoryAndFilesInPath(string path)
         {
 
             var files = Directory.GetFiles(path);
@@ -45,11 +45,8 @@ namespace Blaise.Api.Tests.Helpers.Files
             foreach (var dir in dirs)
             {
                 Console.WriteLine($"Attempting to delete files and folders in'{dir}'");
-                DeleteDirectoryAndFiles(dir);
+                DeleteDirectoryAndFilesInPath(dir);
             }
-
-            Console.WriteLine($"Attempting to delete folder '{path}'");
-            Directory.Delete(path, false);
         }
     }
 }
