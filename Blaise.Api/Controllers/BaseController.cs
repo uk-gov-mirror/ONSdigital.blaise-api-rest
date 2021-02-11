@@ -40,6 +40,7 @@ namespace Blaise.Api.Controllers
         private void CleanUpTempFiles(string filePath)
         {
             File.Delete(filePath);
+
             var path = Path.GetDirectoryName(filePath);
 
             if (string.IsNullOrEmpty(path))
@@ -47,7 +48,27 @@ namespace Blaise.Api.Controllers
                 return;
             }
 
-            Directory.Delete(path, false);
+            DeleteTemporaryGuidFolders(path);
+        }
+
+        private void DeleteTemporaryGuidFolders(string path)
+        {
+            var rootDir = Directory.GetDirectoryRoot(path);
+            
+            if (string.IsNullOrEmpty(rootDir))
+            {
+                return;
+            }
+
+            var subDirectories = Directory.GetDirectories(rootDir);
+            foreach (var subDirectory in subDirectories)
+            {
+                var pathIsGuid = Guid.TryParse(new DirectoryInfo(subDirectory).Name, out _);
+
+                if (!pathIsGuid) continue;
+
+                Directory.Delete(subDirectory, true);
+            }
         }
     }
 }

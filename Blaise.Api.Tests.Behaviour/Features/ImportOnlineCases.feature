@@ -12,7 +12,7 @@ Scenario: A case in the online file is complete and in Blaise it is complete, we
 	When the online file is imported
 	Then the existing blaise case is overwritten with the online case
 
-
+@smoke
 #Scenario 2 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario:  A case in the online file is partially complete and in Blaise it is complete, we keep the existing blaise case
 	Given there is a online file that contains a case that is partially complete
