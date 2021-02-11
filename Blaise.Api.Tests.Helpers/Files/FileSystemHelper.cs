@@ -31,21 +31,15 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         public static void DeleteDirectoryAndFilesInPath(string path)
         {
-
-            var files = Directory.GetFiles(path);
-            var dirs = Directory.GetDirectories(path);
-
-            foreach (var file in files)
+            var dirInfo = new DirectoryInfo(path);
+            foreach (var dir in dirInfo.GetDirectories())
             {
-                Console.WriteLine($"Attempting to delete file '{file}'");
-                File.SetAttributes(file, FileAttributes.Normal);
-                File.Delete(file);
-            }
+                foreach (var file in dir.GetFiles())
+                {
+                    file.Delete();
+                }
 
-            foreach (var dir in dirs)
-            {
-                Console.WriteLine($"Attempting to delete files and folders in'{dir}'");
-                DeleteDirectoryAndFilesInPath(dir);
+                dir.Delete(true);
             }
         }
     }
