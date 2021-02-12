@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -41,25 +42,29 @@ namespace Blaise.Api.Controllers
             }
             finally
             {
-                _loggingService.LogInfo($"Cleanup files '{filePath}'");
                 CleanUpTempFiles(filePath);
             }
         }
 
         private void CleanUpTempFiles(string filePath)
         {
-            File.Delete(filePath);
-            _loggingService.LogInfo($"Deleted file '{filePath}'");
-
-            var path = Path.GetDirectoryName(filePath);
-
-            if (string.IsNullOrEmpty(path))
+            try
             {
-                return;
-            }
+                File.Delete(filePath);
 
-            Directory.Delete(path, true);
-            _loggingService.LogInfo($"Deleted folder '{path}'");
+                var path = Path.GetDirectoryName(filePath);
+
+                if (string.IsNullOrEmpty(path))
+                {
+                    return;
+                }
+
+                Directory.Delete(path, true);
+            }
+            catch (Exception ex)
+            {
+                _loggingService.LogInfo($"There was an error cleaning up downloaded file/folder '{filePath}' - {ex.Message}");
+            }
         }
     }
 }
