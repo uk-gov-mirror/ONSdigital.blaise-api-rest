@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Extensions;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Storage.Interfaces;
@@ -33,13 +34,15 @@ namespace Blaise.Api.Core.Services
             return await CreateInstrumentPackageWithDataAsync(serverParkName, instrumentName);
         }
 
-        public async Task ImportOnlineDataAsync(string bucketPath, string serverParkName, string instrumentName)
+        public async Task ImportOnlineDataAsync(InstrumentDataDto instrumentDataDto, string serverParkName,
+            string instrumentName)
         {
-            bucketPath.ThrowExceptionIfNullOrEmpty("bucketPath");
+            instrumentDataDto.ThrowExceptionIfNull("InstrumentDataDto");
+            instrumentDataDto.InstrumentDataPath.ThrowExceptionIfNullOrEmpty("instrumentDataDto.InstrumentDataPath");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
 
-            var filePath = await DownloadDatabaseFilesFromBucketAsync(bucketPath);
+            var filePath = await DownloadDatabaseFilesFromBucketAsync(instrumentDataDto.InstrumentDataPath);
             var databaseFile = _fileService.GetDatabaseFile(filePath, instrumentName);
 
             _caseService.ImportOnlineDatabaseFile(databaseFile, instrumentName, serverParkName);

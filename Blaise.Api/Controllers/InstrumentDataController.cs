@@ -32,7 +32,7 @@ namespace Blaise.Api.Controllers
         public async Task<IHttpActionResult> PostInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName,
             [FromBody] InstrumentDataDto instrumentDataDto)
         {
-            await _instrumentDataService.ImportOnlineDataAsync(instrumentDataDto.InstrumentDataPath, serverParkName, instrumentName);
+            await _instrumentDataService.ImportOnlineDataAsync(instrumentDataDto, serverParkName, instrumentName);
             return Created("{Request.RequestUri}", instrumentDataDto);
         }
     }

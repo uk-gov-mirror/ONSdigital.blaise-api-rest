@@ -112,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
-    <Compile Include="Extensions\DataRecordExtension.cs" />
     <Compile Include="Interfaces\Services\IInstrumentUninstallerService.cs" />
     <Compile Include="Interfaces\Services\IInstrumentService.cs" />
     <Compile Include="Interfaces\Mappers\IServerParkDtoMapper.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
 using Blaise.Api.Storage.Interfaces;
@@ -24,6 +25,8 @@ namespace Blaise.Api.Tests.Unit.Services
         private string _instrumentName;
         private string _bucketPath;
 
+        private InstrumentDataDto _instrumentDataDto;
+
         [SetUp]
         public void SetUpTests()
         {
@@ -37,6 +40,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _serverParkName = "ServerParkA";
             _instrumentName = "OPN2010A";
             _bucketPath = "OPN2010A";
+
+            _instrumentDataDto = new InstrumentDataDto {InstrumentDataPath = _bucketPath};
 
             _sut = new InstrumentDataService(
                 _fileServiceMock.Object,
@@ -131,7 +136,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.InSequence(_mockSequence).Setup(f => f.DeletePath(It.IsAny<string>()));
 
             //act
-            await _sut.ImportOnlineDataAsync(_bucketPath, _serverParkName, _instrumentName);
+            await _sut.ImportOnlineDataAsync(_instrumentDataDto, _serverParkName, _instrumentName);
 
             //assert
             _storageServiceMock.Verify(v => v.DownloadDatabaseFilesFromNisraBucketAsync(_bucketPath), Times.Once);
@@ -144,28 +149,43 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_An_Empty_BucketPath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
-        {
-            //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(string.Empty, _serverParkName,
-                _instrumentName));
-            Assert.AreEqual("A value for the argument 'bucketPath' must be supplied", exception.Message);
-        }
-
-        [Test]
-        public void Given_A_Null_BucketPath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
+        public void Given_A_Null_InstrumentDataDto_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(null,_serverParkName,
+                _instrumentName));
+            Assert.AreEqual("InstrumentDataDto", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_InstrumentDataPath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
+        {
+            //arrange
+            _instrumentDataDto.InstrumentDataPath = string.Empty;
+
+            //act && assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_instrumentDataDto, _serverParkName,
+                _instrumentName));
+            Assert.AreEqual("A value for the argument 'instrumentDataDto.InstrumentDataPath' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_InstrumentDataPath_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //arrange
+            _instrumentDataDto.InstrumentDataPath = null;
+
+            //act && assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_instrumentDataDto,_serverParkName,
                _instrumentName));
-            Assert.AreEqual("bucketPath", exception.ParamName);
+            Assert.AreEqual("instrumentDataDto.InstrumentDataPath", exception.ParamName);
         }
 
         [Test]
         public void Given_An_Empty_InstrumentName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_bucketPath, _serverParkName,
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_instrumentDataDto, _serverParkName,
                 string.Empty));
             Assert.AreEqual("A value for the argument 'instrumentName' must be supplied", exception.Message);
         }
@@ -174,7 +194,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_InstrumentName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_bucketPath,_serverParkName,
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_instrumentDataDto,_serverParkName,
                null));
             Assert.AreEqual("instrumentName", exception.ParamName);
         }
@@ -183,7 +203,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_An_Empty_ServerParkName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_bucketPath,string.Empty,
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.ImportOnlineDataAsync(_instrumentDataDto,string.Empty,
                 _instrumentName));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
@@ -192,7 +212,7 @@ namespace Blaise.Api.Tests.Unit.Services
         public void Given_A_Null_ServerParkName_When_I_Call_ImportOnlineDataAsync_Then_An_ArgumentNullException_Is_Thrown()
         {
             //act && assert
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_bucketPath, null,
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(_instrumentDataDto, null,
                 _instrumentName));
             Assert.AreEqual("serverParkName", exception.ParamName);
         }
