@@ -154,7 +154,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.ImportOnlineDataAsync(null,_serverParkName,
                 _instrumentName));
-            Assert.AreEqual("InstrumentDataDto", exception.ParamName);
+            Assert.AreEqual("The argument 'InstrumentDataDto' must be supplied", exception.ParamName);
         }
 
         [Test]
