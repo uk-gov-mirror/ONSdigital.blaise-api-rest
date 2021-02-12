@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Storage.Interfaces;
+using Blaise.Nuget.Api.Contracts.Exceptions;
 
 namespace Blaise.Api.Storage.Services
 {
@@ -45,16 +46,21 @@ namespace Blaise.Api.Storage.Services
                 "InstrumentFiles",
                 Guid.NewGuid().ToString());
 
-            var files = (await _cloudStorageClient.GetListOfFiles(_configurationProvider.NisraBucket, bucketPath)).ToList();
+            var bucketFiles = (await _cloudStorageClient.GetListOfFiles(_configurationProvider.NisraBucket, bucketPath)).ToList();
 
-            _loggingService.LogInfo($"Attempting to Downloaded '{files.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
-
-            foreach (var file in files)
+            if (!bucketFiles.Any())
             {
-                await DownloadFromBucketAsync(_configurationProvider.NisraBucket, file, localFilePath);
+                throw new DataNotFoundException($"No files were found for bucket path '{bucketPath}' in bucket '{_configurationProvider.NisraBucket}'");
             }
 
-            _loggingService.LogInfo($"Downloaded '{files.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
+            _loggingService.LogInfo($"Attempting to Downloaded '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
+
+            foreach (var bucketFile in bucketFiles)
+            {
+                await DownloadFromBucketAsync(_configurationProvider.NisraBucket, bucketFile, localFilePath);
+            }
+
+            _loggingService.LogInfo($"Downloaded '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
 
             return localFilePath;
         }
