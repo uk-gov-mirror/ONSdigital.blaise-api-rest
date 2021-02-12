@@ -1,10 +1,13 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Cloud;
 using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Helpers.Enums;
 using Blaise.Api.Tests.Helpers.Extensions;
+using Blaise.Api.Tests.Models.Case;
+using Blaise.Api.Tests.Models.Enums;
 
 namespace Blaise.Api.Tests.Helpers.Files
 {
@@ -24,6 +27,17 @@ namespace Blaise.Api.Tests.Helpers.Files
             var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
 
             CaseHelper.GetInstance().CreateCasesInFile(instrumentDatabase, numberOfCases);
+
+            await UploadFilesToBucket(extractedFilePath);
+        }
+
+        public async Task CreateCasesInOnlineFileAsync(IEnumerable<CaseModel> caseModels)
+        {
+            var instrumentPackage = await DownloadPackageFromBucket();
+            var extractedFilePath = ExtractPackageFiles(instrumentPackage);
+            var instrumentDatabase = Path.Combine(extractedFilePath, BlaiseConfigurationHelper.InstrumentName + ".bdix");
+
+            CaseHelper.GetInstance().CreateCasesInFile(instrumentDatabase, caseModels.ToList());
 
             await UploadFilesToBucket(extractedFilePath);
         }

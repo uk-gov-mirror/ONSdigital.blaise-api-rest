@@ -1,11 +1,14 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Helpers.Enums;
 using Blaise.Api.Tests.Helpers.Files;
 using Blaise.Api.Tests.Helpers.Instrument;
 using Blaise.Api.Tests.Helpers.RestApi;
+using Blaise.Api.Tests.Models.Case;
+using Blaise.Api.Tests.Models.Enums;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
@@ -57,6 +60,12 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             _scenarioContext.Set(primaryKey,"primaryKey");
         }
 
+        [Given(@"there is a online file that contains the following cases")]
+        public async Task GivenThereIsAOnlineFileThatContainsTheFollowingCases(IEnumerable<CaseModel> cases)
+        {
+            await OnlineFileHelper.GetInstance().CreateCasesInOnlineFileAsync(cases);
+        }
+        
         [Given(@"the same case exists in Blaise that is complete")]
         public void GivenTheSameCaseExistsInBlaiseThatIsComplete()
         {
@@ -73,7 +82,14 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void GivenTheSameCaseExistsInBlaiseWithTheOutcomeCode(int outcomeCode)
         {
             var primaryKey = _scenarioContext.Get<string>("primaryKey");
-            CaseHelper.GetInstance().CreateCaseInBlaise(primaryKey, outcomeCode, ModeType.Tel);
+            var caseModel = new CaseModel(primaryKey, outcomeCode.ToString(), ModeType.Tel);
+            CaseHelper.GetInstance().CreateCaseInBlaise(caseModel);
+        }
+        
+        [Given(@"blaise contains the following cases")]
+        public void GivenBlaiseContainsTheFollowingCases(IEnumerable<CaseModel> cases)
+        {
+            CaseHelper.GetInstance().CreateCasesInBlaise(cases);
         }
         
         [When(@"the online file is imported")]
@@ -118,8 +134,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         {
             CaseHelper.GetInstance().CreateCasesInBlaise(numberOfCases);
         }
-
-
+        
         [Then(@"blaise will contain no cases")]
         public void ThenBlaiseWillContainNoCases()
         {
@@ -132,6 +147,37 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             var numberOfCasesInBlaise = CaseHelper.GetInstance().NumberOfCasesInInstrument();
 
             Assert.AreEqual(numberOfCases, numberOfCasesInBlaise);
+        }
+
+        [Then(@"blaise will contain the following cases")]
+        public void ThenBlaiseWillContainTheFollowingCases(IEnumerable<CaseModel> cases)
+        {
+            var numberOfCasesInDatabase = CaseHelper.GetInstance().NumberOfCasesInInstrument();
+            var casesExpected = cases.ToList();
+
+            if (casesExpected.Count != numberOfCasesInDatabase)
+            {
+                Assert.Fail($"Expected '{casesExpected.Count}' cases in the database, but {numberOfCasesInDatabase} cases were found");
+            }
+
+            var casesInDatabase = CaseHelper.GetInstance().GetCasesInDatabase();
+
+            foreach (var caseModel in casesInDatabase)
+            {
+                var caseRecordExpected = casesExpected.FirstOrDefault(c => c.PrimaryKey == caseModel.PrimaryKey);
+
+                if (caseRecordExpected == null)
+                {
+                    Assert.Fail($"Case {caseModel.PrimaryKey} was in the database but not found in expected cases");
+                }
+
+                Assert.AreEqual(caseRecordExpected.Outcome, caseModel.Outcome, $"expected an outcome of '{caseRecordExpected.Outcome}' for case '{caseModel.PrimaryKey}'," +
+                                                                               $"but was '{caseModel.Outcome}'");
+
+                Assert.AreEqual(caseRecordExpected.Mode, caseModel.Mode, $"expected an version of '{caseRecordExpected.Mode}' for case '{caseModel.PrimaryKey}'," +
+                                                                         $"but was '{caseModel.Mode}'");
+
+            }
         }
 
         [AfterScenario("onlinedata")]

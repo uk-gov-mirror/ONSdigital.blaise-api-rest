@@ -1,4 +1,4 @@
-﻿namespace Blaise.Api.Tests.Helpers.Enums
+﻿namespace Blaise.Api.Tests.Models.Enums
 {
     public enum ModeType
     {

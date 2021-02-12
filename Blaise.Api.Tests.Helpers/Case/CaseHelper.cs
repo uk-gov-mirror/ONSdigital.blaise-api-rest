@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using Blaise.Api.Tests.Helpers.Configuration;
-using Blaise.Api.Tests.Helpers.Enums;
+using Blaise.Api.Tests.Models.Case;
+using Blaise.Api.Tests.Models.Enums;
 using Blaise.Nuget.Api.Api;
 using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Extensions;
@@ -20,7 +20,7 @@ namespace Blaise.Api.Tests.Helpers.Case
         public CaseHelper()
         {
             _blaiseCaseApi = new BlaiseCaseApi();
-            _primaryKey = 9000000;
+            _primaryKey = 900000;
         }
 
         public static CaseHelper GetInstance()
@@ -32,7 +32,8 @@ namespace Blaise.Api.Tests.Helpers.Case
         {
             for (var count = 0; count < expectedNumberOfCases; count++)
             {
-                CreateCaseInBlaise(_primaryKey.ToString());
+                var caseModel = new CaseModel(_primaryKey.ToString(), "110", ModeType.Tel);
+                CreateCaseInBlaise(caseModel);
                 _primaryKey++;
             }
         }
@@ -46,16 +47,32 @@ namespace Blaise.Api.Tests.Helpers.Case
             }
         }
 
-        public void CreateCaseInBlaise(string primaryKey, int outcome = 110, ModeType mode = ModeType.Tel)
+        public void CreateCasesInFile(string extractedFilePath, IList<CaseModel> caseModels)
+        {
+            foreach (var caseModel in caseModels)
+            {
+                CreateCaseInFile(extractedFilePath, caseModel);
+            }
+        }
+
+        public void CreateCasesInBlaise(IEnumerable<CaseModel> caseModels)
+        {
+            foreach (var caseModel in caseModels)
+            {
+                CreateCaseInBlaise(caseModel);
+            }
+        }
+
+        public void CreateCaseInBlaise(CaseModel caseModel)
         {
             var dataFields = new Dictionary<string, string>
             {
-                { "SerialNumber", primaryKey },
-                { FieldNameType.HOut.FullName(), outcome.ToString() },
-                { FieldNameType.Mode.FullName(), ((int)mode).ToString() }
+                { "SerialNumber", caseModel.PrimaryKey },
+                { FieldNameType.HOut.FullName(), caseModel.Outcome },
+                { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() }
             };
 
-            _blaiseCaseApi.CreateCase(primaryKey, dataFields,
+            _blaiseCaseApi.CreateCase(caseModel.PrimaryKey, dataFields,
                 BlaiseConfigurationHelper.InstrumentName, BlaiseConfigurationHelper.ServerParkName);
         }
 
@@ -70,6 +87,38 @@ namespace Blaise.Api.Tests.Helpers.Case
 
             _blaiseCaseApi.CreateCase(databaseFile, _primaryKey.ToString(), dataFields);
             return _primaryKey.ToString();
+        }
+
+        public void CreateCaseInFile(string databaseFile, CaseModel caseModel)
+        {
+            var dataFields = new Dictionary<string, string>
+            {
+                { "SerialNumber", caseModel.PrimaryKey },
+                { FieldNameType.HOut.FullName(), caseModel.Outcome },
+                { FieldNameType.Mode.FullName(), ((int)caseModel.Mode).ToString() }
+            };
+
+            _blaiseCaseApi.CreateCase(databaseFile,caseModel.PrimaryKey, dataFields);
+        }
+
+        public IEnumerable<CaseModel> GetCasesInDatabase()
+        {
+            var caseModels = new List<CaseModel>();
+
+            var casesInDatabase = _blaiseCaseApi.GetCases( 
+                BlaiseConfigurationHelper.InstrumentName, BlaiseConfigurationHelper.ServerParkName);
+
+            while (!casesInDatabase.EndOfSet)
+            {
+                var caseRecord = casesInDatabase.ActiveRecord;
+                var outcome = _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.HOut).IntegerValue.ToString(CultureInfo.InvariantCulture);
+                var mode = _blaiseCaseApi.GetFieldValue(caseRecord, FieldNameType.Mode).EnumerationValue;
+
+                caseModels.Add(new CaseModel(_blaiseCaseApi.GetPrimaryKeyValue(caseRecord), outcome, (ModeType)mode));
+                casesInDatabase.MoveNext();
+            }
+
+            return caseModels;
         }
 
         public void DeleteCases()

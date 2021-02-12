@@ -188,7 +188,6 @@
     <Compile Include="Cloud\CloudStorageHelper.cs" />
     <Compile Include="Configuration\BlaiseConfigurationHelper.cs" />
     <Compile Include="Configuration\RestApiConfigurationHelper.cs" />
-    <Compile Include="Enums\ModeType.cs" />
     <Compile Include="Extensions\ArgumentValidationExtensions.cs" />
     <Compile Include="Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />

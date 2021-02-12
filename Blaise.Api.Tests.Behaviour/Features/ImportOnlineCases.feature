@@ -5,6 +5,108 @@ Feature: Import online cases
 	I want to be given cases to import representing the data captured online
 
 @smoke
+#Covers all scenarios in one test run
+Scenario: There is an online file available that contains cases that already exists in the blaise database, the cases are updated depending on the outcome codes
+	Given there is a online file that contains the following cases
+	| primarykey | outcome | mode | 
+	#scenario 1
+	| 900001     | 110     | Web  | 
+	#scenario 2
+	| 900002     | 210     | Web  | 
+	#scenario 3
+	| 900003     | 110     | Web  | 
+	#scenario 4
+	| 900004     | 110     | Web  | 
+	| 900005     | 110     | Web  | 
+	| 900006     | 110     | Web  | 
+	| 900007     | 110     | Web  | 
+	| 900008     | 110     | Web  | 
+	| 900009     | 110     | Web  | 
+	#scenario 5
+	| 900010     | 0       | Web  | 
+	#scenario 6
+	| 900011     | 210     | Web  | 
+	#scenario 7
+	| 900012     | 210     | Web  | 
+	| 900013     | 210     | Web  | 
+	| 900014     | 210     | Web  | 
+	| 900015     | 210     | Web  | 
+	| 900016     | 210     | Web  | 
+	| 900017     | 210     | Web  | 
+	#scenario 8
+	| 900018     | 0       | Web  | 
+	#scenario 9
+	| 900019     | 210     | Web  | 
+	#scenario 10
+	| 900020     | 110     | Web  | 
+	
+	And blaise contains the following cases
+	| primarykey | outcome | mode | 
+	#scenario 1
+	| 900001     | 110     | Tel  | 
+	#scenario 2
+	| 900002     | 110     | Tel  | 
+	#scenario 3
+	| 900003     | 210     | Tel  | 
+	#scenario 4
+	| 900004     | 310     | Tel  | 
+	| 900005     | 430     | Tel  | 
+	| 900006     | 460     | Tel  | 
+	| 900007     | 461     | Tel  | 
+	| 900008     | 541     | Tel  | 
+	| 900009     | 542     | Tel  | 
+	#scenario 5
+	| 900010     | 110     | Tel  | 
+	#scenario 6
+	| 900011     | 210     | Tel  | 
+	#scenario 7
+	| 900012     | 310     | Tel  | 
+	| 900013     | 430     | Tel  | 
+	| 900014     | 460     | Tel  | 
+	| 900015     | 461     | Tel  | 
+	| 900016     | 541     | Tel  | 
+	| 900017     | 542     | Tel  | 
+	#scenario 8
+	| 900018     | 310     | Tel  | 
+	#scenario 9
+	| 900019     | 562     | Tel  | 
+	#scenario 10
+	| 900020     | 561     | Tel  | 
+
+	When the online file is imported
+	Then blaise will contain the following cases
+	| primarykey | outcome | mode | 
+	#scenario 1
+	| 900001     | 110     | Web  | 
+	#scenario 2
+	| 900002     | 110     | Tel  | 
+	#scenario 3
+	| 900003     | 110     | Web  | 
+	#scenario 4
+	| 900004     | 110     | Web  | 
+	| 900005     | 110     | Web  | 
+	| 900006     | 110     | Web  | 
+	| 900007     | 110     | Web  | 
+	| 900008     | 110     | Web  | 
+	| 900009     | 110     | Web  | 
+	#scenario 5
+	| 900010     | 110     | Tel  | 
+	#scenario 6
+	| 900011     | 210     | Web  | 
+	#scenario 7
+	| 900012     | 210     | Web  | 
+	| 900013     | 210     | Web  | 
+	| 900014     | 210     | Web  | 
+	| 900015     | 210     | Web  | 
+	| 900016     | 210     | Web  | 
+	| 900017     | 210     | Web  | 
+	#scenario 8
+	| 900018     | 310     | Tel  | 
+	#scenario 9
+	| 900019     | 562     | Tel  | 
+	#scenario 10
+	| 900020     | 561     | Tel  | 
+
 #Scenario 1 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is complete and in Blaise it is complete, we take the online case
 	Given there is a online file that contains a case that is complete
@@ -12,7 +114,6 @@ Scenario: A case in the online file is complete and in Blaise it is complete, we
 	When the online file is imported
 	Then the existing blaise case is overwritten with the online case
 
-@smoke
 #Scenario 2 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario:  A case in the online file is partially complete and in Blaise it is complete, we keep the existing blaise case
 	Given there is a online file that contains a case that is partially complete
@@ -83,7 +184,7 @@ Scenario: A case in the online file that has not started and in Blaise it is non
 	Given there is a online file that contains a case that has not been started
 	And the same case exists in Blaise with the outcome code '310'
 	When the online file is imported
-	Then  the existing blaise case is kept
+	Then the existing blaise case is kept
 
 
 #Scenario 9 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
@@ -91,7 +192,7 @@ Scenario: A case in the online file that is partially complete and in Blaise it 
 	Given there is a online file that contains a case that is partially complete
 	And the same case exists in Blaise with the outcome code '562'
 	When the online file is imported
-	Then  the existing blaise case is kept
+	Then the existing blaise case is kept
 
 
 #Scenario 10 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
@@ -99,24 +200,4 @@ Scenario: A case in the online file that is complete and in Blaise it marked as 
 	Given there is a online file that contains a case that is complete
 	And the same case exists in Blaise with the outcome code '561'
 	When the online file is imported
-	Then  the existing blaise case is kept
-
-#Additional NFR Scenarios 
-
-Scenario: There is a no online file available and Blaise contains no cases
-	Given there is a not a online file available 
-	And blaise contains no cases
-	When the online file is imported
-	Then blaise will contain no cases
-
-Scenario: There is a no online file available and Blaise contains 10 cases
-	Given there is a not a online file available 
-	And blaise contains '10' cases
-	When the online file is imported
-	Then blaise will contain '10' cases
-
-Scenario: There is an online file available with 10 cases and Blaise contains no cases
-	Given there is a online file that contains '10' cases 
-	And blaise contains no cases
-	When the online file is imported
-	Then blaise will contain '10' cases
+	Then the existing blaise case is kept

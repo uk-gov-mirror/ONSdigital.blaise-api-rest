@@ -78,16 +78,16 @@ namespace Blaise.Api.Tests.Behaviour.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("A case in the online file is complete and in Blaise it is complete, we take the o" +
-            "nline case")]
+        [NUnit.Framework.DescriptionAttribute("There is an online file available that contains cases that already exists in the " +
+            "blaise database, the cases are updated depending on the outcome codes")]
         [NUnit.Framework.CategoryAttribute("smoke")]
-        public virtual void ACaseInTheOnlineFileIsCompleteAndInBlaiseItIsCompleteWeTakeTheOnlineCase()
+        public virtual void ThereIsAnOnlineFileAvailableThatContainsCasesThatAlreadyExistsInTheBlaiseDatabaseTheCasesAreUpdatedDependingOnTheOutcomeCodes()
         {
             string[] tagsOfScenario = new string[] {
                     "smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is complete and in Blaise it is complete, we take the o" +
-                    "nline case", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("There is an online file available that contains cases that already exists in the " +
+                    "blaise database, the cases are updated depending on the outcome codes", null, tagsOfScenario, argumentsOfScenario);
 #line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -108,34 +108,284 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "primarykey",
+                            "outcome",
+                            "mode"});
+                table1.AddRow(new string[] {
+                            "900001",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900002",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900003",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900004",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900005",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900006",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900007",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900008",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900009",
+                            "110",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900010",
+                            "0",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900011",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900012",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900013",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900014",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900015",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900016",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900017",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900018",
+                            "0",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900019",
+                            "210",
+                            "Web"});
+                table1.AddRow(new string[] {
+                            "900020",
+                            "110",
+                            "Web"});
 #line 10
- testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("there is a online file that contains the following cases", ((string)(null)), table1, "Given ");
 #line hidden
-#line 11
- testRunner.And("the same case exists in Blaise that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "primarykey",
+                            "outcome",
+                            "mode"});
+                table2.AddRow(new string[] {
+                            "900001",
+                            "110",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900002",
+                            "110",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900003",
+                            "210",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900004",
+                            "310",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900005",
+                            "430",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900006",
+                            "460",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900007",
+                            "461",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900008",
+                            "541",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900009",
+                            "542",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900010",
+                            "110",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900011",
+                            "210",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900012",
+                            "310",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900013",
+                            "430",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900014",
+                            "460",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900015",
+                            "461",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900016",
+                            "541",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900017",
+                            "542",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900018",
+                            "310",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900019",
+                            "562",
+                            "Tel"});
+                table2.AddRow(new string[] {
+                            "900020",
+                            "561",
+                            "Tel"});
+#line 43
+ testRunner.And("blaise contains the following cases", ((string)(null)), table2, "And ");
 #line hidden
-#line 12
+#line 76
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
- testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "primarykey",
+                            "outcome",
+                            "mode"});
+                table3.AddRow(new string[] {
+                            "900001",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900002",
+                            "110",
+                            "Tel"});
+                table3.AddRow(new string[] {
+                            "900003",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900004",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900005",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900006",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900007",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900008",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900009",
+                            "110",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900010",
+                            "110",
+                            "Tel"});
+                table3.AddRow(new string[] {
+                            "900011",
+                            "210",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900012",
+                            "210",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900013",
+                            "210",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900014",
+                            "210",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900015",
+                            "210",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900016",
+                            "210",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900017",
+                            "210",
+                            "Web"});
+                table3.AddRow(new string[] {
+                            "900018",
+                            "310",
+                            "Tel"});
+                table3.AddRow(new string[] {
+                            "900019",
+                            "562",
+                            "Tel"});
+                table3.AddRow(new string[] {
+                            "900020",
+                            "561",
+                            "Tel"});
+#line 77
+ testRunner.Then("blaise will contain the following cases", ((string)(null)), table3, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("A case in the online file is partially complete and in Blaise it is complete, we " +
-            "keep the existing blaise case")]
-        [NUnit.Framework.CategoryAttribute("smoke")]
-        public virtual void ACaseInTheOnlineFileIsPartiallyCompleteAndInBlaiseItIsCompleteWeKeepTheExistingBlaiseCase()
+        [NUnit.Framework.DescriptionAttribute("A case in the online file is complete and in Blaise it is complete, we take the o" +
+            "nline case")]
+        public virtual void ACaseInTheOnlineFileIsCompleteAndInBlaiseItIsCompleteWeTakeTheOnlineCase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "smoke"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is partially complete and in Blaise it is complete, we " +
-                    "keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
-#line 17
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is complete and in Blaise it is complete, we take the o" +
+                    "nline case", null, tagsOfScenario, argumentsOfScenario);
+#line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -155,16 +405,61 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 18
- testRunner.Given("there is a online file that contains a case that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 112
+ testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 19
+#line 113
  testRunner.And("the same case exists in Blaise that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 114
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 115
+ testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("A case in the online file is partially complete and in Blaise it is complete, we " +
+            "keep the existing blaise case")]
+        public virtual void ACaseInTheOnlineFileIsPartiallyCompleteAndInBlaiseItIsCompleteWeKeepTheExistingBlaiseCase()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is partially complete and in Blaise it is complete, we " +
+                    "keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
+#line 118
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 119
+ testRunner.Given("there is a online file that contains a case that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 120
+ testRunner.And("the same case exists in Blaise that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 121
+ testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 122
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -180,7 +475,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is complete and in Blaise it is partially complete, we " +
                     "take the online case", null, tagsOfScenario, argumentsOfScenario);
-#line 25
+#line 126
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -200,16 +495,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 127
  testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 27
+#line 128
  testRunner.And("the same case exists in Blaise that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 28
+#line 129
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 130
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -235,7 +530,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("description", description);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is complete and in Blaise it is between the range 210-5" +
                     "42, we take the online case", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 133
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -255,16 +550,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
+#line 134
  testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 34
+#line 135
  testRunner.And(string.Format("the same case exists in Blaise with the outcome code \'{0}\'", existingOutcome), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 35
+#line 136
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 137
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -280,7 +575,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that has not started and in Blaise it is complete, we k" +
                     "eep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
-#line 50
+#line 151
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -300,16 +595,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 51
+#line 152
  testRunner.Given("there is a online file that contains a case that has not been started", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 52
+#line 153
  testRunner.And("the same case exists in Blaise that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 154
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 155
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -325,7 +620,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is partially complete and in Blaise it is partially com" +
                     "plete, we take the online case", null, tagsOfScenario, argumentsOfScenario);
-#line 58
+#line 159
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -345,16 +640,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 59
+#line 160
  testRunner.Given("there is a online file that contains a case that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 60
+#line 161
  testRunner.And("the same case exists in Blaise that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
+#line 162
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 62
+#line 163
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -379,7 +674,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("description", description);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file is partially complete and in Blaise and it is between t" +
                     "he range 310-542, we take the online case", null, tagsOfScenario, argumentsOfScenario);
-#line 65
+#line 166
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -399,16 +694,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 66
+#line 167
  testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 67
+#line 168
  testRunner.And(string.Format("the same case exists in Blaise with the outcome code \'{0}\'", existingOutcome), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 169
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 69
+#line 170
  testRunner.Then("the existing blaise case is overwritten with the online case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -424,7 +719,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that has not started and in Blaise it is non-contact, w" +
                     "e keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
-#line 82
+#line 183
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -444,16 +739,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 83
+#line 184
  testRunner.Given("there is a online file that contains a case that has not been started", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 84
+#line 185
  testRunner.And("the same case exists in Blaise with the outcome code \'310\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 85
+#line 186
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 86
+#line 187
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -469,7 +764,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that is partially complete and in Blaise it marked as r" +
                     "espondent request for data to be deleted, we keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
-#line 90
+#line 191
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -489,16 +784,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 91
+#line 192
  testRunner.Given("there is a online file that contains a case that is partially complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 92
+#line 193
  testRunner.And("the same case exists in Blaise with the outcome code \'562\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 93
+#line 194
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 94
+#line 195
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -514,7 +809,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A case in the online file that is complete and in Blaise it marked as respondent " +
                     "request for data to be deleted, we keep the existing blaise case", null, tagsOfScenario, argumentsOfScenario);
-#line 98
+#line 199
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -534,146 +829,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 99
+#line 200
  testRunner.Given("there is a online file that contains a case that is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 100
+#line 201
  testRunner.And("the same case exists in Blaise with the outcome code \'561\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 101
+#line 202
  testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 102
+#line 203
  testRunner.Then("the existing blaise case is kept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("There is a no online file available and Blaise contains no cases")]
-        public virtual void ThereIsANoOnlineFileAvailableAndBlaiseContainsNoCases()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("There is a no online file available and Blaise contains no cases", null, tagsOfScenario, argumentsOfScenario);
-#line 106
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 107
- testRunner.Given("there is a not a online file available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 108
- testRunner.And("blaise contains no cases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 109
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 110
- testRunner.Then("blaise will contain no cases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("There is a no online file available and Blaise contains 10 cases")]
-        public virtual void ThereIsANoOnlineFileAvailableAndBlaiseContains10Cases()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("There is a no online file available and Blaise contains 10 cases", null, tagsOfScenario, argumentsOfScenario);
-#line 112
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 113
- testRunner.Given("there is a not a online file available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 114
- testRunner.And("blaise contains \'10\' cases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 115
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 116
- testRunner.Then("blaise will contain \'10\' cases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("There is an online file available with 10 cases and Blaise contains no cases")]
-        public virtual void ThereIsAnOnlineFileAvailableWith10CasesAndBlaiseContainsNoCases()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("There is an online file available with 10 cases and Blaise contains no cases", null, tagsOfScenario, argumentsOfScenario);
-#line 118
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 119
- testRunner.Given("there is a online file that contains \'10\' cases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 120
- testRunner.And("blaise contains no cases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 121
- testRunner.When("the online file is imported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 122
- testRunner.Then("blaise will contain \'10\' cases", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
