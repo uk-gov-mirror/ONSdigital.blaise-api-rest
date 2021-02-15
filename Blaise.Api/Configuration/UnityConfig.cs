@@ -21,11 +21,14 @@ namespace Blaise.Api.Configuration
     {
         public static IUnityContainer GetConfiguredContainer()
         {
-			var container = new UnityContainer();
+            var container = new UnityContainer();
 
             //blaise api
             var blaiseConfigurationProvider = new BlaiseConfigurationProvider();
             var connectionModel = blaiseConfigurationProvider.GetConnectionModel();
+
+            //logging
+            container.RegisterType<ILoggingService, FileLoggingService>();
 
             container.RegisterType<IBlaiseServerParkApi, BlaiseServerParkApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseSurveyApi, BlaiseSurveyApi>(new InjectionConstructor(connectionModel));
@@ -35,9 +38,6 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IBlaiseUserApi, BlaiseUserApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseFileApi, BlaiseFileApi>(new InjectionConstructor(connectionModel));
             container.RegisterType<IBlaiseCaseApi, BlaiseCaseApi>(new InjectionConstructor(connectionModel));
-
-            //logging
-            container.RegisterType<ILoggingService, FileLoggingService>();
 
             //providers
             container.RegisterType<IConfigurationProvider, ConfigurationProvider>();
@@ -60,7 +60,9 @@ namespace Blaise.Api.Configuration
             container.RegisterType<IHealthCheckService, HealthCheckService>();
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IBlaiseFileService, BlaiseFileService>();
+            container.RegisterType<IFileService, FileService>();
+            container.RegisterType<ICaseService, CaseService>();
+            container.RegisterType<IUpdateCaseService, UpdateCaseService>();
 
             //storage services
             container.RegisterType<ICloudStorageService, CloudStorageService>();

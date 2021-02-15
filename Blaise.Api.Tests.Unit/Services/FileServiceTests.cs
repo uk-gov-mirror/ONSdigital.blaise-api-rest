@@ -9,9 +9,9 @@ using NUnit.Framework;
 
 namespace Blaise.Api.Tests.Unit.Services
 {
-    public class BlaiseFileServiceTests
+    public class FileServiceTests
     {
-        private BlaiseFileService _sut;
+        private FileService _sut;
 
         private Mock<IBlaiseFileApi> _blaiseFileApiMock;
 
@@ -36,7 +36,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _instrumentFile = "OPN2010A.zip";
             _instrumentName = "OPN2010A";
 
-            _sut = new BlaiseFileService(_blaiseFileApiMock.Object, _fileSystemMock, _configurationProviderMock.Object);
+            _sut = new FileService(_blaiseFileApiMock.Object, _fileSystemMock, _configurationProviderMock.Object);
         }
                 
         [Test]
@@ -130,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Services
             var fileSystemMock = new Mock<IFileSystem>();
             fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
 
-            var sut = new BlaiseFileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
+            var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
 
             //act
             sut.DeleteFile(instrumentFile);
@@ -140,7 +140,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_GetInstrumentNameFromFile_Then_The_Correct_Services_Are_Called()
+        public void Given_I_Call_GetInstrumentNameFromFile_Then_The_Correct_Name_Is_Returned()
         {
             //act
             var result = _sut.GetInstrumentNameFromFile(_instrumentFile);
@@ -150,7 +150,7 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_I_Call_GetInstrumentPackageName_Then_The_Correct_Services_Are_Called()
+        public void Given_I_Call_GetInstrumentPackageName_Then_The_Correct_Name_Is_Returned()
         {
             //arrange
             var packageExtension = "bpkg";
@@ -163,6 +163,77 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             Assert.AreEqual(expectedPackageName, result);
+        }
+
+        [Test]
+        public void Given_I_Call_GetDatabaseFile_Then_The_Correct_Name_Is_Returned()
+        {
+            //arrange
+            var filePath = @"d:\test";
+            var expectedName = $@"{filePath}\{_instrumentName}.bdix";
+
+            //act
+            var result = _sut.GetDatabaseFile(filePath, _instrumentName);
+
+            //assert
+            Assert.AreEqual(expectedName, result);
+        }
+
+        [Test]
+        public void Given_I_Call_DeletePathAndFiles_Then_The_Path_And_All_Files_Are_Deleted()
+        {
+            //arrange
+            const string filePath = @"d:\temp\File1.bdix";
+            const string path = @"d:\temp";
+
+            var fileSystemMock = new Mock<IFileSystem>();
+            fileSystemMock.Setup(s => s.File.Delete(It.IsAny<string>()));
+            fileSystemMock.Setup(s => s.Path.GetDirectoryName(It.IsAny<string>())).Returns(path);
+            fileSystemMock.Setup(s => s.Directory.Delete(It.IsAny<string>()));
+
+            var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
+
+            //act
+            sut.DeletePathAndFiles(filePath);
+
+            //assert
+            fileSystemMock.Verify(f =>f.File.Delete(filePath),Times.Once);
+            fileSystemMock.Verify(f =>f.Path.GetDirectoryName(filePath),Times.Once);
+            fileSystemMock.Verify(f =>f.Directory.Delete(path, true),Times.Once);
+        }
+
+        [Test]
+        public void Given_A_Valid_Path_When_I_Call_DeletePath_Then_The_Path_Is_Deleted()
+        {
+            //arrange
+            const string path = @"d:\temp";
+
+            var fileSystemMock = new Mock<IFileSystem>();
+            fileSystemMock.Setup(s => s.Directory.Delete(It.IsAny<string>()));
+
+            var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
+
+            //act
+            sut.DeletePath(path);
+
+            //assert
+            fileSystemMock.Verify(f =>f.Directory.Delete(path, true),Times.Once);
+        }
+
+        [TestCase("")]
+        [TestCase(null)]
+        public void Given_An_Empty_Or_Null_Path_When_I_Call_DeletePath_Then_Nothing_Is_Called(string path)
+        {
+            var fileSystemMock = new Mock<IFileSystem>();
+            fileSystemMock.Setup(s => s.Directory.Delete(It.IsAny<string>()));
+
+            var sut = new FileService(_blaiseFileApiMock.Object, fileSystemMock.Object, _configurationProviderMock.Object);
+
+            //act
+            sut.DeletePath(path);
+
+            //assert
+            fileSystemMock.VerifyNoOtherCalls();
         }
     }
 }

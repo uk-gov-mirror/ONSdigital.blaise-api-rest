@@ -8,13 +8,13 @@ using Blaise.Api.Contracts.Interfaces;
 [assembly: InternalsVisibleTo("Blaise.Api.Tests.Unit")]
 namespace Blaise.Api.Core.Services
 {
-    public class BlaiseFileService : IBlaiseFileService
+    public class FileService : IFileService
     {
         private readonly IBlaiseFileApi _blaiseFileApi;
         private readonly IFileSystem _fileSystem;
         private readonly IConfigurationProvider _configurationProvider;
 
-        public BlaiseFileService(
+        public FileService(
             IBlaiseFileApi blaiseFileApi, 
             IFileSystem fileSystem, 
             IConfigurationProvider configurationProvider)
@@ -57,6 +57,30 @@ namespace Blaise.Api.Core.Services
         public string GetInstrumentPackageName(string instrumentName)
         {
             return $"{instrumentName}.{_configurationProvider.PackageExtension}";
+        }
+
+        public string GetDatabaseFile(string filePath, string instrumentName)
+        {
+            return _fileSystem.Path.Combine(filePath, $"{instrumentName}.bdix");
+        }
+
+        public void DeletePathAndFiles(string filePath)
+        {
+            _fileSystem.File.Delete(filePath);
+
+            var path = _fileSystem.Path.GetDirectoryName(filePath);
+
+            DeletePath(path);
+        }
+
+        public void DeletePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            _fileSystem.Directory.Delete(path, true);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Blaise.Api.Tests.Helpers.Extensions
 {
     public static class FileExtensions
     {
-        public static string ExtractFile(this string sourceFilePath, string destinationFilePath)
+        public static string ExtractFiles(this string sourceFilePath, string destinationFilePath)
         {
             if (Directory.Exists(destinationFilePath))
             {
@@ -15,6 +15,12 @@ namespace Blaise.Api.Tests.Helpers.Extensions
             ZipFile.ExtractToDirectory(sourceFilePath, destinationFilePath);
 
             return destinationFilePath;
+        }
+
+        public static string ZipFolder(this string sourceFilePath, string DestinationFilePath)
+        {
+            ZipFile.CreateFromDirectory(sourceFilePath, DestinationFilePath);
+            return DestinationFilePath;
         }
     }
 }

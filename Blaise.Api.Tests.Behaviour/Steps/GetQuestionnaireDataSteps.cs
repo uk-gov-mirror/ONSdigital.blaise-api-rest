@@ -35,7 +35,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given(@"we have captured correspondent data for the questionnaire")]
         public void GivenWeHaveCapturedCorrespondentDataForTheQuestionnaire()
         {
-            CaseHelper.GetInstance().CreateCases(ExpectedNumberOfCases);
+            CaseHelper.GetInstance().CreateCasesInBlaise(ExpectedNumberOfCases);
         }
 
         [When(@"the API is called to retrieve the questionnaire with data")]
@@ -51,9 +51,11 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         public void ThenTheQuestionnairePackageContainsTheCapturedCorrespondentData()
         {
             var deliveredFile = _scenarioContext.Get<string>(ApiResponse);
-            var extractedFilePath = Path.Combine(BlaiseConfigurationHelper.TempDownloadPath, BlaiseConfigurationHelper.InstrumentName);
+            var extractedFilePath = Path.Combine(
+                BlaiseConfigurationHelper.TempTestsPath, 
+                BlaiseConfigurationHelper.InstrumentName);
 
-            deliveredFile.ExtractFile(extractedFilePath);
+            deliveredFile.ExtractFiles(extractedFilePath);
             var dataInterfaceFile = $@"{extractedFilePath}\{BlaiseConfigurationHelper.InstrumentName}.bdix";
             var numberOfCases = CaseHelper.GetInstance().NumberOfCasesInInstrument(dataInterfaceFile);
 

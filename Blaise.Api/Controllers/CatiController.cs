@@ -16,7 +16,7 @@ namespace Blaise.Api.Controllers
 
         public CatiController(
             ICatiService catiService, 
-            ILoggingService loggingService)
+            ILoggingService loggingService) : base(loggingService)
         {
             _catiService = catiService;
             _loggingService = loggingService;

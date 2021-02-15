@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Blaise.Api.Tests.Helpers.Case;
 using Blaise.Api.Tests.Helpers.Configuration;
 using Blaise.Api.Tests.Helpers.Files;
 using Blaise.Api.Tests.Helpers.Instrument;
@@ -26,7 +26,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [Given(@"there is a questionnaire installed on a Blaise environment")]
         public void GivenThereIsAnInstrumentInstalledOnABlaiseEnvironment()
         {
-            InstrumentHelper.GetInstance().InstallInstrument();
+            InstrumentHelper.GetInstance().InstallSurvey();
             Assert.IsTrue(InstrumentHelper.GetInstance().SurveyHasInstalled(60));
         }
 
@@ -81,6 +81,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
         [AfterFeature("questionnaires")]
         public static void CleanUpScenario()
         {
+            CaseHelper.GetInstance().DeleteCases();
             InstrumentHelper.GetInstance().UninstallSurvey();
             FileSystemHelper.GetInstance().CleanUpTempFiles();
         }

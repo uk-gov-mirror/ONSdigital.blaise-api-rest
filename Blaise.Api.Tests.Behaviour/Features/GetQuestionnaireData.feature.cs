@@ -77,6 +77,24 @@ namespace Blaise.Api.Tests.Behaviour.Features
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 7
+#line hidden
+#line 8
+ testRunner.Given("there is a questionnaire available in a bucket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 9
+ testRunner.When("the API is called to deploy the questionnaire", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+ testRunner.Then("the questionnaire is available to use in the Blaise environment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 11
+ testRunner.And("the questionnaire does not contain any correspondent data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Deliver an instrument with all correspondent data that has been captured so far")]
         [NUnit.Framework.CategoryAttribute("smoke")]
@@ -106,6 +124,9 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 7
+this.FeatureBackground();
+#line hidden
 #line 15
  testRunner.Given("we have captured correspondent data for the questionnaire", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden

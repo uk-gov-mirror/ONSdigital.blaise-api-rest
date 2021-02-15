@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading;
 using Blaise.Api.Tests.Helpers.Configuration;
 
 namespace Blaise.Api.Tests.Helpers.Files
@@ -14,17 +16,35 @@ namespace Blaise.Api.Tests.Helpers.Files
 
         public void CleanUpTempFiles()
         {
-            if (Directory.Exists(BlaiseConfigurationHelper.TempDownloadPath))
+            if (!Directory.Exists(BlaiseConfigurationHelper.TempTestsPath)) return;
+
+            try
             {
-                foreach (var directory in Directory.GetDirectories(BlaiseConfigurationHelper.TempDownloadPath))
+                Thread.Sleep(10000);
+                DeleteDirectoryAndFilesInPath(BlaiseConfigurationHelper.TempTestsPath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not cleanup folders, {e.Message}, {e}");
+            }
+        }
+
+        public static void DeleteDirectoryAndFilesInPath(string path)
+        {
+            var dirInfo = new DirectoryInfo(path);
+            foreach (var dir in dirInfo.GetDirectories())
+            {
+                foreach (var file in dir.GetFiles())
                 {
-                    Directory.Delete(directory, true);
+                    file.Delete();
                 }
 
-                foreach (var file in Directory.GetFiles(BlaiseConfigurationHelper.TempDownloadPath))
-                {
-                    File.Delete(file);
-                }
+                dir.Delete(true);
+            }
+
+            foreach (var file in Directory.GetFiles(path))
+            {
+                File.Delete(file);
             }
         }
     }
