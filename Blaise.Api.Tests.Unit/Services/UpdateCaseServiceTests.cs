@@ -13,7 +13,7 @@ namespace Blaise.Api.Tests.Unit.Services
     public class UpdateCaseServiceTests
     {
         private Mock<IBlaiseCaseApi> _blaiseApiMock;
-        private Mock<ICatiManaService> _catiManaMock;
+        private Mock<ICatiDataService> _catiManaMock;
         private Mock<ILoggingService> _loggingMock;
         private MockSequence _mockSequence;
 
@@ -21,7 +21,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private Mock<IDataRecord> _existingDataRecordMock;
         private Mock<IDataValue> _dataValueMock;
 
-        private readonly string _serialNumber;
+        private readonly string _primaryKey;
         private readonly string _serverParkName;
         private readonly string _instrumentName;
         private Dictionary<string, string> _newFieldData;
@@ -31,7 +31,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
         public UpdateCaseServiceTests()
         {
-            _serialNumber = "SN123";
+            _primaryKey = "SN123";
             _serverParkName = "Park1";
             _instrumentName = "OPN123";
         }
@@ -61,10 +61,11 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(_dataValueMock.Object);
 
             //important that the service calls the methods in the right order, otherwise you could end up removing what you have added
-            _catiManaMock = new Mock<ICatiManaService>(MockBehavior.Strict);
+            _catiManaMock = new Mock<ICatiDataService>(MockBehavior.Strict);
             _mockSequence = new MockSequence();
 
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
+            _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveCallHistoryBlock(_newFieldData));
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveWebNudgedField(_newFieldData));
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
                 It.IsAny<int>()));
@@ -87,7 +88,7 @@ namespace Blaise.Api.Tests.Unit.Services
             
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName, 
-                _instrumentName, _serialNumber);
+                _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -109,7 +110,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
 
             //act
-            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName, _instrumentName, _serialNumber);
+            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(), 
@@ -129,7 +130,7 @@ namespace Blaise.Api.Tests.Unit.Services
             
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, 
-                _serverParkName, _instrumentName, _serialNumber);
+                _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -157,7 +158,7 @@ namespace Blaise.Api.Tests.Unit.Services
           
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _serialNumber);
+                _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -180,7 +181,7 @@ namespace Blaise.Api.Tests.Unit.Services
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, 
                 _serverParkName, _instrumentName,
-                _serialNumber);
+                _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -201,7 +202,7 @@ namespace Blaise.Api.Tests.Unit.Services
            
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _serialNumber);
+                _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -229,7 +230,7 @@ namespace Blaise.Api.Tests.Unit.Services
             
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _serialNumber);
+                _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -252,7 +253,7 @@ namespace Blaise.Api.Tests.Unit.Services
             
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, 
-                _serverParkName, _instrumentName, _serialNumber);
+                _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -275,7 +276,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object,
-                _serverParkName, _instrumentName, _serialNumber);
+                _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(), 
@@ -295,7 +296,7 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, 
-                _serverParkName, _instrumentName, _serialNumber);
+                _serverParkName, _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(), 
@@ -319,7 +320,7 @@ namespace Blaise.Api.Tests.Unit.Services
             
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName, 
-                _instrumentName, _serialNumber);
+                _instrumentName, _primaryKey);
 
             //assert
             _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
@@ -349,9 +350,11 @@ namespace Blaise.Api.Tests.Unit.Services
 
             //assert
             _catiManaMock.Verify(v => v.RemoveCatiManaBlock(_newFieldData), Times.Once);
+            _catiManaMock.Verify(v => v.RemoveCallHistoryBlock(_newFieldData), Times.Once);
             _catiManaMock.Verify(v => v.RemoveWebNudgedField(_newFieldData), Times.Once);
             _catiManaMock.Verify(v => v.AddCatiManaCallItems(_newFieldData, _existingFieldData,outcomeCode),
                 Times.Once);
+
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData, 
                 _instrumentName, _serverParkName), Times.Once);
         }
