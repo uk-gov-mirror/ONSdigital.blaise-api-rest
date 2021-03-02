@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
-using Blaise.Nuget.Api.Contracts.Enums;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -57,8 +57,8 @@ namespace Blaise.Api.Tests.Unit.Services
             //set up case not in use
             _dataValueMock = new Mock<IDataValue>();
             _dataValueMock.Setup(d => d.IntegerValue).Returns(0); 
-            _blaiseApiMock.Setup(b => b.GetFieldValue(_existingDataRecordMock.Object, FieldNameType.CaseInUse))
-                .Returns(_dataValueMock.Object);
+            _blaiseApiMock.Setup(b => b.CaseInUseInCati(_existingDataRecordMock.Object))
+                .Returns(false);
 
             //important that the service calls the methods in the right order, otherwise you could end up removing what you have added
             _catiManaMock = new Mock<ICatiDataService>(MockBehavior.Strict);
@@ -70,6 +70,10 @@ namespace Blaise.Api.Tests.Unit.Services
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
                 It.IsAny<int>()));
             
+            //needed as we dont update if these fields match
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(DateTime.Now);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(DateTime.Now.AddHours(-1));
+
             _sut = new UpdateCaseService(
                 _blaiseApiMock.Object,
                 _catiManaMock.Object,
@@ -309,14 +313,14 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //arrange
             const int hOutComplete = 110; //complete
+            const int hOutPartial = 210; //partial
 
             _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutComplete);
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
+            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutPartial);
 
             //set up case is in use
-            _dataValueMock.Setup(d => d.IntegerValue).Returns(1); 
-            _blaiseApiMock.Setup(b => b.GetFieldValue(_existingDataRecordMock.Object, FieldNameType.CaseInUse))
-                .Returns(_dataValueMock.Object);
+            _blaiseApiMock.Setup(b => b.CaseInUseInCati(_existingDataRecordMock.Object))
+                .Returns(true);
             
             //act
             _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName, 
@@ -330,33 +334,188 @@ namespace Blaise.Api.Tests.Unit.Services
                 _instrumentName, _serverParkName), Times.Never);
         }
 
+        // Scenario 12
         [Test]
-        public void Given_I_Call_UpdateCase_Then_The_Case_Is_Updated()
+        public void Given_The_Case_Has_Been_Processed_Before_When_I_Call_UpdateExistingCaseWithOnlineData_Then_The_Case_Is_Not_Updated()
         {
             //arrange
-            const int outcomeCode = 110;
+            const int hOutComplete = 110; //complete
+
+            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(hOutComplete);
+            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(hOutComplete);
+
+            //set up case already been processed
+            var lastUpdated = DateTime.Now;
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+
+            //act
+            _sut.UpdateExistingCaseWithOnlineData(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, _serverParkName, 
+                _instrumentName, _primaryKey);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
+                _instrumentName, _serverParkName), Times.Never);
+        }
+
+        [Test]
+        public void Given_I_Call_UpdateCase_Then_The_Correct_Methods_Are_Called()
+        {
+            //arrange
+            const int newOutcomeCode = 110;
+            const int existingOutcomeCode = 210;
 
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_nisraDataRecordMock.Object)).Returns(_newFieldData);
             _blaiseApiMock.Setup(b => b.GetRecordDataFields(_existingDataRecordMock.Object)).Returns(_existingFieldData);
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
             _catiManaMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
-                outcomeCode));
+                newOutcomeCode));
             _blaiseApiMock.Setup(b => b.UpdateCase(_existingDataRecordMock.Object, _newFieldData, 
                 _instrumentName, _serverParkName));
 
             //act
             _sut.UpdateCase(_nisraDataRecordMock.Object, _existingDataRecordMock.Object, 
-                _instrumentName, _serverParkName, outcomeCode);
+                _instrumentName, _serverParkName, newOutcomeCode, existingOutcomeCode, _primaryKey);
 
             //assert
             _catiManaMock.Verify(v => v.RemoveCatiManaBlock(_newFieldData), Times.Once);
             _catiManaMock.Verify(v => v.RemoveCallHistoryBlock(_newFieldData), Times.Once);
             _catiManaMock.Verify(v => v.RemoveWebNudgedField(_newFieldData), Times.Once);
-            _catiManaMock.Verify(v => v.AddCatiManaCallItems(_newFieldData, _existingFieldData,outcomeCode),
+            _catiManaMock.Verify(v => v.AddCatiManaCallItems(_newFieldData, _existingFieldData, newOutcomeCode),
                 Times.Once);
 
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData, 
                 _instrumentName, _serverParkName), Times.Once);
+        }
+
+        [Test]
+        public void Given_A_Record_Has_Updated_When_I_Call_RecordHasBeenUpdated_Then_True_Is_Returned()
+        {
+            //arrange
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+                .Returns(_existingDataRecordMock.Object);
+
+            const int outcomeCode = 110;
+            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(outcomeCode);
+
+            var lastUpdated = DateTime.Now;
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+
+            //act
+            var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, outcomeCode, _instrumentName, _serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.True(result);
+        }
+
+        [Test]
+        public void Given_A_Record_Has_Not_Updated_Due_To_Different_OutComes_When_I_Call_RecordHasBeenUpdated_Then_False_Is_Returned()
+        {
+            //arrange
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+                .Returns(_existingDataRecordMock.Object);
+
+            const int existingOutcomeCode = 110;
+            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(existingOutcomeCode);
+
+            var lastUpdated = DateTime.Now;
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+
+            //act
+            var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, 210, _instrumentName, _serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void Given_A_Record_Has_Not_Updated_Due_To_Different_LastUpdated_dates_When_I_Call_RecordHasBeenUpdated_Then_False_Is_Returned()
+        {
+            //arrange
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+                .Returns(_existingDataRecordMock.Object);
+
+            const int outcomeCode = 110;
+            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_existingDataRecordMock.Object)).Returns(outcomeCode);
+
+            var nisraLastUpdated = DateTime.Now;
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(nisraLastUpdated);
+
+            var existingLastUpdated = DateTime.Now.AddMinutes(-30);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(existingLastUpdated);
+
+            //act
+            var result = _sut.RecordHasBeenUpdated(_primaryKey, _nisraDataRecordMock.Object, outcomeCode, _instrumentName, _serverParkName);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void Given_A_Record_Has_Been_Processed_Before_When_I_Call_NisraRecordHasAlreadyBeenProcessed_Then_True_Is_Returned()
+        {
+            //arrange
+            const int nisraOutcomeCode = 110;
+            const int existingOutcomeCode = 110;
+
+            var lastUpdated = DateTime.Now;
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+
+            //act
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed( _nisraDataRecordMock.Object, nisraOutcomeCode, 
+                _existingDataRecordMock.Object, existingOutcomeCode);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.True(result);
+        }
+
+        [Test]
+        public void Given_A_Record_Has_Not_Been_Processed_Before_Due_To_Different_Outcome_Codes_When_I_Call_NisraRecordHasAlreadyBeenProcessed_Then_False_Is_Returned()
+        {
+            //arrange
+            const int nisraOutcomeCode = 110;
+            const int existingOutcomeCode = 210;
+
+            var lastUpdated = DateTime.Now;
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(lastUpdated);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(lastUpdated);
+
+            //act
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed( _nisraDataRecordMock.Object, nisraOutcomeCode, 
+                _existingDataRecordMock.Object, existingOutcomeCode);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void Given_A_Record_Has_Not_Been_Processed_Before_Due_To_Different_LastUpdated_Dates_When_I_Call_NisraRecordHasAlreadyBeenProcessed_Then_False_Is_Returned()
+        {
+            //arrange
+            const int nisraOutcomeCode = 110;
+            const int existingOutcomeCode = 110;
+
+            var nisraLastUpdated = DateTime.Now;
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_nisraDataRecordMock.Object)).Returns(nisraLastUpdated);
+
+            var existingLastUpdated = DateTime.Now.AddMinutes(-30);
+            _blaiseApiMock.Setup(b => b.GetLastUpdatedDateTime(_existingDataRecordMock.Object)).Returns(existingLastUpdated);
+
+            //act
+            var result = _sut.NisraRecordHasAlreadyBeenProcessed( _nisraDataRecordMock.Object, nisraOutcomeCode, 
+                _existingDataRecordMock.Object, existingOutcomeCode);
+
+            //assert
+            Assert.IsNotNull(result);
+            Assert.False(result);
         }
     }
 }
