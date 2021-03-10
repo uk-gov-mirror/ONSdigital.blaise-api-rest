@@ -69,7 +69,7 @@ namespace Blaise.Api.Core.Services
                 return;
             }
 
-            if (existingOutcome > 542)
+            if (existingOutcome == 561 || existingOutcome == 562)
             {
                 _loggingService.LogInfo(
                     $"Not processed: NISRA case '{primaryKey}' (Existing HOut = '{existingOutcome}'");
