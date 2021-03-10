@@ -168,9 +168,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, _instrumentName, _primaryKey);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_existingDataRecordMock.Object), Times.Once);
-
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
                 _instrumentName, _serverParkName), Times.Once);
         }
@@ -196,9 +193,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, _instrumentName, _primaryKey);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_existingDataRecordMock.Object), Times.Once);
-
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
                 _instrumentName, _serverParkName), Times.Once);
         }
@@ -219,10 +213,8 @@ namespace Blaise.Api.Tests.Unit.Services
                 _primaryKey);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-
-            _blaiseApiMock.VerifyNoOtherCalls();
-
+            _blaiseApiMock.Verify(v => v.UpdateCase(It.IsAny<IDataRecord>(), It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         // Scenario 6 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
@@ -240,9 +232,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, _instrumentName, _primaryKey);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_existingDataRecordMock.Object), Times.Once);
-
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
                 _instrumentName, _serverParkName), Times.Once);
         }
@@ -268,9 +257,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, _instrumentName, _primaryKey);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_existingDataRecordMock.Object), Times.Once);
-
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
                 _instrumentName, _serverParkName), Times.Once);
         }
@@ -291,9 +277,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 _serverParkName, _instrumentName, _primaryKey);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_existingDataRecordMock.Object), Times.Once);
-
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
                 _instrumentName, _serverParkName), Times.Once);
         }
@@ -358,9 +341,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 _instrumentName, _primaryKey);
 
             //assert
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_nisraDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetOutcomeCode(_existingDataRecordMock.Object), Times.Never);
-
             _blaiseApiMock.Verify(v => v.UpdateCase(_existingDataRecordMock.Object, _newFieldData,
                 _instrumentName, _serverParkName), Times.Never);
         }

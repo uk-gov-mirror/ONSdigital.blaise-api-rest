@@ -43,6 +43,7 @@ namespace Blaise.Api.Core.Services
             string serverParkName, string instrumentName, string primaryKey)
         {
             var nisraOutcome = _blaiseApi.GetOutcomeCode(nisraDataRecord);
+            var existingOutcome = _blaiseApi.GetOutcomeCode(existingDataRecord);
 
             if (nisraOutcome == 0)
             {
@@ -51,15 +52,13 @@ namespace Blaise.Api.Core.Services
                 return;
             }
 
-            if (_blaiseApi.CaseInUseInCati(existingDataRecord))
+            if (existingOutcome == 561 || existingOutcome == 562)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{primaryKey}' as the case may be open in Cati");
+                    $"Not processed: NISRA case '{primaryKey}' (Existing HOut = '{existingOutcome}'");
 
                 return;
             }
-
-            var existingOutcome = _blaiseApi.GetOutcomeCode(existingDataRecord);
 
             if (NisraRecordHasAlreadyBeenProcessed(nisraDataRecord, nisraOutcome, existingDataRecord, existingOutcome))
             {
@@ -69,10 +68,10 @@ namespace Blaise.Api.Core.Services
                 return;
             }
 
-            if (existingOutcome == 561 || existingOutcome == 562)
+            if (_blaiseApi.CaseInUseInCati(existingDataRecord))
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{primaryKey}' (Existing HOut = '{existingOutcome}'");
+                    $"Not processed: NISRA case '{primaryKey}' as the case may be open in Cati");
 
                 return;
             }
