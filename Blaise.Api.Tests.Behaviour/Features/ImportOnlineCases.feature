@@ -39,6 +39,8 @@ Scenario: There is an online file available that contains cases that already exi
 	| 900019     | 210     | Web  | 
 	#scenario 10
 	| 900020     | 110     | Web  | 
+	#defect where we had a code of 580 in tel and were not overwriting it with the web case
+	| 900021     | 110     | Web  | 
 	
 	And blaise contains the following cases
 	| primarykey | outcome | mode | 
@@ -72,6 +74,8 @@ Scenario: There is an online file available that contains cases that already exi
 	| 900019     | 562     | Tel  | 
 	#scenario 10
 	| 900020     | 561     | Tel  | 
+	#defect where we had a code of 580 in tel and were not overwriting it with the web case
+	| 900021     | 580     | Tel  | 
 
 	When the online file is processed
 	Then blaise will contain the following cases
@@ -106,6 +110,8 @@ Scenario: There is an online file available that contains cases that already exi
 	| 900019     | 562     | Tel  | 
 	#scenario 10
 	| 900020     | 561     | Tel  | 
+	#defect where we had a code of 580 in tel and were not overwriting it with the web case
+	| 900021     | 110     | Web  | 
 
 #Scenario 1 https://collaborate2.ons.gov.uk/confluence/display/QSS/OPN+NISRA+Case+Processing+Scenarios
 Scenario: A case in the online file is complete and in Blaise it is complete, we take the online case
