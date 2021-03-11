@@ -426,7 +426,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _instrumentName, _serverParkName, outcomeCode, outcomeCode, _primaryKey);
 
             //assert
-            _loggingMock.Verify(v => v.LogInfo($"processed: NISRA case '{_primaryKey}' (HOut = '{outcomeCode}' <= '{outcomeCode}') or (HOut = 0)'"),
+            _loggingMock.Verify(v => v.LogInfo($"processed: NISRA case '{_primaryKey}' (NISRA HOut = '{outcomeCode}' <= '{outcomeCode}') or (Existing HOut = 0)'"),
                 Times.Once);
 
             _loggingMock.Verify(v => v.LogWarn(It.IsAny<string>()), Times.Never);
