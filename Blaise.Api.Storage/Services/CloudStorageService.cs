@@ -53,7 +53,7 @@ namespace Blaise.Api.Storage.Services
                 throw new DataNotFoundException($"No files were found for bucket path '{bucketPath}' in bucket '{_configurationProvider.NisraBucket}'");
             }
 
-            _loggingService.LogInfo($"Attempting to Downloaded '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
+            _loggingService.LogInfo($"Attempting to Download '{bucketFiles.Count}' files from bucket '{_configurationProvider.NisraBucket}'");
 
             foreach (var bucketFile in bucketFiles)
             {
