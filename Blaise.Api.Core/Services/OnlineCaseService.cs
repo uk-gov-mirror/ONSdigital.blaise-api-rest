@@ -47,7 +47,7 @@ namespace Blaise.Api.Core.Services
 
             if (nisraOutcome == 0)
             {
-                _loggingService.LogInfo($"Not processed: NISRA case '{primaryKey}' (HOut = 0)");
+                _loggingService.LogInfo($"Not processed: NISRA case '{primaryKey}' (NISRA HOut = 0)");
 
                 return;
             }
@@ -79,7 +79,7 @@ namespace Blaise.Api.Core.Services
             if (existingOutcome > 0 && existingOutcome < nisraOutcome)
             {
                 _loggingService.LogInfo(
-                    $"Not processed: NISRA case '{primaryKey}' (HOut = '{existingOutcome}' < '{nisraOutcome}')'");
+                    $"Not processed: NISRA case '{primaryKey}' (Existing HOut = '{existingOutcome}' < '{nisraOutcome}')'");
 
                 return;
             }
@@ -105,7 +105,7 @@ namespace Blaise.Api.Core.Services
             if (RecordHasBeenUpdated(primaryKey, newDataRecord, newOutcome, instrumentName, serverParkName))
             {
                 _loggingService.LogInfo(
-                    $"processed: NISRA case '{primaryKey}' (HOut = '{newOutcome}' <= '{existingOutcome}') or (HOut = 0)'");
+                    $"processed: NISRA case '{primaryKey}' (NISRA HOut = '{newOutcome}' <= '{existingOutcome}') or (Existing HOut = 0)'");
                 
                 return;
             }
