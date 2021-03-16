@@ -40,7 +40,7 @@ namespace Blaise.Api.Extensions
             }
         }
 
-        public static void DeleteDirectoryAndFilesInPath(string path)
+        private static void DeleteDirectoryAndFilesInPath(string path)
         {
             var dirInfo = new DirectoryInfo(path);
             foreach (var dir in dirInfo.GetDirectories())
