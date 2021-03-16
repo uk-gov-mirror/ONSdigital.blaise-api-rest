@@ -11,7 +11,7 @@ namespace Blaise.Api.Extensions
             if (!Directory.Exists(path)) return;
 
             var directoryInfo = new DirectoryInfo(path);
-            var parentDirectory = directoryInfo.Parent?.FullName;
+            var parentDirectory = directoryInfo.Parent?.Name;
             
             if (parentDirectory == null)
             {

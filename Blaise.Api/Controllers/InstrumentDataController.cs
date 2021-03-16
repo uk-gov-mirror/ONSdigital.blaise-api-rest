@@ -21,7 +21,8 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IHttpActionResult> GetInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName)
+        public async Task<IHttpActionResult> GetInstrumentWithDataAsync([FromUri] string serverParkName, 
+            [FromUri] string instrumentName)
         {
             var instrumentFile = await _instrumentDataService.GetInstrumentPackageWithDataAsync(serverParkName, instrumentName);
 
@@ -37,8 +38,8 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IHttpActionResult> PostInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName,
-            [FromBody] InstrumentDataDto instrumentDataDto)
+        public async Task<IHttpActionResult> PostInstrumentWithDataAsync([FromUri] string serverParkName, 
+            [FromUri] string instrumentName, [FromBody] InstrumentDataDto instrumentDataDto)
         {
             var instrumentFilesPath = await _instrumentDataService.ImportOnlineDataAsync(instrumentDataDto, serverParkName, instrumentName);
 

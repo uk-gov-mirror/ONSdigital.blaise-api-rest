@@ -5,7 +5,6 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Blaise.Api.Contracts.Interfaces;
-using Blaise.Api.Extensions;
 using Blaise.Api.Filters;
 
 namespace Blaise.Api.Controllers
