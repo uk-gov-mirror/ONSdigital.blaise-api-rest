@@ -144,8 +144,6 @@ namespace Blaise.Api.Tests.Unit.Services
             _fileServiceMock.Verify(v => v.GetDatabaseFile(filePath, _instrumentName), Times.Once);
 
             _caseServiceMock.Verify(v => v.ImportOnlineDatabaseFile(dataBaseFilePath, _instrumentName, _serverParkName), Times.Once);
-
-            _fileServiceMock.Verify(v => v.DeletePath(filePath), Times.Once);
         }
 
         [Test]

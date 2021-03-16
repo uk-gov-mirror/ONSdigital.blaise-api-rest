@@ -7,6 +7,6 @@ namespace Blaise.Api.Core.Interfaces.Services
     {
         Task<string> GetInstrumentPackageWithDataAsync(string serverParkName, string instrumentName);
 
-        Task ImportOnlineDataAsync(InstrumentDataDto instrumentDataDto, string serverParkName, string instrumentName);
+        Task<string> ImportOnlineDataAsync(InstrumentDataDto instrumentDataDto, string serverParkName, string instrumentName);
     }
 }

@@ -27,23 +27,16 @@ namespace Blaise.Api.Controllers
 
         internal IHttpActionResult DownloadFile(string filePath)
         {
-            try
+            _loggingService.LogInfo($"Downloading file '{filePath}'");
+            var responseMsg = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                _loggingService.LogInfo($"Downloading file '{filePath}'");
-                var responseMsg = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new ByteArrayContent(File.ReadAllBytes(filePath))
-                };
+                Content = new ByteArrayContent(File.ReadAllBytes(filePath))
+            };
 
-                responseMsg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = Path.GetFileName(filePath) };
-                responseMsg.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            responseMsg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = Path.GetFileName(filePath) };
+            responseMsg.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-                return ResponseMessage(responseMsg);
-            }
-            finally
-            {
-                Path.GetDirectoryName(filePath).CleanUpTempFiles();
-            }
+            return ResponseMessage(responseMsg);
         }
     }
 }

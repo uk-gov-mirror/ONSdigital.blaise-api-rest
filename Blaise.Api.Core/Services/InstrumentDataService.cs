@@ -34,7 +34,7 @@ namespace Blaise.Api.Core.Services
             return await CreateInstrumentPackageWithDataAsync(serverParkName, instrumentName);
         }
 
-        public async Task ImportOnlineDataAsync(InstrumentDataDto instrumentDataDto, string serverParkName,
+        public async Task<string> ImportOnlineDataAsync(InstrumentDataDto instrumentDataDto, string serverParkName,
             string instrumentName)
         {
             instrumentDataDto.ThrowExceptionIfNull("InstrumentDataDto");
@@ -46,7 +46,7 @@ namespace Blaise.Api.Core.Services
             var databaseFile = _fileService.GetDatabaseFile(filePath, instrumentName);
 
             _caseService.ImportOnlineDatabaseFile(databaseFile, instrumentName, serverParkName);
-            _fileService.DeletePath(filePath);
+            return filePath;
         }
 
         private async Task<string> CreateInstrumentPackageWithDataAsync(string serverParkName, string instrumentName)
