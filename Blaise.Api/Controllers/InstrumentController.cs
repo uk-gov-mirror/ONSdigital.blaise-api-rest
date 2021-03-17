@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Extensions;
 
 namespace Blaise.Api.Controllers
 {
@@ -18,17 +19,19 @@ namespace Blaise.Api.Controllers
         private readonly IInstrumentInstallerService _installInstrumentService;
         private readonly IInstrumentUninstallerService _uninstallInstrumentService;
         private readonly ILoggingService _loggingService;
+        private readonly IConfigurationProvider _configurationProvider;
 
         public InstrumentController(
             IInstrumentService instrumentService,
             IInstrumentInstallerService installInstrumentService,
             IInstrumentUninstallerService uninstallInstrumentService,
-            ILoggingService loggingService) : base(loggingService)
+            ILoggingService loggingService, IConfigurationProvider configurationProvider) : base(loggingService)
         {
             _instrumentService = instrumentService;
             _installInstrumentService = installInstrumentService;
             _uninstallInstrumentService = uninstallInstrumentService;
             _loggingService = loggingService;
+            _configurationProvider = configurationProvider;
         }
 
         [HttpGet]
@@ -106,13 +109,22 @@ namespace Blaise.Api.Controllers
         [Route("")]
         public async Task<IHttpActionResult> InstallInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
         {
-            _loggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
+            var tempPath = _configurationProvider.TempPath;
+            
+            try
+            {
+                _loggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
 
-            var instrumentName = await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto);
+                var instrumentName = await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto, tempPath);
 
-            _loggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
+                _loggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
 
-            return Created($"{Request.RequestUri}/{instrumentName}", instrumentPackageDto);
+                return Created($"{Request.RequestUri}/{instrumentName}", instrumentPackageDto);
+            }
+            finally
+            {
+                tempPath.CleanUpTempFiles();
+            }
         }
 
         [HttpDelete]

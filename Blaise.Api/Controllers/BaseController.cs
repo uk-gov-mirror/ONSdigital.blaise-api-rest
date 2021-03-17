@@ -14,6 +14,7 @@ namespace Blaise.Api.Controllers
     {
         private readonly ILoggingService _loggingService;
 
+
         public BaseController(ILoggingService loggingService)
         {
             _loggingService = loggingService;

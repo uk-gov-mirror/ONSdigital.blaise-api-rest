@@ -24,14 +24,13 @@ namespace Blaise.Api.Core.Services
             _storageService = storageService;
         }
 
-        public async Task<string> InstallInstrumentAsync(string serverParkName,
-            InstrumentPackageDto instrumentPackageDto)
+        public async Task<string> InstallInstrumentAsync(string serverParkName, InstrumentPackageDto instrumentPackageDto, string tempFilePath)
         {
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
             instrumentPackageDto.InstrumentFile.ThrowExceptionIfNullOrEmpty("instrumentPackageDto.InstrumentFile");
+            tempFilePath.ThrowExceptionIfNullOrEmpty("tempFilePath");
 
-            var instrumentFile = await _storageService.DownloadPackageFromInstrumentBucketAsync(
-                instrumentPackageDto.InstrumentFile);
+            var instrumentFile = await _storageService.DownloadPackageFromInstrumentBucketAsync(instrumentPackageDto.InstrumentFile, tempFilePath);
 
             _fileService.UpdateInstrumentFileWithSqlConnection(instrumentFile);
 
@@ -42,8 +41,6 @@ namespace Blaise.Api.Core.Services
                 serverParkName, 
                 instrumentFile, 
                 SurveyInterviewType.Cati);
-
-            _fileService.DeletePathAndFiles(instrumentFile);
 
             return instrumentName;
         }

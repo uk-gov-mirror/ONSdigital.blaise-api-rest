@@ -11,28 +11,35 @@ namespace Blaise.Api.Controllers
     public class InstrumentDataController : BaseController
     {
         private readonly IInstrumentDataService _instrumentDataService;
-  
+        private readonly ILoggingService _loggingService;
+        private readonly IConfigurationProvider _configurationProvider;
+
         public InstrumentDataController(
             IInstrumentDataService dataDeliveryService, 
-            ILoggingService loggingService) : base(loggingService)
+            ILoggingService loggingService, 
+            IConfigurationProvider configurationProvider) : base(loggingService)
         {
             _instrumentDataService = dataDeliveryService;
+            _loggingService = loggingService;
+            _configurationProvider = configurationProvider;
         }
 
         [HttpGet]
         [Route("")]
-        public async Task<IHttpActionResult> GetInstrumentWithDataAsync([FromUri] string serverParkName, 
-            [FromUri] string instrumentName)
+        public async Task<IHttpActionResult> GetInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
-            var instrumentFile = await _instrumentDataService.GetInstrumentPackageWithDataAsync(serverParkName, instrumentName);
-
+            var tempPath = _configurationProvider.TempPath;
+            
             try
             {
+                _loggingService.LogInfo($"Attempting to download instrument '{instrumentName}' with data on server park '{serverParkName}'");
+                var instrumentFile = await _instrumentDataService.GetInstrumentPackageWithDataAsync(serverParkName, instrumentName, tempPath);
+               
                 return DownloadFile(instrumentFile);
             }
             finally
             {
-                instrumentFile.CleanUpTempFiles();
+                tempPath.CleanUpTempFiles();
             }
         }
 
@@ -41,15 +48,17 @@ namespace Blaise.Api.Controllers
         public async Task<IHttpActionResult> PostInstrumentWithDataAsync([FromUri] string serverParkName, 
             [FromUri] string instrumentName, [FromBody] InstrumentDataDto instrumentDataDto)
         {
-            var instrumentFilesPath = await _instrumentDataService.ImportOnlineDataAsync(instrumentDataDto, serverParkName, instrumentName);
-
+            var tempPath = _configurationProvider.TempPath;
+            
             try
             {
+                _loggingService.LogInfo($"Attempting to import instrument '{instrumentName}' with data on server park '{serverParkName}'");
+                await _instrumentDataService.ImportOnlineDataAsync(instrumentDataDto, serverParkName, instrumentName, tempPath);
                 return Created("{Request.RequestUri}", instrumentDataDto);
             }
             finally
             {
-                instrumentFilesPath.CleanUpTempFiles();
+                tempPath.CleanUpTempFiles();
             }
         }
     }
