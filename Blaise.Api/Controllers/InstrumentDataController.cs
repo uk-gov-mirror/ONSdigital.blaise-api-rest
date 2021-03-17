@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.Instrument;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Extensions;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
@@ -26,6 +29,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ByteArrayContent))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public async Task<IHttpActionResult> GetInstrumentWithDataAsync([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             var tempPath = _configurationProvider.TempPath;
@@ -45,6 +51,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(InstrumentDataDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public async Task<IHttpActionResult> PostInstrumentWithDataAsync([FromUri] string serverParkName, 
             [FromUri] string instrumentName, [FromBody] InstrumentDataDto instrumentDataDto)
         {

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Http;
-using System.Web.Http.Description;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.ServerPark;
 using Blaise.Api.Core.Interfaces.Services;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
@@ -24,7 +25,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [ResponseType(typeof(IEnumerable<ServerParkDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<ServerParkDto>))]
         public IHttpActionResult GetServerParks()
         {
             _loggingService.LogInfo("Obtaining a list of server parks");
@@ -38,7 +39,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{serverParkName}")]
-        [ResponseType(typeof(ServerParkDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(ServerParkDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetServerPark([FromUri] string serverParkName)
         {
             var park = _serverParkService.GetServerPark(serverParkName);
@@ -50,7 +53,8 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{serverParkName}/exists")]
-        [ResponseType(typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
         public IHttpActionResult ServerParkExists([FromUri] string serverParkName)
         {
             var exists = _serverParkService.ServerParkExists(serverParkName);
@@ -62,6 +66,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("{serverParkName}/server")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] ServerDto serverDto)
         {
             _loggingService.LogInfo($"Attempt to register a server '{serverDto.Name}'");
