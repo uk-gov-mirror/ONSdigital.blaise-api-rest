@@ -57,6 +57,8 @@ namespace Blaise.Api.Extensions
             {
                 File.Delete(file);
             }
+
+            Directory.Delete(path, true);
         }
     }
 }
