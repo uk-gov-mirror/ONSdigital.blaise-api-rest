@@ -4,10 +4,12 @@ using Blaise.Nuget.Api.Contracts.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
 using Blaise.Api.Contracts.Interfaces;
+using Blaise.Api.Extensions;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
@@ -18,36 +20,42 @@ namespace Blaise.Api.Controllers
         private readonly IInstrumentInstallerService _installInstrumentService;
         private readonly IInstrumentUninstallerService _uninstallInstrumentService;
         private readonly ILoggingService _loggingService;
+        private readonly IConfigurationProvider _configurationProvider;
 
         public InstrumentController(
             IInstrumentService instrumentService,
             IInstrumentInstallerService installInstrumentService,
             IInstrumentUninstallerService uninstallInstrumentService,
-            ILoggingService loggingService) : base(loggingService)
+            ILoggingService loggingService, IConfigurationProvider configurationProvider) : base(loggingService)
         {
             _instrumentService = instrumentService;
             _installInstrumentService = installInstrumentService;
             _uninstallInstrumentService = uninstallInstrumentService;
             _loggingService = loggingService;
+            _configurationProvider = configurationProvider;
         }
 
         [HttpGet]
         [Route("")]
-        [ResponseType(typeof(IEnumerable<InstrumentDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(IEnumerable<InstrumentDto>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstruments(string serverParkName)
         {
             _loggingService.LogInfo("Obtaining a list of instruments for a server park");
 
             var instruments = _instrumentService.GetInstruments(serverParkName).ToList();
 
-            _loggingService.LogInfo($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
+            _loggingService.LogInfo($"Successfully received {instruments.Count} instruments");
 
             return Ok(instruments);
         }
 
         [HttpGet]
         [Route("{instrumentName}")]
-        [ResponseType(typeof(InstrumentDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(InstrumentDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo("Get an instrument for a server park");
@@ -62,7 +70,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/exists")]
-        [ResponseType(typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult InstrumentExists([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Check that an instrument exists on server park '{serverParkName}'");
@@ -76,7 +86,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/id")]
-        [ResponseType(typeof(Guid))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(Guid))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrumentId([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Get the ID of an instrument on server park '{serverParkName}'");
@@ -90,7 +102,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{instrumentName}/status")]
-        [ResponseType(typeof(SurveyStatusType))]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(SurveyStatusType))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetInstrumentStatus([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Get the status of an instrument on server park '{serverParkName}'");
@@ -104,19 +118,34 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
+        [SwaggerResponse(HttpStatusCode.Created, Type=typeof(InstrumentPackageDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public async Task<IHttpActionResult> InstallInstrument([FromUri] string serverParkName, [FromBody] InstrumentPackageDto instrumentPackageDto)
         {
-            _loggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
+            var tempPath = _configurationProvider.TempPath;
+            
+            try
+            {
+                _loggingService.LogInfo($"Attempting to install instrument '{instrumentPackageDto.InstrumentFile}' on server park '{serverParkName}'");
 
-            var instrumentName = await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto);
+                var instrumentName = await _installInstrumentService.InstallInstrumentAsync(serverParkName, instrumentPackageDto, tempPath);
 
-            _loggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
+                _loggingService.LogInfo($"Instrument '{instrumentPackageDto.InstrumentFile}' installed on server park '{serverParkName}'");
 
-            return Created($"{Request.RequestUri}/{instrumentName}", instrumentPackageDto);
+                return Created($"{Request.RequestUri}/{instrumentName}", instrumentPackageDto);
+            }
+            finally
+            {
+                tempPath.CleanUpTempFiles();
+            }
         }
 
         [HttpDelete]
         [Route("{instrumentName}")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UninstallInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Attempting to uninstall instrument '{instrumentName}' on server park '{serverParkName}'");
@@ -130,6 +159,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{instrumentName}/activate")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult ActivateInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Activate instrument '{instrumentName}' on server park '{serverParkName}'");
@@ -144,6 +176,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{instrumentName}/deactivate")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult DeactivateInstrument([FromUri] string serverParkName, [FromUri] string instrumentName)
         {
             _loggingService.LogInfo($"Deactivate instrument '{instrumentName}' on server park '{serverParkName}'");

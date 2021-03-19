@@ -7,7 +7,6 @@ using Blaise.Api.Storage.Services;
 using Blaise.Nuget.Api.Contracts.Exceptions;
 using Moq;
 using NUnit.Framework;
-using TaskExtensions = System.Data.Entity.SqlServer.Utilities.TaskExtensions;
 
 namespace Blaise.Api.Tests.Unit.Storage
 {
@@ -40,24 +39,21 @@ namespace Blaise.Api.Tests.Unit.Storage
         {
             //arrange
             const string bucketName = "DQS";
-            const string tempPath = @"d:\Temp";
             const string bucketFilePath = "OPN1234/OPN1234.zip";
             const string fileName = "OPN1234.zip";
-            var localFilePath = $@"d:\temp\InstrumentFiles\GUID";
+            var tempFilePath = @"d:\temp\GUID";
+            var localFilePath = @"d:\temp\GUID\OPN1234.zip";
 
-            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
             _configurationProviderMock.Setup(c => c.DqsBucket).Returns(bucketName);
 
-            _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(localFilePath);
 
-            _fileSystemMock.Setup(f => f.Directory.Exists(localFilePath)).Returns(true);
+            _fileSystemMock.Setup(f => f.Directory.Exists(tempFilePath)).Returns(true);
             _fileSystemMock.Setup(f => f.Path.GetFileName(bucketFilePath)).Returns(fileName);
-            _fileSystemMock.Setup(s => s.Path.Combine(localFilePath, fileName))
+            _fileSystemMock.Setup(s => s.Path.Combine(tempFilePath, fileName))
                 .Returns(localFilePath);
 
             //act
-            await _sut.DownloadPackageFromInstrumentBucketAsync(bucketFilePath);
+            await _sut.DownloadPackageFromInstrumentBucketAsync(bucketFilePath, tempFilePath);
 
             //assert
             _storageProviderMock.Verify(v => v.DownloadAsync(bucketName,
@@ -69,9 +65,8 @@ namespace Blaise.Api.Tests.Unit.Storage
         {
             //arrange
             const string bucketName = "NISRA";
-            const string tempPath = @"d:\Temp";
             const string bucketFilePath = "OPN1234";
-            var localFilePath = $@"d:\temp\InstrumentFiles\GUID";
+            var tempFilePath = $@"d:\temp\GUID";
             var files = new List<string>()
             {
                 "OPN.bdix",
@@ -85,19 +80,16 @@ namespace Blaise.Api.Tests.Unit.Storage
             foreach (var file in files)
             {
                 _fileSystemMock.Setup(f => f.Path.GetFileName(file)).Returns(file);
-                _fileSystemMock.Setup(s => s.Path.Combine(localFilePath, file)).Returns($@"{localFilePath}\\{file}");
+                _fileSystemMock.Setup(s => s.Path.Combine(tempFilePath, file)).Returns($@"{tempFilePath}\\{file}");
             }
 
-            _configurationProviderMock.Setup(c => c.TempPath).Returns(tempPath);
             _configurationProviderMock.Setup(c => c.NisraBucket).Returns(bucketName);
 
-            _fileSystemMock.Setup(s => s.Path.Combine(tempPath, It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(localFilePath);
 
-            _fileSystemMock.Setup(f => f.Directory.Exists(localFilePath)).Returns(true);
+            _fileSystemMock.Setup(f => f.Directory.Exists(tempFilePath)).Returns(true);
 
             //act
-            await _sut.DownloadDatabaseFilesFromNisraBucketAsync(bucketFilePath);
+            await _sut.DownloadDatabaseFilesFromNisraBucketAsync(bucketFilePath, tempFilePath);
 
             //assert
             _storageProviderMock.Verify(v => v.GetListOfFiles(bucketName,
@@ -105,7 +97,7 @@ namespace Blaise.Api.Tests.Unit.Storage
 
             foreach (var file in files)
             {
-                _storageProviderMock.Verify(v => v.DownloadAsync(bucketName, file, $@"{localFilePath}\\{file}"));
+                _storageProviderMock.Verify(v => v.DownloadAsync(bucketName, file, $@"{tempFilePath}\\{file}"));
             }
         }
 
@@ -130,7 +122,7 @@ namespace Blaise.Api.Tests.Unit.Storage
             _fileSystemMock.Setup(f => f.Directory.Exists(localFilePath)).Returns(true);
 
             //act && assert
-            var exception = Assert.ThrowsAsync<DataNotFoundException>(async () => await _sut.DownloadDatabaseFilesFromNisraBucketAsync(bucketFilePath));
+            var exception = Assert.ThrowsAsync<DataNotFoundException>(async () => await _sut.DownloadDatabaseFilesFromNisraBucketAsync(bucketFilePath, tempPath));
             Assert.AreEqual($"No files were found for bucket path '{bucketFilePath}' in bucket '{bucketName}'", exception.Message);
         }
 
