@@ -46,7 +46,7 @@ namespace Blaise.Api.Controllers
 
             var instruments = _instrumentService.GetInstruments(serverParkName).ToList();
 
-            _loggingService.LogInfo($"Successfully received a list of instruments '{string.Join(", ", instruments)}'");
+            _loggingService.LogInfo($"Successfully received {instruments.Count} instruments");
 
             return Ok(instruments);
         }

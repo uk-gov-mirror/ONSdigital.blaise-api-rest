@@ -32,7 +32,7 @@ namespace Blaise.Api.Controllers
 
             var instruments = _catiService.GetCatiInstruments().ToList();
 
-            _loggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+            _loggingService.LogInfo($"Successfully received {instruments.Count} instruments from Cati");
 
             return Ok(instruments);
         }
@@ -48,7 +48,7 @@ namespace Blaise.Api.Controllers
 
             var instruments = _catiService.GetCatiInstruments(serverParkName).ToList();
 
-            _loggingService.LogInfo($"Successfully received a list of instruments from Cati '{string.Join(", ", instruments)}'");
+            _loggingService.LogInfo($"Successfully received {instruments.Count} instruments from Cati");
 
             return Ok(instruments);
         }
