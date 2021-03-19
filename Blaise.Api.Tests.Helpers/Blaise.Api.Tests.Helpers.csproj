@@ -210,6 +210,10 @@
       <Project>{14D16F19-4BCA-4320-822F-B140B762B2B5}</Project>
       <Name>Blaise.Api.Tests.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Blaise.Api\Blaise.Api.csproj">
+      <Project>{f35096f9-a4bb-4c18-8da1-158c66fabcac}</Project>
+      <Name>Blaise.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

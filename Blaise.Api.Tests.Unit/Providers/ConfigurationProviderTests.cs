@@ -37,7 +37,18 @@ namespace Blaise.Api.Tests.Unit.Providers
 
             //assert
             Assert.NotNull(result);
-            Assert.AreEqual(@"c:\Blaise\Temp", result);
+            Assert.True(result.StartsWith(@"c:\Blaise\Temp"));
+        }
+
+        [Test]
+        public void Given_I_Call_TempPath_I_Get_A_Unique_Path_Back_Each_Time()
+        {
+            //act
+            var result1 = _sut.TempPath;
+            var result2 = _sut.TempPath;
+
+            //assert
+            Assert.AreNotEqual(result1, result2);
         }
 
         [Test]

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Web.Http;
-using System.Web.Http.Description;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.User;
 using Blaise.Api.Core.Interfaces.Services;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
@@ -14,7 +15,7 @@ namespace Blaise.Api.Controllers
         private readonly ILoggingService _loggingService;
 
         public UserController(
-            IUserService userService, 
+            IUserService userService,
             ILoggingService loggingService) : base(loggingService)
         {
             _userService = userService;
@@ -23,7 +24,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [ResponseType(typeof(IEnumerable<UserDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<UserDto>))]
         public IHttpActionResult GetUsers()
         {
             _loggingService.LogInfo("Getting a list of users");
@@ -37,7 +38,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{userName}")]
-        [ResponseType(typeof(UserDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetUser([FromUri] string userName)
         {
             _loggingService.LogInfo($"Attempting to get user '{userName}'");
@@ -51,7 +54,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{userName}/exists")]
-        [ResponseType(typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UserExists([FromUri] string userName)
         {
             _loggingService.LogInfo($"Attempting to see if user '{userName}' exists");
@@ -65,6 +70,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(AddUserDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult AddUser([FromBody] AddUserDto userDto)
         {
             _loggingService.LogInfo($"Attempting to add user '{userDto.Name}'");
@@ -78,6 +86,9 @@ namespace Blaise.Api.Controllers
 
         [HttpDelete]
         [Route("{userName}")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult RemoveUser([FromUri] string userName)
         {
             _loggingService.LogInfo($"Attempting to remove user '{userName}'");
@@ -91,6 +102,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{userName}/password")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdatePassword([FromUri] string userName, [FromBody] UpdateUserPasswordDto passwordDto)
         {
             _loggingService.LogInfo($"Attempting to update password for user '{userName}'");
@@ -104,6 +118,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{userName}/role")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdateRole([FromUri] string userName, [FromBody] UpdateUserRoleDto roleDto)
         {
             _loggingService.LogInfo($"Attempting to update user '{userName}' role to '{roleDto.Role}'");
@@ -117,6 +134,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{userName}/serverparks")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdateServerParks([FromUri] string userName, [FromBody] UpdateUserServerParksDto serverParksDto)
         {
             _loggingService.LogInfo($"Attempting to update server parks for user '{userName}'");
