@@ -23,6 +23,7 @@ namespace Blaise.Api.Tests.Unit.Services
         private string _serverParkName;
         private string _instrumentName;
         private string _instrumentFile;
+        private string _tempPath;
 
         private InstrumentPackageDto _instrumentPackageDto;
 
@@ -37,6 +38,7 @@ namespace Blaise.Api.Tests.Unit.Services
             _instrumentFile = "OPN2010A.zip";
             _serverParkName = "ServerParkA";
             _instrumentName = "OPN2010A";
+            _tempPath = @"c:\temp\GUID";
 
             _instrumentPackageDto = new InstrumentPackageDto
             {
@@ -56,7 +58,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromInstrumentBucketAsync(
-                    _instrumentFile)).ReturnsAsync(instrumentFilePath);
+                    _instrumentFile, _tempPath)).ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
                 .UpdateInstrumentFileWithSqlConnection(instrumentFilePath));
@@ -67,18 +69,15 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
 
-            _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeletePathAndFiles(instrumentFilePath));
-
             //act
-            await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto);
+            await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);
 
             //assert
-            _storageServiceMock.Verify(v => v.DownloadPackageFromInstrumentBucketAsync( _instrumentFile), Times.Once);
+            _storageServiceMock.Verify(v => v.DownloadPackageFromInstrumentBucketAsync( _instrumentFile, _tempPath), Times.Once);
             _fileServiceMock.Verify(v => v.UpdateInstrumentFileWithSqlConnection(instrumentFilePath), Times.Once);
             _fileServiceMock.Verify(v => v.GetInstrumentNameFromFile(_instrumentFile), Times.Once);
             _blaiseSurveyApiMock.Verify(v => v.InstallSurvey(_instrumentName, _serverParkName,
                 instrumentFilePath, SurveyInterviewType.Cati), Times.Once);
-            _fileServiceMock.Verify(v => v.DeletePathAndFiles(instrumentFilePath), Times.Once);
         }
 
         [Test]
@@ -88,7 +87,7 @@ namespace Blaise.Api.Tests.Unit.Services
             const string instrumentFilePath = "d:\\temp\\OPN1234.zip";
 
             _storageServiceMock.InSequence(_mockSequence).Setup(s => s.DownloadPackageFromInstrumentBucketAsync(
-                    _instrumentFile)).ReturnsAsync(instrumentFilePath);
+                    _instrumentFile, _tempPath)).ReturnsAsync(instrumentFilePath);
 
             _fileServiceMock.InSequence(_mockSequence).Setup(b => b
                 .UpdateInstrumentFileWithSqlConnection(instrumentFilePath));
@@ -99,10 +98,8 @@ namespace Blaise.Api.Tests.Unit.Services
             _blaiseSurveyApiMock.InSequence(_mockSequence).Setup(b => b
                 .InstallSurvey(_instrumentName,_serverParkName, instrumentFilePath, SurveyInterviewType.Cati));
 
-            _fileServiceMock.InSequence(_mockSequence).Setup(s => s.DeletePathAndFiles(instrumentFilePath));
-
             //act
-            var result = await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto);
+            var result = await _sut.InstallInstrumentAsync(_serverParkName, _instrumentPackageDto, _tempPath);
 
             //assert
             Assert.IsNotNull(result);
@@ -115,7 +112,7 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallInstrumentAsync(string.Empty, 
-                _instrumentPackageDto));
+                _instrumentPackageDto, _tempPath));
             Assert.AreEqual("A value for the argument 'serverParkName' must be supplied", exception.Message);
         }
 
@@ -124,8 +121,26 @@ namespace Blaise.Api.Tests.Unit.Services
         {
             //act && assert
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallInstrumentAsync(null,
-                _instrumentPackageDto));
+                _instrumentPackageDto, _tempPath));
             Assert.AreEqual("serverParkName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_TempFilePath_When_I_Call_InstallInstrument_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () => await _sut.InstallInstrumentAsync(_serverParkName, 
+                _instrumentPackageDto, string.Empty));
+            Assert.AreEqual("A value for the argument 'tempFilePath' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_TempFilePath_When_I_Call_InstallInstrument_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.InstallInstrumentAsync(_serverParkName,
+                _instrumentPackageDto, null));
+            Assert.AreEqual("tempFilePath", exception.ParamName);
         }
     }
 }

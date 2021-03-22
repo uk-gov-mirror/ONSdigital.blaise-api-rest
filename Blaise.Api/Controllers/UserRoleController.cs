@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Web.Http;
-using System.Web.Http.Description;
 using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Contracts.Models.UserRole;
 using Blaise.Api.Core.Interfaces.Services;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Blaise.Api.Controllers
 {
@@ -23,7 +24,7 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [ResponseType(typeof(IEnumerable<UserRoleDto>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<UserRoleDto>))]
         public IHttpActionResult GetRoles()
         {
             _loggingService.LogInfo("Getting a list of user roles");
@@ -37,7 +38,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{name}")]
-        [ResponseType(typeof(UserRoleDto))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserRoleDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult GetUserRole([FromUri] string name)
         {
             _loggingService.LogInfo($"Attempting to get user role '{name}'");
@@ -51,7 +54,9 @@ namespace Blaise.Api.Controllers
 
         [HttpGet]
         [Route("{name}/exists")]
-        [ResponseType(typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UserRoleExists([FromUri] string name)
         {
             _loggingService.LogInfo($"Attempting to see if user role '{name}' exists");
@@ -65,6 +70,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPost]
         [Route("")]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(UserRoleDto))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult AddUserRole([FromBody] UserRoleDto roleDto)
         {
             _loggingService.LogInfo($"Attempting to add user role '{roleDto.Name}'");
@@ -78,6 +86,9 @@ namespace Blaise.Api.Controllers
 
         [HttpDelete]
         [Route("{name}")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult RemoveUserRole([FromUri] string name)
         {
             _loggingService.LogInfo($"Attempting to remove user role '{name}'");
@@ -91,6 +102,9 @@ namespace Blaise.Api.Controllers
 
         [HttpPatch]
         [Route("{name}/permissions")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
         public IHttpActionResult UpdateRolePermissions([FromUri] string name, [FromBody] IEnumerable<string> permissions)
         {
             _loggingService.LogInfo("Attempting to update permissions for user role '{name}'");

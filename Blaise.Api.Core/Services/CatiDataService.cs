@@ -109,7 +109,7 @@ namespace Blaise.Api.Core.Services
                 {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DayNumber", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DayNumber"]},
                 {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialTime", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialTime"]},
                 {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].NrOfDials", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].NrOfDials"]},
-                {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialResult", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialResult"]},
+                {$"CatiMana.CatiCall.RegsCalls[{newEntryNumber}].DialResult", fieldData[$"CatiMana.CatiCall.RegsCalls[{existingEntryNumber}].DialResult"]}
             };
         }
     }

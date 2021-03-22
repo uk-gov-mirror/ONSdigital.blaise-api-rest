@@ -21,22 +21,8 @@ namespace Blaise.Api.Core.Services
             instrumentName.ThrowExceptionIfNullOrEmpty("instrumentName");
             serverParkName.ThrowExceptionIfNullOrEmpty("serverParkName");
 
-            DeleteData(instrumentName, serverParkName);
+            _blaiseCaseApi.RemoveCases(instrumentName, serverParkName);
             _blaiseSurveyApi.UninstallSurvey(instrumentName, serverParkName);
-        }
-
-        private void DeleteData(string instrumentName, string serverParkName)
-        {
-            var cases = _blaiseCaseApi.GetCases(instrumentName, serverParkName);
-
-            while (!cases.EndOfSet)
-            {
-                var primaryKey = _blaiseCaseApi.GetPrimaryKeyValue(cases.ActiveRecord);
-
-                _blaiseCaseApi.RemoveCase(primaryKey, instrumentName, serverParkName);
-
-                cases.MoveNext();
-            }
         }
     }
 }
