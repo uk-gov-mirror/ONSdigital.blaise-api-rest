@@ -23,9 +23,6 @@ namespace Blaise.Api.Filters
                 case DataNotFoundException _:
                     context.Response = new HttpResponseMessage(HttpStatusCode.NotFound);
                     break;
-                case MethodFailedException _:
-                    context.Response = new HttpResponseMessage((HttpStatusCode)420);
-                    break;
                 case ArgumentNullException _:
                 case ArgumentException _:
                     context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);

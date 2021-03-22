@@ -42,18 +42,5 @@ namespace Blaise.Api.Storage.Providers
                 }
             }
         }
-
-        public async Task UploadAsync(string bucketName, string filePath)
-        {
-            using (var storageClient = await StorageClient.CreateAsync())
-            {
-                var fileName = Path.GetFileName(filePath);
-
-                using (var fileStream = _fileSystem.FileStream.Create(filePath, FileMode.OpenOrCreate))
-                {
-                    await storageClient.UploadObjectAsync(bucketName, fileName, null, fileStream);
-                }
-            }
-        }
     }
 }
