@@ -96,7 +96,7 @@ namespace Blaise.Api.Core.Services
             var existingTimeStamp = _blaiseApi.GetLastUpdatedDateTime(existingDataRecord);
             var recordHasAlreadyBeenProcessed = nisraOutcome == existingOutcome && nisraTimeStamp == existingTimeStamp;
             
-            _loggingService.LogInfo($"Check NISRA Update needed for case '{primaryKey}': '{!recordHasAlreadyBeenProcessed}' - " +
+            _loggingService.LogInfo($"Check if NISRA case has already been processed previously '{primaryKey}': '{recordHasAlreadyBeenProcessed}' - " +
                                     $"(NISRA HOut = '{nisraOutcome}' timestamp = '{nisraTimeStamp}') " +
                                     $"(Existing HOut = '{existingOutcome}' timestamp = '{existingTimeStamp}')" +
                                     $" for instrument '{instrumentName}'");
