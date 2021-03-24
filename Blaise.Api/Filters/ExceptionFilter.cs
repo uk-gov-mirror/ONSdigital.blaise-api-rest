@@ -22,17 +22,18 @@ namespace Blaise.Api.Filters
             {
                 case DataNotFoundException _:
                     context.Response = new HttpResponseMessage(HttpStatusCode.NotFound);
+                    _loggingService.LogError("Warning: ", context.Exception);
                     break;
                 case ArgumentNullException _:
                 case ArgumentException _:
                     context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    _loggingService.LogError("Error: ", context.Exception);
                     break;
                 default:
                     context.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                    _loggingService.LogError("Error: ", context.Exception);
                     break;
             }
-            
-            _loggingService.LogError("Error: ", context.Exception);
         }
     }
 }
