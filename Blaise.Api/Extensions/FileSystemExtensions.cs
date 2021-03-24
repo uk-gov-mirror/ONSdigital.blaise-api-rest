@@ -24,8 +24,15 @@ namespace Blaise.Api.Extensions
 
         private static void CleanUpFiles(string path)
         {
-            Thread.Sleep(2000);
-            Directory.Delete(path, true);
+            try
+            {
+                Thread.Sleep(2000);
+                Directory.Delete(path, true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }
