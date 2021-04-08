@@ -1,6 +1,7 @@
 ﻿using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Api.Core.Services;
+using Blaise.Nuget.Api.Contracts.Exceptions;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -76,37 +77,6 @@ namespace Blaise.Api.Tests.Unit.Services
         }
 
         [Test]
-        public void Given_There_A_Record_In_The_Nisra_File_Does_Not_Exist_When_I_Call_ImportOnlineDatabaseFile_Then_The_Record_Is_Added()
-        {
-            //arrange
-            _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
-            _dataSetMock.SetupSequence(d => d.EndOfSet)
-                .Returns(false)
-                .Returns(true);
-
-            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(_newDataRecordMock.Object)).Returns(_primaryKey);
-            _blaiseApiMock.Setup(b => b.CaseExists(_primaryKey, _serverParkName, _instrumentName)).Returns(false);
-
-            //act
-            _sut.ImportOnlineDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
-
-            //assert
-            _blaiseApiMock.Verify(v => v.GetCases(_databaseFileName), Times.Once);
-            _blaiseApiMock.Verify(v => v.GetPrimaryKeyValue(_newDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.CaseExists(_primaryKey, _instrumentName, _serverParkName), Times.Once);
-
-            _onlineCaseServiceMock.Verify(v => v.CreateOnlineCase(_newDataRecordMock.Object, _instrumentName,
-                _serverParkName, _primaryKey), Times.Once);
-
-            _dataSetMock.Verify(v => v.EndOfSet, Times.Exactly(2));
-            _dataSetMock.Verify(v => v.ActiveRecord, Times.Once);
-            _dataSetMock.Verify(v => v.MoveNext(), Times.Once);
-            
-            _blaiseApiMock.VerifyNoOtherCalls();
-            _onlineCaseServiceMock.VerifyNoOtherCalls();
-        }
-
-        [Test]
         public void Given_A_Record_Already_Exists_When_I_Call_ImportCasesFromFile_Then_The_Record_Is_Updated()
         {
             //arrange
@@ -116,7 +86,6 @@ namespace Blaise.Api.Tests.Unit.Services
                 .Returns(true);
 
             _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(_newDataRecordMock.Object)).Returns(_primaryKey);
-            _blaiseApiMock.Setup(b => b.CaseExists(_primaryKey, _instrumentName, _serverParkName)).Returns(true);
 
             _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
                 .Returns(_existingDataRecordMock.Object);
@@ -127,7 +96,6 @@ namespace Blaise.Api.Tests.Unit.Services
             //assert
             _blaiseApiMock.Verify(v => v.GetCases(_databaseFileName), Times.Once);
             _blaiseApiMock.Verify(v => v.GetPrimaryKeyValue(_newDataRecordMock.Object), Times.Once);
-            _blaiseApiMock.Verify(v => v.CaseExists(_primaryKey, _instrumentName, _serverParkName), Times.Once);
             _blaiseApiMock.Verify(v => v.GetCase(_primaryKey, _instrumentName, _serverParkName), Times.Once);
 
             _dataSetMock.Verify(v => v.EndOfSet, Times.Exactly(2));
@@ -136,6 +104,39 @@ namespace Blaise.Api.Tests.Unit.Services
 
             _onlineCaseServiceMock.Verify(v => v.UpdateExistingCaseWithOnlineData(_newDataRecordMock.Object, _existingDataRecordMock.Object,
                 _serverParkName, _instrumentName, _primaryKey), Times.Once);
+
+            _blaiseApiMock.VerifyNoOtherCalls();
+            _onlineCaseServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Test]
+        public void Given_A_Record_Does_Not_Exist_When_I_Call_ImportCasesFromFile_Then_The_Next_Record_Is_Processed()
+        {
+            //arrange
+            _dataSetMock.Setup(d => d.ActiveRecord).Returns(_newDataRecordMock.Object);
+            _dataSetMock.SetupSequence(d => d.EndOfSet)
+                .Returns(false)
+                .Returns(true);
+
+            _blaiseApiMock.Setup(b => b.GetPrimaryKeyValue(_newDataRecordMock.Object)).Returns(_primaryKey);
+
+            _blaiseApiMock.Setup(b => b.GetCase(_primaryKey, _instrumentName, _serverParkName))
+                .Throws(new DataNotFoundException(""));
+
+            //act
+            _sut.ImportOnlineDatabaseFile(_databaseFileName, _instrumentName, _serverParkName);
+
+            //assert
+            _blaiseApiMock.Verify(v => v.GetCases(_databaseFileName), Times.Once);
+            _blaiseApiMock.Verify(v => v.GetPrimaryKeyValue(_newDataRecordMock.Object), Times.Once);
+            _blaiseApiMock.Verify(v => v.GetCase(_primaryKey, _instrumentName, _serverParkName), Times.Once);
+
+            _dataSetMock.Verify(v => v.EndOfSet, Times.Exactly(2));
+            _dataSetMock.Verify(v => v.ActiveRecord, Times.Once);
+            _dataSetMock.Verify(v => v.MoveNext(), Times.Once);
+
+            _onlineCaseServiceMock.Verify(v => v.UpdateExistingCaseWithOnlineData(_newDataRecordMock.Object, _existingDataRecordMock.Object,
+                _serverParkName, _instrumentName, _primaryKey), Times.Never);
 
             _blaiseApiMock.VerifyNoOtherCalls();
             _onlineCaseServiceMock.VerifyNoOtherCalls();

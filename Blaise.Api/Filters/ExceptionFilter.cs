@@ -22,7 +22,7 @@ namespace Blaise.Api.Filters
             {
                 case DataNotFoundException _:
                     context.Response = new HttpResponseMessage(HttpStatusCode.NotFound);
-                    _loggingService.LogError("Warning: ", context.Exception);
+                    _loggingService.LogWarn($"Warning: {context.Exception}");
                     break;
                 case ArgumentNullException _:
                 case ArgumentException _:

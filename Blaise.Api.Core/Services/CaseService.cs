@@ -1,4 +1,5 @@
-﻿using Blaise.Api.Contracts.Interfaces;
+﻿using System;
+using Blaise.Api.Contracts.Interfaces;
 using Blaise.Api.Core.Interfaces.Services;
 using Blaise.Nuget.Api.Contracts.Interfaces;
 
@@ -11,8 +12,8 @@ namespace Blaise.Api.Core.Services
         private readonly ILoggingService _loggingService;
 
         public CaseService(
-            IBlaiseCaseApi blaiseApi, 
-            IOnlineCaseService updateCaseService, 
+            IBlaiseCaseApi blaiseApi,
+            IOnlineCaseService updateCaseService,
             ILoggingService loggingService)
         {
             _blaiseApi = blaiseApi;
@@ -29,22 +30,17 @@ namespace Blaise.Api.Core.Services
                 var newRecord = caseRecords.ActiveRecord;
                 var primaryKey = _blaiseApi.GetPrimaryKeyValue(newRecord);
 
-                if (_blaiseApi.CaseExists(primaryKey, instrumentName, serverParkName))
+                try
                 {
-                    _loggingService.LogInfo($"Case with serial number '{primaryKey}' exists in Blaise");
-
                     var existingCase = _blaiseApi.GetCase(primaryKey, instrumentName, serverParkName);
-                    _onlineCaseService.UpdateExistingCaseWithOnlineData(newRecord, existingCase, 
-                        serverParkName, instrumentName,  primaryKey);
+                    _onlineCaseService.UpdateExistingCaseWithOnlineData(newRecord, existingCase,
+                        serverParkName, instrumentName, primaryKey);
                 }
-                else
+                catch (Exception ex)
                 {
-                    _loggingService.LogInfo($"Case with serial number '{primaryKey}' does not exist in Blaise");
-
-                    _onlineCaseService.CreateOnlineCase(newRecord, instrumentName, 
-                        serverParkName, primaryKey);
+                    _loggingService.LogWarn($"Warning: There was an error updating case '{primaryKey}' - '{ex}'");
                 }
-
+                
                 caseRecords.MoveNext();
             }
         }

@@ -24,21 +24,6 @@ namespace Blaise.Api.Core.Services
             _loggingService = loggingService;
         }
 
-        public void CreateOnlineCase(IDataRecord dataRecord, string instrumentName, string serverParkName,
-            string primaryKey)
-        {
-            var outcomeCode = _blaiseApi.GetOutcomeCode(dataRecord);
-            var existingFieldData = _blaiseApi.GetRecordDataFields(dataRecord);
-
-            var newFieldData = _blaiseApi.GetRecordDataFields(dataRecord);
-            _catiDataService.RemoveCatiManaBlock(newFieldData);
-
-            _catiDataService.AddCatiManaCallItems(newFieldData, existingFieldData, outcomeCode);
-
-            _blaiseApi.CreateCase(primaryKey, newFieldData, instrumentName, serverParkName);
-            _loggingService.LogInfo($"Created new case with SerialNumber '{primaryKey}'");
-        }
-
         public void UpdateExistingCaseWithOnlineData(IDataRecord nisraDataRecord, IDataRecord existingDataRecord,
             string serverParkName, string instrumentName, string primaryKey)
         {
