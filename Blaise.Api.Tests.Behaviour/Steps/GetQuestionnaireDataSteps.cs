@@ -64,7 +64,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.AreEqual(ExpectedNumberOfCases, numberOfCases);
         }
 
-        //[AfterScenario("data")]
+        [AfterScenario("data")]
         public void CleanUpScenario()
         {
             CaseHelper.GetInstance().DeleteCases();

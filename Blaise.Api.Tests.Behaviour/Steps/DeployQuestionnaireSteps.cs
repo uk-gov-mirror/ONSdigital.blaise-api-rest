@@ -32,7 +32,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             Assert.AreEqual(HttpStatusCode.Created, response);
         }
         
-        //[AfterScenario("deploy")]
+        [AfterScenario("deploy")]
         public async Task CleanUpScenario()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
