@@ -10,7 +10,7 @@ Background:
 	Then the questionnaire is available to use in the Blaise environment
 	And the questionnaire does not contain any correspondent data
 
-@smoke
+
 Scenario: Deliver an instrument with all correspondent data that has been captured so far
 	Given we have captured correspondent data for the questionnaire
 	When the API is called to retrieve the questionnaire with data

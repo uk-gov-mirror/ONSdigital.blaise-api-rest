@@ -210,7 +210,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             }
         }
 
-        [AfterScenario("onlinedata")]
+        //[AfterScenario("onlinedata")]
         public static async Task CleanUpScenario()
         {
             CaseHelper.GetInstance().DeleteCases();
@@ -218,7 +218,7 @@ namespace Blaise.Api.Tests.Behaviour.Steps
             FileSystemHelper.GetInstance().CleanUpTempFiles(_tempFilePath);
         }
         
-        [AfterFeature("onlinedata")]
+        //[AfterFeature("onlinedata")]
         public static void CleanUpFeature()
         {
             InstrumentHelper.GetInstance().UninstallSurvey();
