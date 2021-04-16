@@ -482,5 +482,52 @@ namespace Blaise.Api.Tests.Unit.Services
             var exception = Assert.Throws<ArgumentNullException>(() => _sut.RemoveUser(null));
             Assert.AreEqual("userName", exception.ParamName);
         }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Given_Valid_Arguments_When_I_Call_ValidateUser_Then_The_Correct_Value_Is_Returned(bool exists)
+        {
+            //arrange
+
+            _blaiseApiMock.Setup(r => r.ValidateUser(_userName, _password)).Returns(exists);
+
+            //act
+            var result = _sut.ValidateUser(_userName, _password);
+
+            //assert
+            Assert.AreEqual(exists, result);
+        }
+
+        [Test]
+        public void Given_An_Empty_UserName_When_I_Call_ValidateUser_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.ValidateUser(string.Empty, _password));
+            Assert.AreEqual("A value for the argument 'userName' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_UserName_When_I_Call_ValidateUser_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.ValidateUser(null, _password));
+            Assert.AreEqual("userName", exception.ParamName);
+        }
+
+        [Test]
+        public void Given_An_Empty_Password_When_I_Call_ValidateUser_Then_An_ArgumentException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentException>(() => _sut.ValidateUser(_userName, string.Empty));
+            Assert.AreEqual("A value for the argument 'password' must be supplied", exception.Message);
+        }
+
+        [Test]
+        public void Given_A_Null_Password_When_I_Call_ValidateUser_Then_An_ArgumentNullException_Is_Thrown()
+        {
+            //act && assert
+            var exception = Assert.Throws<ArgumentNullException>(() => _sut.ValidateUser(_userName, null));
+            Assert.AreEqual("password", exception.ParamName);
+        }
     }
 }

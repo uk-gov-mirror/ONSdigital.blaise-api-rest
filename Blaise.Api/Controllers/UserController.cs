@@ -147,5 +147,21 @@ namespace Blaise.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("{userName}/password/{password}/validate")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
+        public IHttpActionResult ValidateUser([FromUri] string userName, [FromUri] string password)
+        {
+            _loggingService.LogInfo($"Attempting to validate user '{userName}' credentials");
+
+            var valid = _userService.ValidateUser(userName, password);
+
+            _loggingService.LogInfo($"User '{userName}' credentials have been validated");
+
+            return Ok(valid);
+        }
     }
 }
