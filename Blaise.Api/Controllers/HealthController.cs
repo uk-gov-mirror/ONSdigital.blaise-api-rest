@@ -26,7 +26,6 @@ namespace Blaise.Api.Controllers
         
         [HttpGet]
         [Route("")]
-        [ResponseType(typeof(List<HealthCheckResultDto>))]
         public IHttpActionResult HealthCheck()
         {
             _loggingService.LogInfo("performing Health check on Blaise connectivity");
@@ -37,6 +36,18 @@ namespace Blaise.Api.Controllers
             {
                 return Content(HttpStatusCode.ServiceUnavailable, results);
             }
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("diagnosis")]
+        [ResponseType(typeof(List<HealthCheckResultDto>))]
+        public IHttpActionResult HealthCheckDiagnosis()
+        {
+            _loggingService.LogInfo("performing Health check on Blaise connectivity");
+
+            var results = _healthService.PerformCheck().ToList();
 
             return Ok(results);
         }

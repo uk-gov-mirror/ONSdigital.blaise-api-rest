@@ -79,37 +79,7 @@ namespace Blaise.Api.Tests.Unit.Services
                 _catiDataMock.Object,
                 _loggingMock.Object);
         }
-        [Test]
-        public void Given_A_New_dataRecord_When_I_Call_CreateOnlineCase_Then_The_Case_Is_Created()
-        {
-            //arrange
-            const int outcomeCode = 110;
-            _blaiseApiMock.Setup(b => b.GetOutcomeCode(_nisraDataRecordMock.Object)).Returns(outcomeCode);
-
-            //important that the service calls the methods in the right order, otherwise you could end up removing what you have added
-            _catiDataMock = new Mock<ICatiDataService>(MockBehavior.Strict);
-            _mockSequence = new MockSequence();
-
-            _catiDataMock.InSequence(_mockSequence).Setup(c => c.RemoveCatiManaBlock(_newFieldData));
-            _catiDataMock.InSequence(_mockSequence).Setup(c => c.AddCatiManaCallItems(_newFieldData, _existingFieldData,
-                It.IsAny<int>()));
-
-            var sut = new OnlineCaseService(
-                _blaiseApiMock.Object,
-                _catiDataMock.Object,
-                _loggingMock.Object);
-
-            //act
-            sut.CreateOnlineCase(_nisraDataRecordMock.Object, _instrumentName, _serverParkName, _primaryKey);
-
-            //assert
-            _catiDataMock.Verify(v => v.RemoveCatiManaBlock(_newFieldData), Times.Once);
-            _catiDataMock.Verify(v => v.AddCatiManaCallItems(_newFieldData, _existingFieldData, outcomeCode),
-                Times.Once);
-
-            _blaiseApiMock.Verify(v => v.CreateCase(_primaryKey, _newFieldData,
-                _instrumentName, _serverParkName), Times.Once);
-        }
+        
 
         // Scenario 1 (https://collaborate2.ons.gov.uk/confluence/display/QSS/Blaise+5+NISRA+Case+Processor+Flow)
         [Test]

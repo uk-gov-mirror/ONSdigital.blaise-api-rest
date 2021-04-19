@@ -81,5 +81,13 @@ namespace Blaise.Api.Core.Services
 
             _blaiseApi.RemoveUser(userName);
         }
+
+        public bool ValidateUser(string userName, string password)
+        {
+            userName.ThrowExceptionIfNullOrEmpty("userName");
+            password.ThrowExceptionIfNullOrEmpty("password");
+
+            return _blaiseApi.ValidateUser(userName, password);
+        }
     }
 }
