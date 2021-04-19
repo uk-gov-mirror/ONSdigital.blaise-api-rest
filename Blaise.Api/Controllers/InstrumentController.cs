@@ -138,6 +138,7 @@ namespace Blaise.Api.Controllers
             finally
             {
                 tempPath.CleanUpTempFiles();
+                _loggingService.LogInfo($"Removed temporary files and folder '{tempPath}'");
             }
         }
 

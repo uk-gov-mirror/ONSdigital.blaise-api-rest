@@ -63,21 +63,5 @@ namespace Blaise.Api.Controllers
 
             return Ok(exists);
         }
-
-        [HttpPost]
-        [Route("{serverParkName}/server")]
-        [SwaggerResponse(HttpStatusCode.NoContent, Type = null)]
-        [SwaggerResponse(HttpStatusCode.BadRequest, Type = null)]
-        [SwaggerResponse(HttpStatusCode.NotFound, Type = null)]
-        public IHttpActionResult RegisterMachine([FromUri] string serverParkName, [FromBody] ServerDto serverDto)
-        {
-            _loggingService.LogInfo($"Attempt to register a server '{serverDto.Name}'");
-
-            _serverParkService.RegisterServerOnServerPark(serverParkName, serverDto);
-
-            _loggingService.LogInfo($"Successfully registered a server '{serverDto.Name}'");
-
-            return NoContent();
-        }
     }
 }

@@ -13,5 +13,7 @@ namespace Blaise.Api.Core.Interfaces.Services
         void UpdatePassword(string userName, UpdateUserPasswordDto passwordDto);
         void UpdateRole(string userName, UpdateUserRoleDto roleDto);
         void UpdateServerParks(string userName, UpdateUserServerParksDto serverParksDto);
+
+        bool ValidateUser(string userName, string password);
     }
 }
